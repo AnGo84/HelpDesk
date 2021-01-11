@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="HelpDesk:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="HelpDesk.war">
-      <element id="artifact" artifact-name="HelpDesk:war exploded" />
-    </root>
-  </artifact>
-</component>
