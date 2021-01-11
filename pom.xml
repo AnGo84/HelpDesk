@@ -13,10 +13,10 @@
     <name>HelpDesk</name>
 
     <properties>
-        <springframework.version>4.3.11.RELEASE</springframework.version>
-        <springsecurity.version>4.2.3.RELEASE</springsecurity.version>
-        <hibernate.version>4.3.11.Final</hibernate.version>
-        <mysql.connector.version>5.1.31</mysql.connector.version>
+        <springframework.version>5.2.12.RELEASE</springframework.version>
+        <springsecurity.version>5.3.6.RELEASE</springsecurity.version>
+        <hibernate.version>5.4.27.Final</hibernate.version>
+        <mysql.connector.version>8.0.22</mysql.connector.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>5.1.3.Final</version>
+            <version>6.1.5.Final</version>
         </dependency>
 
         <!-- MySQL -->
@@ -122,12 +122,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.8.1</version>
+            <version>2.12.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.8.1</version>
+            <version>2.12.1</version>
         </dependency>
 
     </dependencies>
