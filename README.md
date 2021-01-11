@@ -9,6 +9,9 @@ HelpDesk is a simple ticketing system.
 
 In progress
 
+### Release notes:
+Used: Spring MVC, Spring Security, Hibernate, MySql, Logback
+
 ### TODO
  - Add tests;
  - Migration to Spring boot;
