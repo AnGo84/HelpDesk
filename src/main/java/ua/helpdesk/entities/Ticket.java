@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,7 +18,7 @@ public class Ticket implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //    @NotEmpty
+    @NotBlank
     @Column(name = "NUMBER", unique = true, nullable = false)
     private String number;
 
@@ -67,5 +68,8 @@ public class Ticket implements Serializable {
     @Column(name = "SOLUTION", nullable = false)
     private String solution;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "ticket_id")
+    private List<TicketMessage> messages;
 
 }
