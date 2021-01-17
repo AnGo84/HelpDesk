@@ -1,15 +1,12 @@
 package ua.helpdesk.service;
 
-import org.hibernate.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.CategoryDao;
-import ua.helpdesk.dao.CategoryDaoImpl;
-import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.model.Category;
+import ua.helpdesk.entities.Category;
 
 import java.util.List;
 

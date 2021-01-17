@@ -9,13 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import ua.helpdesk.model.*;
+import ua.helpdesk.entities.*;
 import ua.helpdesk.service.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +25,8 @@ import java.util.List;
 import java.util.Locale;
 
 
-@Controller
-@RequestMapping("/")
+//@Controller
+//@RequestMapping("/")
 @SessionAttributes("roles")
 public class AppController {
     static final Logger logger = LoggerFactory.getLogger(AppController.class);

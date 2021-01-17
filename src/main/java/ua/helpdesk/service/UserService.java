@@ -1,8 +1,8 @@
 package ua.helpdesk.service;
 
-import java.util.List;
+import ua.helpdesk.entities.User;
 
-import ua.helpdesk.model.User;
+import java.util.List;
 
 
 public interface UserService {

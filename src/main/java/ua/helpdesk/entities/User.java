@@ -1,9 +1,10 @@
-package ua.helpdesk.model;
+package ua.helpdesk.entities;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -34,10 +35,10 @@ public class User implements Serializable {
     private String firstName;
 
     @NotEmpty
-    @Column(name = "MIDDLENAME", nullable = false)
+    @Column(name = "MIDDLENAME")
     private String middleName;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "EMAIL", nullable = false)
     private String email;
 

@@ -4,10 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.model.Group;
+import ua.helpdesk.entities.Group;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package ua.helpdesk.dao;
 
-import ua.helpdesk.model.Category;
-import ua.helpdesk.model.TicketView;
+import ua.helpdesk.entities.TicketView;
 
 import java.util.List;
 

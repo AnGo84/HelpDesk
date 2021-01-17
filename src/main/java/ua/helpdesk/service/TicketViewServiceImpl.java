@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TicketViewDao;
-import ua.helpdesk.model.TicketView;
+import ua.helpdesk.entities.TicketView;
 
 import java.util.List;
 

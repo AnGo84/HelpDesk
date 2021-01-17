@@ -1,6 +1,6 @@
 package ua.helpdesk.service;
 
-import ua.helpdesk.model.TicketView;
+import ua.helpdesk.entities.TicketView;
 
 import java.util.List;
 

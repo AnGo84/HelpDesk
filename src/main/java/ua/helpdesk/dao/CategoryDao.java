@@ -1,7 +1,6 @@
 package ua.helpdesk.dao;
 
-import ua.helpdesk.model.Category;
-import ua.helpdesk.service.TableDataService;
+import ua.helpdesk.entities.Category;
 
 import java.util.List;
 

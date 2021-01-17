@@ -1,13 +1,12 @@
 package ua.helpdesk.dao;
 
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import ua.helpdesk.entities.UserType;
 
-import ua.helpdesk.model.UserType;
+import java.util.List;
 
 
 @Repository("userTypeDao")

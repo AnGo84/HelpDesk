@@ -1,25 +1,27 @@
-package ua.helpdesk.model;
+package ua.helpdesk.entities;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Ticket_state")
-public class TicketState implements Serializable {
+@Table(name = "CATEGORIES")
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "NAME", unique = true, nullable = false)
     private String name;
 
-    @NotEmpty
-    @Column(name = "altName", unique = true, nullable = false)
-    private String altName;
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SERVICE_ID")
+    private Service service;
 
     public Integer getId() {
         return id;
@@ -37,58 +39,62 @@ public class TicketState implements Serializable {
         this.name = name;
     }
 
-    public String getAltName() {
-        return altName;
+    public Service getService() {
+        return service;
     }
 
-    public void setAltName(String altName) {
-        this.altName = altName;
+    public void setService(Service service) {
+        this.service = service;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof User))
-            return false;
-        TicketState other = (TicketState) obj;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Category)) return false;
+
+        Category category = (Category) obj;
+
         if (id == null) {
-            if (other.id != null)
+            if (category.id != null)
                 return false;
-        } else if (!id.equals(other.id))
+        } else if (!id.equals(category.id))
             return false;
+
         if (name == null) {
-            if (other.name != null)
+            if (category.name != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!name.equals(category.name))
             return false;
-        if (altName == null) {
-            if (other.altName != null)
+
+        if (service == null) {
+            if (category.service != null)
                 return false;
-        } else if (!altName.equals(other.altName))
+        } else if (!service.equals(category.service))
             return false;
+
         return true;
 
     }
 
     @Override
     public int hashCode() {
+
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((altName == null) ? 0 : altName.hashCode());
+        result = prime * result + ((service == null) ? 0 : service.hashCode());
+
         return result;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TicketType{");
+        final StringBuilder sb = new StringBuilder("Category{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", altName='").append(altName).append('\'');
+        sb.append(", ").append(service);
         sb.append('}');
         return sb.toString();
     }

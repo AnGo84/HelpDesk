@@ -1,13 +1,13 @@
-package ua.helpdesk.model;
+package ua.helpdesk.entities;
 
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Ticket_type")
-public class TicketType implements Serializable {
+@Table(name = "SERVICES")
+public class Service implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class TicketType implements Serializable {
             return false;
         if (!(obj instanceof User))
             return false;
-        TicketType other = (TicketType) obj;
+        Service other = (Service) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -68,7 +68,7 @@ public class TicketType implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TicketType{");
+        final StringBuilder sb = new StringBuilder("Service{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append('}');

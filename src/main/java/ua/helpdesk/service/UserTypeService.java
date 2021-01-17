@@ -1,8 +1,8 @@
 package ua.helpdesk.service;
 
-import java.util.List;
+import ua.helpdesk.entities.UserType;
 
-import ua.helpdesk.model.UserType;
+import java.util.List;
 
 
 public interface UserTypeService {

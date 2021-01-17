@@ -1,13 +1,12 @@
 package ua.helpdesk.dao;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import ua.helpdesk.model.Group;
+import ua.helpdesk.entities.Group;
 
 import java.util.List;
 

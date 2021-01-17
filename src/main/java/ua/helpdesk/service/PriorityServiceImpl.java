@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.model.Priority;
+import ua.helpdesk.entities.Priority;
 
 import java.util.List;
 

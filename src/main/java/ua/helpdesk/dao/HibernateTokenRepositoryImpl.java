@@ -1,7 +1,5 @@
 package ua.helpdesk.dao;
 
-import java.util.Date;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -10,9 +8,9 @@ import org.springframework.security.web.authentication.rememberme.PersistentReme
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ua.helpdesk.entities.PersistentLogin;
 
-import ua.helpdesk.dao.AbstractDao;
-import ua.helpdesk.model.PersistentLogin;
+import java.util.Date;
 
 @Repository("tokenRepositoryDao")
 @Transactional

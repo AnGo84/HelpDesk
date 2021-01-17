@@ -5,11 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ua.helpdesk.model.Group;
-import ua.helpdesk.model.Priority;
-import ua.helpdesk.model.UserType;
+import ua.helpdesk.entities.Priority;
 import ua.helpdesk.service.TableDataService;
-import ua.helpdesk.service.UserTypeService;
 
 /**
  * A converter class used in views to map id's to actual userProfile objects.

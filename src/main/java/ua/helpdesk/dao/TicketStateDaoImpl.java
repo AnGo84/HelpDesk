@@ -6,8 +6,7 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import ua.helpdesk.model.TicketState;
-import ua.helpdesk.model.TicketType;
+import ua.helpdesk.entities.TicketState;
 
 import java.util.List;
 

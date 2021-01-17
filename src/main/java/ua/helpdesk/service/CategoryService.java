@@ -1,6 +1,6 @@
 package ua.helpdesk.service;
 
-import ua.helpdesk.model.Category;
+import ua.helpdesk.entities.Category;
 
 import java.util.List;
 

@@ -1,20 +1,17 @@
 package ua.helpdesk.dao;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ua.helpdesk.model.Category;
-import ua.helpdesk.model.Service;
+import ua.helpdesk.entities.Category;
+import ua.helpdesk.entities.Service;
 import ua.helpdesk.service.TableDataService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository("categoryDao")

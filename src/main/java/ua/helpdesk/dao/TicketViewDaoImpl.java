@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ua.helpdesk.model.TicketView;
-import ua.helpdesk.model.User;
+import ua.helpdesk.entities.TicketView;
+import ua.helpdesk.entities.User;
 import ua.helpdesk.service.UserService;
 
 import java.util.List;

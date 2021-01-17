@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ua.helpdesk.model.Group;
+import ua.helpdesk.entities.Group;
 import ua.helpdesk.service.TableDataService;
 
 

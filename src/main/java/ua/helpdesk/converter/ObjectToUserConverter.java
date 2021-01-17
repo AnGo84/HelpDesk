@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ua.helpdesk.model.User;
+import ua.helpdesk.entities.User;
 import ua.helpdesk.service.UserService;
 
 

@@ -1,4 +1,4 @@
-package ua.helpdesk.model;
+package ua.helpdesk.entities;
 
 import java.io.Serializable;
 
