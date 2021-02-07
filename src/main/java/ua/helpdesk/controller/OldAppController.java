@@ -28,18 +28,18 @@ import java.util.Locale;
 //@Controller
 //@RequestMapping("/")
 @SessionAttributes("roles")
-public class AppController {
-    static final Logger logger = LoggerFactory.getLogger(AppController.class);
+public class OldAppController {
+	static final Logger logger = LoggerFactory.getLogger(OldAppController.class);
 
-    @Autowired
-    UserService userService;
+	@Autowired
+	UserService userService;
 
-    @Autowired
-    UserTypeService userTypeService;
+	@Autowired
+	UserTypeService userTypeService;
 
-    @Autowired
-    TableDataService<Service> serviceService;
-    @Autowired
+	@Autowired
+	TableDataService<Service> serviceService;
+	@Autowired
     CategoryService categoryService;
     //TableDataService<Category> categoryService;
 

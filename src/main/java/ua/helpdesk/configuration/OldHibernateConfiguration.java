@@ -17,7 +17,7 @@ import java.util.Properties;
 //@EnableTransactionManagement
 @ComponentScan({"ua.helpdesk.configuration"})
 @PropertySource(value = {"classpath:application.properties"})
-public class HibernateConfiguration {
+public class OldHibernateConfiguration {
 
     @Autowired
     private Environment environment;
@@ -26,7 +26,7 @@ public class HibernateConfiguration {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "ua.helpdesk.model" });
+        sessionFactory.setPackagesToScan(new String[]{"ua.helpdesk.model"});
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
      }

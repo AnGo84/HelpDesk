@@ -1,40 +1,37 @@
 package ua.helpdesk.entities;
 
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "LOGIN", unique = true, nullable = false)
     private String login;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "LASTNAME", nullable = false)
     private String lastName;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "FIRSTNAME", nullable = false)
     private String firstName;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "MIDDLENAME")
     private String middleName;
 
@@ -59,14 +56,13 @@ public class User implements Serializable {
     @JoinColumn(name = "USER_TYPE_ID")
     private UserType userType;
 
-    /*@NotNull*/
-    @ManyToMany(fetch = FetchType.LAZY)
-    //@ManyToMany(fetch = FetchType.EAGER)
+
+    /*@ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USERS_GROUPS",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "GROUP_ID")})
     private Set<Group> groups = new HashSet<>();
-
+*/
 
     @Column(name = "active", nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -145,13 +141,13 @@ public class User implements Serializable {
         this.userType = userType;
     }
 
-    public Set<Group> getGroups() {
+    /*public Set<Group> getGroups() {
         return groups;
     }
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
-    }
+    }*/
 
     public Boolean getActive() {
         return active;
@@ -266,7 +262,7 @@ public class User implements Serializable {
         sb.append(", email='").append(email).append('\'');
         sb.append(", phone='").append(phone).append('\'');
         sb.append(", userType=").append(userType);
-        sb.append(", groups=").append(groups);
+        //sb.append(", groups=").append(groups);
         sb.append(", active=").append(active);
         sb.append('}');
         return sb.toString();

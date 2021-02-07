@@ -1,13 +1,12 @@
 package ua.helpdesk.configuration;
 
-import java.io.IOException;
-
 import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.transaction.UserTransaction;
+import java.io.IOException;
 
 
-public class ConnectionFilter implements Filter {
+public class OldConnectionFilter implements Filter {
     @Override
     public void destroy() {
     }

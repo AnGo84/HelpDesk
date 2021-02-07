@@ -1,4 +1,4 @@
-package ua.helpdesk.security;
+package ua.helpdesk.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationTrustResolverIm
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,8 +19,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 //@Configuration
 
-@EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+//@EnableWebSecurity
+public class OldSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     @Qualifier("customUserDetailsService")
@@ -79,5 +78,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public AuthenticationTrustResolver getAuthenticationTrustResolver() {
         return new AuthenticationTrustResolverImpl();
     }
+
 
 }

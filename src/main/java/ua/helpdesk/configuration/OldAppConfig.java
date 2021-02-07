@@ -18,7 +18,7 @@ import ua.helpdesk.converter.*;
 @EnableWebMvc
 //@EnableTransactionManagement
 @ComponentScan(basePackages = "ua.helpdesk")
-public class AppConfig extends WebMvcConfigurerAdapter {
+public class OldAppConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     SessionFactory sessionFactory;
