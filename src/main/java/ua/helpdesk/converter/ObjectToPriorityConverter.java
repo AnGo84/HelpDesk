@@ -4,14 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 import ua.helpdesk.entities.Priority;
 import ua.helpdesk.service.TableDataService;
 
 /**
  * A converter class used in views to map id's to actual userProfile objects.
  */
-@Component
+//@Component
 public class ObjectToPriorityConverter implements Converter<Object, Priority>{
 
 	static final Logger logger = LoggerFactory.getLogger(ObjectToPriorityConverter.class);

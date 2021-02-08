@@ -6,15 +6,16 @@ import javax.transaction.UserTransaction;
 import java.io.IOException;
 
 
-public class OldConnectionFilter implements Filter {
-    @Override
+public class OldConnectionFilter {
+    //public class OldConnectionFilter implements Filter {
+    //@Override
     public void destroy() {
     }
 
     @Resource
     private UserTransaction utx;
 
-    @Override
+    //@Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         try {
@@ -26,7 +27,7 @@ public class OldConnectionFilter implements Filter {
         }
     }
 
-    @Override
+    //@Override
     public void init(FilterConfig arg0) throws ServletException {
     }
 

@@ -7,14 +7,13 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import ua.helpdesk.entities.TicketView;
 import ua.helpdesk.entities.User;
 import ua.helpdesk.service.UserService;
 
 import java.util.List;
 
-@Repository("ticketViewDao")
+//@Repository("ticketViewDao")
 public class TicketViewDaoImpl extends AbstractDao<Integer, TicketView> implements TicketViewDao {
 
     static final Logger logger = LoggerFactory.getLogger(TicketViewDaoImpl.class);

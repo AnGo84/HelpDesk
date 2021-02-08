@@ -5,12 +5,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 import ua.helpdesk.entities.Service;
 
 import java.util.List;
 
-@Repository("serviceDao")
+//@Repository("serviceDao")
 public class ServiceDaoImpl extends AbstractDao<Integer, Service> implements TableDateDao<Service> {
 
     static final Logger logger = LoggerFactory.getLogger(ServiceDaoImpl.class);

@@ -3,14 +3,13 @@ package ua.helpdesk.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TableDateDao;
 import ua.helpdesk.entities.Group;
 
 import java.util.List;
 
-@Service("groupService")
+//@Service("groupService")
 @Transactional
 public class GroupServiceImpl implements TableDataService<Group> {
     static final Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);

@@ -24,5 +24,4 @@ public class Category {
     @JoinColumn(name = "SERVICE_ID")
     private Service service;
 
-
 }

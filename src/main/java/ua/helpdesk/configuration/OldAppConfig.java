@@ -15,7 +15,7 @@ import ua.helpdesk.converter.*;
 
 
 //@Configuration
-@EnableWebMvc
+//@EnableWebMvc
 //@EnableTransactionManagement
 @ComponentScan(basePackages = "ua.helpdesk")
 public class OldAppConfig extends WebMvcConfigurerAdapter {

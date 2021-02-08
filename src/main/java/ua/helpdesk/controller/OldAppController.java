@@ -15,7 +15,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import ua.helpdesk.entities.*;
-import ua.helpdesk.service.*;
+import ua.helpdesk.service.CategoryService;
+import ua.helpdesk.service.TableDataService;
+import ua.helpdesk.service.TicketViewService;
+import ua.helpdesk.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,17 +32,17 @@ import java.util.Locale;
 //@RequestMapping("/")
 @SessionAttributes("roles")
 public class OldAppController {
-	static final Logger logger = LoggerFactory.getLogger(OldAppController.class);
+    static final Logger logger = LoggerFactory.getLogger(OldAppController.class);
 
-	@Autowired
-	UserService userService;
+    @Autowired
+    UserService userService;
 
-	@Autowired
-	UserTypeService userTypeService;
+	/*@Autowired
+	UserTypeService userTypeService;*/
 
-	@Autowired
-	TableDataService<Service> serviceService;
-	@Autowired
+    @Autowired
+    TableDataService<Service> serviceService;
+    @Autowired
     CategoryService categoryService;
     //TableDataService<Category> categoryService;
 
@@ -125,12 +128,12 @@ public class OldAppController {
          * framework as well while still using internationalized messages.
          *
          */
-        if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
+        /*if (!userService.isUserLoginUnique(user.getId(), user.getLogin())) {
             FieldError loginError = new FieldError("user", "login", messageSource.getMessage("non.unique.login", new String[]{user.getLogin()}, Locale.getDefault()));
             result.addError(loginError);
             //return "registration";
             return "user";
-        }
+        }*/
 
 
         userService.saveUser(user);
@@ -618,11 +621,11 @@ public class OldAppController {
     /**
      * This method will provide UserType list to views
      */
-    @ModelAttribute("roles")
+   /* @ModelAttribute("roles")
     public List<UserType> initializeProfiles() {
         return userTypeService.findAll();
     }
-
+*/
     /**
      * This method will provide Services list to views
      */

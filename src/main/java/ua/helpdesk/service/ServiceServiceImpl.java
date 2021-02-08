@@ -9,7 +9,7 @@ import ua.helpdesk.entities.Service;
 
 import java.util.List;
 
-@org.springframework.stereotype.Service("serviceService")
+//@org.springframework.stereotype.Service("serviceService")
 @Transactional
 public class ServiceServiceImpl implements TableDataService<Service> {
     static final Logger logger = LoggerFactory.getLogger(ServiceServiceImpl.class);

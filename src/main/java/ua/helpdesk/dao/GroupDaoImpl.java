@@ -5,12 +5,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 import ua.helpdesk.entities.Group;
 
 import java.util.List;
 
-@Repository("groupDao")
+//@Repository("groupDao")
 public class GroupDaoImpl extends AbstractDao<Integer, Group> implements TableDateDao<Group> {
 
     static final Logger logger = LoggerFactory.getLogger(GroupDaoImpl.class);

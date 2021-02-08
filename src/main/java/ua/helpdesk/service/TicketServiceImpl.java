@@ -9,7 +9,7 @@ import ua.helpdesk.entities.Ticket;
 
 import java.util.List;
 
-@org.springframework.stereotype.Service("ticketService")
+//@org.springframework.stereotype.Service("ticketService")
 @Transactional
 public class TicketServiceImpl implements TableDataService<Ticket> {
     static final Logger logger = LoggerFactory.getLogger(TicketServiceImpl.class);

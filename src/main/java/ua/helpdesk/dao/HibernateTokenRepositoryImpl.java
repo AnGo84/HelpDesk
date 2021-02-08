@@ -6,13 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.entities.PersistentLogin;
 
 import java.util.Date;
 
-@Repository("tokenRepositoryDao")
+//@Repository("tokenRepositoryDao")
 @Transactional
 public class HibernateTokenRepositoryImpl extends AbstractDao<String, PersistentLogin>
 		implements PersistentTokenRepository {

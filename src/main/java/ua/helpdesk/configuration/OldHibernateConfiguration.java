@@ -3,8 +3,6 @@ package ua.helpdesk.configuration;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -15,8 +13,8 @@ import java.util.Properties;
 
 //@Configuration
 //@EnableTransactionManagement
-@ComponentScan({"ua.helpdesk.configuration"})
-@PropertySource(value = {"classpath:application.properties"})
+//@ComponentScan({"ua.helpdesk.configuration"})
+//@PropertySource(value = {"classpath:application.properties"})
 public class OldHibernateConfiguration {
 
     @Autowired

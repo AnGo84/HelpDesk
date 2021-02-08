@@ -7,14 +7,13 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import ua.helpdesk.entities.Category;
 import ua.helpdesk.entities.Service;
 import ua.helpdesk.service.TableDataService;
 
 import java.util.List;
 
-@Repository("categoryDao")
+//@Repository("categoryDao")
 //public class CategoryDaoImpl extends AbstractDao<Integer, Category> implements TableDateDao<Category> {
 public class CategoryDaoImpl extends AbstractDao<Integer, Category> implements CategoryDao {
     static final Logger logger = LoggerFactory.getLogger(CategoryDaoImpl.class);

@@ -1,0 +1,59 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:fragment="header-css">
+        <!-- this is header-css -->
+        <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/font-awesome.min.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/css/helpdesk.css}">
+
+        <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+        <!--<script th:src="@{/js/popper.min.js}"></script>-->
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+    <!-- this is header -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+        <a class="navbar-brand" href="#">HELPDESK</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavMenu">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" sec:authorize="isAnonymous()">
+                <li class="nav-item">
+                    <a class="nav-link text-light" th:href="@{/login}" th:text="#{label.login.sign_in}">Sign in</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                <li class="nav-item">
+                    <a class="nav-link text-light" th:href="@{/user/view}">
+                        <i class="fa fa-user"></i>
+                        <span th:text="#{label.user}">User</span>
+                        "<span sec:authentication="name"></span>"
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" th:href="@{/logout}" th:text="#{label.login.sign_out}">Logout</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+</div>
+
+</body>
+</html>

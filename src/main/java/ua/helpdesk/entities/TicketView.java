@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity
+//@Entity
 @Immutable
 @Table(name = "VTICKETS")
 
@@ -39,13 +39,13 @@ public class TicketView implements Serializable {
     @JoinColumn(name = "PRIORITY_ID")
     private Priority priority;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    /*@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TICKET_STATE_ID")
     private TicketState ticketState;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "TICKET_TYPE_ID")
-    private TicketType ticketType;
+    private TicketType ticketType;*/
 
 
     @Column(name = "DATE", nullable = true)
@@ -119,7 +119,7 @@ public class TicketView implements Serializable {
         this.priority = priority;
     }
 
-    public TicketState getTicketState() {
+    /*public TicketState getTicketState() {
         return ticketState;
     }
 
@@ -134,7 +134,7 @@ public class TicketView implements Serializable {
     public void setTicketType(TicketType ticketType) {
         this.ticketType = ticketType;
     }
-
+*/
     public Date getDate() {
         return date;
     }
@@ -181,8 +181,8 @@ public class TicketView implements Serializable {
         if (!service.equals(ticket.service)) return false;
         if (!category.equals(ticket.category)) return false;
         if (!priority.equals(ticket.priority)) return false;
-        if (!ticketState.equals(ticket.ticketState)) return false;
-        if (!ticketType.equals(ticket.ticketType)) return false;
+        //if (!ticketState.equals(ticket.ticketState)) return false;
+        //if (!ticketType.equals(ticket.ticketType)) return false;
         if (!date.equals(ticket.date)) return false;
         if (!user.equals(ticket.user)) return false;
         if (!performer.equals(ticket.performer)) return false;
@@ -200,8 +200,8 @@ public class TicketView implements Serializable {
         result = prime * result + ((service == null) ? 0 : service.hashCode());
         result = prime * result + ((category == null) ? 0 : category.hashCode());
         result = prime * result + ((priority == null) ? 0 : priority.hashCode());
-        result = prime * result + ((ticketState == null) ? 0 : ticketState.hashCode());
-        result = prime * result + ((ticketType == null) ? 0 : ticketType.hashCode());
+        //result = prime * result + ((ticketState == null) ? 0 : ticketState.hashCode());
+        //result = prime * result + ((ticketType == null) ? 0 : ticketType.hashCode());
         result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((user == null) ? 0 : user.hashCode());
         result = prime * result + ((performer == null) ? 0 : performer.hashCode());
@@ -219,8 +219,8 @@ public class TicketView implements Serializable {
         sb.append(", service=").append(service);
         sb.append(", category=").append(category);
         sb.append(", priority=").append(priority);
-        sb.append(", ticketState=").append(ticketState);
-        sb.append(", ticketType=").append(ticketType);
+        //sb.append(", ticketState=").append(ticketState);
+        //sb.append(", ticketType=").append(ticketType);
         sb.append(", date=").append(date);
         sb.append(", user=").append(user);
         sb.append(", performer=").append(performer);

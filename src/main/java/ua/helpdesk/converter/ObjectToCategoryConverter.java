@@ -4,12 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 import ua.helpdesk.entities.Category;
 import ua.helpdesk.service.CategoryService;
 
 
-@Component
+//@Component
 public class ObjectToCategoryConverter implements Converter<Object, Category> {
 
     static final Logger logger = LoggerFactory.getLogger(ObjectToCategoryConverter.class);

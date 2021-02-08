@@ -1,19 +1,18 @@
 package ua.helpdesk.configuration;
 
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-public class OldAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-    @Override
+public class OldAppInitializer //extends AbstractAnnotationConfigDispatcherServletInitializer
+{
+    //@Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{OldAppConfig.class};
     }
 
-    @Override
+    //@Override
     protected Class<?>[] getServletConfigClasses() {
         return null;
     }
 
-    @Override
+    //@Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }

@@ -9,7 +9,7 @@ import ua.helpdesk.entities.Priority;
 
 import java.util.List;
 
-@org.springframework.stereotype.Service("priorityService")
+//@org.springframework.stereotype.Service("priorityService")
 @Transactional
 public class PriorityServiceImpl implements TableDataService<Priority> {
     static final Logger logger = LoggerFactory.getLogger(PriorityServiceImpl.class);

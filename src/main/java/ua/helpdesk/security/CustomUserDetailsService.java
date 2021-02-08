@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import ua.helpdesk.entities.User;
 import ua.helpdesk.service.UserService;
 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Service("customUserDetailsService")
+//@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
     static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);

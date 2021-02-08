@@ -5,12 +5,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 import ua.helpdesk.entities.Ticket;
 
 import java.util.List;
 
-@Repository("ticketDao")
+//@Repository("ticketDao")
 public class TicketDaoImpl extends AbstractDao<Integer, Ticket> implements TableDateDao<Ticket> {
 
     static final Logger logger = LoggerFactory.getLogger(TicketDaoImpl.class);

@@ -5,12 +5,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 import ua.helpdesk.entities.Priority;
 
 import java.util.List;
 
-@Repository("priorityDao")
+//@Repository("priorityDao")
 public class PriorityDaoImpl extends AbstractDao<Integer, Priority> implements TableDateDao<Priority> {
 
     static final Logger logger = LoggerFactory.getLogger(PriorityDaoImpl.class);

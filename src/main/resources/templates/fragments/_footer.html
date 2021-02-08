@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+</head>
+<body>
+<div th:fragment="footer">
+    <div class="container">
+        <footer>
+            <!-- FOOTER -->
+            © 2021 Helpdesk.com.ua
+            <span sec:authorize="isAuthenticated()">| Logged user: <span sec:authentication="name"></span> |
+                Roles: <span sec:authentication="principal.authorities"></span> |
+                <a th:href="@{/logout}">Sign Out</a>
+            </span>
+            <!--<script th:src="@{/js/bootstrap.min.js}"></script>-->
+        </footer>
+    </div>
+
+</div>
+</body>
+</html>
