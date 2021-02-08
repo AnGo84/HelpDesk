@@ -22,11 +22,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) {
-		User user = userRepository.findByUsername(username);
+		User user = userRepository.findByLogin(username);
 		if (user == null) throw new UsernameNotFoundException(username);
 
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-		grantedAuthorities.add(new SimpleGrantedAuthority(user.getUserType().getName()));
+		grantedAuthorities.add(new SimpleGrantedAuthority(user.getUserType().name()));
 		/*for (Role role : user.getRoles()){
 			grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
 		}*/

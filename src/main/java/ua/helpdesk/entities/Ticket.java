@@ -2,6 +2,7 @@ package ua.helpdesk.entities;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+import ua.helpdesk.entities.converter.TicketStateConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -45,12 +46,14 @@ public class Ticket implements Serializable {
     @JoinColumn(name = "PRIORITY_ID")
     private Priority priority;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "TICKET_STATE_ID")
+    @NotNull
+    @Column(name = "TICKET_STATE_ID")
+    @Convert(converter = TicketStateConverter.class)
     private TicketState ticketState;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "TICKET_TYPE_ID")
+    @NotNull
+    @Column(name = "TICKET_TYPE_ID")
+    @Convert(converter = TicketStateConverter.class)
     private TicketType ticketType;
 
     @Column(name = "DATE", nullable = true)

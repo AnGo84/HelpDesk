@@ -1,77 +1,94 @@
 package ua.helpdesk.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.helpdesk.dao.UserDao;
+import org.thymeleaf.util.StringUtils;
 import ua.helpdesk.entities.User;
+import ua.helpdesk.exception.EntityErrorType;
+import ua.helpdesk.exception.EntityException;
+import ua.helpdesk.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.Objects.isNull;
 
 
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements UserService {
+@RequiredArgsConstructor
+@Slf4j
+public class UserServiceImpl implements CommonService<User> {
 
-    @Autowired
-    private UserDao dao;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    //@Transactional(propagation=Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
-    public User findById(Integer id) {
+    public String getPrincipal() {
+        String userName;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        return dao.findById(id);
-    }
-
-    public User findByLogin(String login) {
-        User user = dao.findByLogin(login);
-        return user;
-    }
-
-    public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        dao.save(user);
-    }
-
-    /*
-     * Since the method is running with Transaction, No need to call hibernate update explicitly.
-     * Just fetch the entity from db and update it with proper values within transaction.
-     * It will be updated in db once transaction ends.
-     */
-    public void updateUser(User user) {
-        User entity = dao.findById(user.getId());
-        if (entity != null) {
-            entity.setLogin(user.getLogin());
-            if (!user.getPassword().equals(entity.getPassword())) {
-                entity.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
-            entity.setLastName(user.getLastName());
-            entity.setFirstName(user.getFirstName());
-            entity.setMiddleName(user.getMiddleName());
-            entity.setEmail(user.getEmail());
-            entity.setPhone(user.getPhone());
-//			entity.setUserProfiles(user.getUserProfiles());
-            entity.setUserType(user.getUserType());
-            entity.setGroups(user.getGroups());
-            entity.setActive(user.getActive());
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails) principal).getUsername();
+        } else {
+            userName = principal.toString();
         }
+        return userName;
     }
 
-
-    public void deleteUserByLogin(String login) {
-        dao.deleteByLogin(login);
+    @Override
+    public User save(User entity) {
+        log.info("Save entity: {}", entity);
+        User savedEntity = userRepository.save(entity);
+        return savedEntity;
     }
 
-    public List<User> findAllUsers() {
-        return dao.findAllUsers();
+    @Override
+    public List<User> saveAll(List<User> entities) {
+        return userRepository.saveAll(entities);
     }
 
-    public boolean isUserLoginUnique(Integer id, String login) {
-        User user = findByLogin(login);
-        return (user == null || ((id != null) && (user.getId() == id)));
+    @Override
+    public User update(User entity) {
+        return userRepository.save(entity);
     }
 
+    @Override
+    public User get(Long id) {
+        Optional<User> entity = userRepository.findById(id);
+        if (entity.isPresent()) {
+            return entity.get();
+        }
+        return null;
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Boolean deleteById(Long id) {
+        User entity = userRepository.findById(id)
+                .orElseThrow(() -> new EntityException(String.format(EntityErrorType.ENTITY_NOT_FOUND_BY_ID.getDescription(), id)));
+        userRepository.deleteById(id);
+        return !userRepository.findById(entity.getId()).isPresent();
+    }
+
+    @Override
+    public Boolean deleteAll() {
+        userRepository.deleteAll();
+        return userRepository.findAll().isEmpty();
+    }
+
+    @Override
+    public Boolean isExist(User entity) {
+        if (isNull(entity) || StringUtils.isEmpty(entity.getLogin())) {
+            throw new EntityException(EntityErrorType.ENTITY_NOT_FOUND.getDescription());
+        }
+        return userRepository.findByLogin(entity.getLogin()) != null;
+    }
 }

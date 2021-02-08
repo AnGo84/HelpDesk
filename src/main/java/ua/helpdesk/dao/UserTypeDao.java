@@ -1,7 +1,5 @@
 package ua.helpdesk.dao;
 
-import ua.helpdesk.entities.UserType;
-
 import java.util.List;
 
 

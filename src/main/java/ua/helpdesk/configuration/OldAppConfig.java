@@ -24,8 +24,6 @@ public class OldAppConfig extends WebMvcConfigurerAdapter {
     SessionFactory sessionFactory;
 
     @Autowired
-    RoleToUserTypeConverter roleToUserTypeConverter;
-    @Autowired
     ObjectToServiceConverter objectToServiceConverter;
     @Autowired
     ObjectToGroupConverter objectToGroupConverter;
@@ -74,7 +72,6 @@ public class OldAppConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(roleToUserTypeConverter);
         registry.addConverter(objectToServiceConverter);
         registry.addConverter(objectToGroupConverter);
         registry.addConverter(objectToCategoryConverter);

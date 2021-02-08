@@ -4,7 +4,6 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-import ua.helpdesk.entities.UserType;
 
 import java.util.List;
 

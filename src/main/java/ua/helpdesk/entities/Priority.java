@@ -1,8 +1,7 @@
 package ua.helpdesk.entities;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
@@ -14,12 +13,12 @@ public class Priority implements Serializable {
     private Integer id;
 
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "time_limit", unique = true, nullable = false)
     private Integer timeLimit;
 
