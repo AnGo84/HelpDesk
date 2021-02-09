@@ -1,12 +1,12 @@
 package ua.helpdesk.service;
 
-import ua.helpdesk.entities.TicketView;
+import ua.helpdesk.entity.TicketView;
 
 import java.util.List;
 
 public interface TicketViewService {
 
-    TicketView findById(Integer id);
+    TicketView findById(Long id);
 
     TicketView findByName(String name);
 
@@ -16,12 +16,12 @@ public interface TicketViewService {
 
     void deleteDataByName(String name);
 
-    void deleteDataById(Integer id);
+    void deleteDataById(Long id);
 
     List<TicketView> findAllData();
 
     List<TicketView> findTicketsForUser(String userName);
 
-    List<TicketView> findTicketsForUser(Integer userID);
+    List<TicketView> findTicketsForUser(Long userID);
 
 }

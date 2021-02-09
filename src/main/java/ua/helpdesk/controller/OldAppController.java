@@ -14,7 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import ua.helpdesk.entities.*;
+import ua.helpdesk.entity.*;
 import ua.helpdesk.service.CategoryService;
 import ua.helpdesk.service.TableDataService;
 import ua.helpdesk.service.TicketViewService;
@@ -51,7 +51,7 @@ public class OldAppController {
     @Autowired
     TableDataService<Group> groupService;
     @Autowired
-    TableDataService<Priority> priorityService;
+    TableDataService<TicketPriority> priorityService;
     @Autowired
     TableDataService<TicketType> ticketTypeService;
     @Autowired
@@ -260,7 +260,7 @@ public class OldAppController {
      * This method will provide the medium to update an existing service.
      */
     @RequestMapping(value = {"/edit-service-{id}"}, method = RequestMethod.GET)
-    public String editService(@PathVariable Integer id, ModelMap model) {
+    public String editService(@PathVariable Long id, ModelMap model) {
         logger.info("EDIT SERVICE: " + id);
         Service service = serviceService.findById(id);
 
@@ -295,7 +295,7 @@ public class OldAppController {
      * This method will delete an service by it's ID value.
      */
     @RequestMapping(value = {"/delete-service-{id}"}, method = RequestMethod.GET)
-    public String deleteService(@PathVariable Integer id) {
+    public String deleteService(@PathVariable Long id) {
         serviceService.deleteDataById(id);
         return "redirect:/serviceslist";
     }
@@ -359,7 +359,7 @@ public class OldAppController {
      * This method will provide the medium to update an existing category.
      */
     @RequestMapping(value = {"/edit-category-{id}"}, method = RequestMethod.GET)
-    public String editCategory(@PathVariable Integer id, ModelMap model) {
+    public String editCategory(@PathVariable Long id, ModelMap model) {
         logger.info("edit-category-: " + id);
 
         Category category = categoryService.findById(id);
@@ -395,7 +395,7 @@ public class OldAppController {
      * This method will delete an category by it's ID value.
      */
     @RequestMapping(value = {"/delete-category-{id}"}, method = RequestMethod.GET)
-    public String deleteCategory(@PathVariable Integer id) {
+    public String deleteCategory(@PathVariable Long id) {
         categoryService.deleteDataById(id);
         return "redirect:/categorieslist";
     }
@@ -460,7 +460,7 @@ public class OldAppController {
      * This method will provide the medium to update an existing group.
      */
     @RequestMapping(value = {"/edit-group-{id}"}, method = RequestMethod.GET)
-    public String editGroup(@PathVariable Integer id, ModelMap model) {
+    public String editGroup(@PathVariable Long id, ModelMap model) {
         logger.info("EDIT GROUP: " + id);
         Group group = groupService.findById(id);
 
@@ -476,7 +476,7 @@ public class OldAppController {
      */
     @RequestMapping(value = {"/edit-group-{id}"}, method = RequestMethod.POST)
     public String updateGroup(@Valid Group group, BindingResult result,
-                              ModelMap model, @PathVariable Integer id) {
+                              ModelMap model, @PathVariable Long id) {
         logger.info("EDIT GROUP: " + group);
         if (result.hasErrors()) {
             return "group";
@@ -495,7 +495,7 @@ public class OldAppController {
      * This method will delete an group by it's ID value.
      */
     @RequestMapping(value = {"/delete-group-{id}"}, method = RequestMethod.GET)
-    public String deleteGroup(@PathVariable Integer id) {
+    public String deleteGroup(@PathVariable Long id) {
         groupService.deleteDataById(id);
         return "redirect:/grouplist";
     }
@@ -544,7 +544,7 @@ public class OldAppController {
         ticket.setUser(userService.findByLogin(getPrincipal()));
         ticket.setNumber(ticket.getService().getName().replaceAll(" ",""));
         ticket.setDate(new Date());
-        ticket.setTicketState(ticketStateService.findById(1));
+        ticket.setTicketState(ticketStateService.findById(1l));
         //logger.info("After update fields: " + ticket.toString());
 
         /*if (!ticketService.isDataUnique(ticket.getId(), ticket.getNumber())) {
@@ -568,7 +568,7 @@ public class OldAppController {
      */
     @RequestMapping(value = {"/edit-ticket-{id}"}, method = RequestMethod.GET)
     public String editTicket(@PathVariable String id, ModelMap model) {
-        Ticket ticket = ticketService.findById(Integer.valueOf(id));
+        Ticket ticket = ticketService.findById(Long.valueOf(id));
         model.addAttribute("ticket", ticket);
         //model.addAttribute("edit", true);
         model.addAttribute("loggedinuser", getPrincipal());
@@ -654,7 +654,7 @@ public class OldAppController {
      * This method will provide Priorities list to views
      */
     @ModelAttribute("prioritiesList")
-    public List<Priority> initializePriorities() {
+    public List<TicketPriority> initializePriorities() {
         return priorityService.findAllData();
     }
 
@@ -677,17 +677,18 @@ public class OldAppController {
     /**
      * This method will provide Categories list for Service by name to views
      */
-    /**@RequestMapping(value = "/services", method = RequestMethod.GET)
-    public @ResponseBody
-    List<Service> findAllServices() {
-        logger.debug("finding all services");
-        return serviceService.findAllData();
-    }
-    */
+    /**
+     * @RequestMapping(value = "/services", method = RequestMethod.GET)
+     * public @ResponseBody
+     * List<Service> findAllServices() {
+     * logger.debug("finding all services");
+     * return serviceService.findAllData();
+     * }
+     */
     @RequestMapping(value = "/serviceCategories", method = RequestMethod.GET)
     public @ResponseBody
     List<Category> categoriesForService(
-            @RequestParam(value = "serviceName", required = true) Integer service) {
+            @RequestParam(value = "serviceName", required = true) Long service) {
         //logger.info("finding categories for service " + service);
         return categoryService.findCategoryForService(service);
     }

@@ -11,7 +11,6 @@ import org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import ua.helpdesk.converter.*;
 
 
 //@Configuration
@@ -22,21 +21,6 @@ public class OldAppConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     SessionFactory sessionFactory;
-
-    @Autowired
-    ObjectToServiceConverter objectToServiceConverter;
-    @Autowired
-    ObjectToGroupConverter objectToGroupConverter;
-    @Autowired
-    ObjectToCategoryConverter objectToCategoryConverter;
-    @Autowired
-    ObjectToPriorityConverter objectToPriorityConverter;
-    @Autowired
-    ObjectToTicketTypeConverter objectToTicketTypeConverter;
-    @Autowired
-    ObjectToTicketStateConverter objectToTicketStateConverter;
-    @Autowired
-    ObjectToUserConverter objectToUserConverter;
 
 
     /**
@@ -72,14 +56,15 @@ public class OldAppConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(objectToServiceConverter);
+        /*registry.addConverter(objectToServiceConverter);
         registry.addConverter(objectToGroupConverter);
         registry.addConverter(objectToCategoryConverter);
         registry.addConverter(objectToPriorityConverter);
         registry.addConverter(objectToTicketTypeConverter);
         registry.addConverter(objectToTicketStateConverter);
-        registry.addConverter(objectToUserConverter);
+        registry.addConverter(objectToUserConverter);*/
     }
+
     /**
      * Configure MessageSource to lookup any validation/error message in internationalized property files
      */

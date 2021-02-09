@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.transaction.annotation.Transactional;
-import ua.helpdesk.entities.PersistentLogin;
+import ua.helpdesk.entity.PersistentLogin;
 
 import java.util.Date;
 

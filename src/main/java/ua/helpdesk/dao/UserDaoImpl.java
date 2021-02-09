@@ -6,17 +6,17 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.helpdesk.entities.User;
+import ua.helpdesk.entity.User;
 
 import java.util.List;
 
 
 //@Repository("userDao")
-public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
+public class UserDaoImpl extends AbstractDao<Long, User> implements UserDao {
 
     static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
-    public User findById(Integer id) {
+    public User findById(Long id) {
         logger.info("User ID : {}", id);
         User user = getByKey(id);
         if (user != null) {

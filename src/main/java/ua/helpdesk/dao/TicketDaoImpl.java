@@ -5,17 +5,17 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.helpdesk.entities.Ticket;
+import ua.helpdesk.entity.Ticket;
 
 import java.util.List;
 
 //@Repository("ticketDao")
-public class TicketDaoImpl extends AbstractDao<Integer, Ticket> implements TableDateDao<Ticket> {
+public class TicketDaoImpl extends AbstractDao<Long, Ticket> implements TableDateDao<Ticket> {
 
     static final Logger logger = LoggerFactory.getLogger(TicketDaoImpl.class);
 
     @Override
-    public Ticket findById(Integer id) {
+    public Ticket findById(Long id) {
         logger.info("FindByID : {}", id);
         Ticket ticket = getByKey(id);
         return ticket;
@@ -47,7 +47,7 @@ public class TicketDaoImpl extends AbstractDao<Integer, Ticket> implements Table
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         logger.info("DeleteByID : {}", id);
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("id", id));

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface TableDataService<T> {
 
-    T findById(Integer id);
+    T findById(Long id);
 
     T findByName(String name);
 
@@ -14,11 +14,11 @@ public interface TableDataService<T> {
 
     void deleteDataByName(String name);
 
-    void deleteDataById(Integer id);
+    void deleteDataById(Long id);
 
     List<T> findAllData();
 
-    boolean isDataUnique(Integer id, String name);
+    boolean isDataUnique(Long id, String name);
 
-    boolean isDataUnique(Integer id, String name, Integer type_id);
+    boolean isDataUnique(Long id, String name, Long type_id);
 }

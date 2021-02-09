@@ -5,17 +5,17 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.helpdesk.entities.Group;
+import ua.helpdesk.entity.Group;
 
 import java.util.List;
 
 //@Repository("groupDao")
-public class GroupDaoImpl extends AbstractDao<Integer, Group> implements TableDateDao<Group> {
+public class GroupDaoImpl extends AbstractDao<Long, Group> implements TableDateDao<Group> {
 
     static final Logger logger = LoggerFactory.getLogger(GroupDaoImpl.class);
 
     @Override
-    public Group findById(Integer id) {
+    public Group findById(Long id) {
         logger.info("FindByID : {}", id);
         Group group = getByKey(id);
         /*if (group != null) {
@@ -50,7 +50,7 @@ public class GroupDaoImpl extends AbstractDao<Integer, Group> implements TableDa
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         logger.info("DeleteByID : {}", id);
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("id", id));

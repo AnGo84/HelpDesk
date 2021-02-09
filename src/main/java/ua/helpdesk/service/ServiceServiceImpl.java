@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.entities.Service;
+import ua.helpdesk.entity.Service;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class ServiceServiceImpl implements TableDataService<Service> {
     private TableDateDao<Service> dao;
 
     @Override
-    public Service findById(Integer id) {
+    public Service findById(Long id) {
         logger.info("FindById: {}", id);
         if (id == null) {
             return null;
@@ -55,7 +55,7 @@ public class ServiceServiceImpl implements TableDataService<Service> {
     }
 
     @Override
-    public void deleteDataById(Integer id) {
+    public void deleteDataById(Long id) {
         dao.deleteById(id);
     }
 
@@ -65,13 +65,13 @@ public class ServiceServiceImpl implements TableDataService<Service> {
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name) {
+    public boolean isDataUnique(Long id, String name) {
         Service service = findByName(name);
         return (service == null || ((id != null) && (service.getId() == id && service.getName().equals(name))));
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name, Integer type_id) {
+    public boolean isDataUnique(Long id, String name, Long type_id) {
         return false;
     }
 }

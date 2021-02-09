@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.entities.Ticket;
+import ua.helpdesk.entity.Ticket;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class TicketServiceImpl implements TableDataService<Ticket> {
     private TableDateDao<Ticket> dao;
 
     @Override
-    public Ticket findById(Integer id) {
+    public Ticket findById(Long id) {
         logger.info("FindById: {}", id);
         if (id == null) {
             return null;
@@ -56,7 +56,7 @@ public class TicketServiceImpl implements TableDataService<Ticket> {
             entity.setDescription(ticket.getDescription());
             entity.setService(ticket.getService());
             entity.setCategory(ticket.getCategory());
-            entity.setPriority(ticket.getPriority());
+            entity.setTicketPriority(ticket.getTicketPriority());
             entity.setTicketState(ticket.getTicketState());
             entity.setTicketType(ticket.getTicketType());
             entity.setDate(ticket.getDate());
@@ -72,7 +72,7 @@ public class TicketServiceImpl implements TableDataService<Ticket> {
     }
 
     @Override
-    public void deleteDataById(Integer id) {
+    public void deleteDataById(Long id) {
         dao.deleteById(id);
     }
 
@@ -82,13 +82,13 @@ public class TicketServiceImpl implements TableDataService<Ticket> {
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name) {
+    public boolean isDataUnique(Long id, String name) {
         Ticket ticket = findByName(name);
         return (ticket == null || ((id != null) && (ticket.getId() == id && ticket.getNumber().equals(name))));
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name, Integer type_id) {
+    public boolean isDataUnique(Long id, String name, Long type_id) {
         return false;
     }
 

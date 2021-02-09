@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TicketViewDao;
-import ua.helpdesk.entities.TicketView;
+import ua.helpdesk.entity.TicketView;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class TicketViewServiceImpl implements TicketViewService {
     private TicketViewDao dao;
 
     @Override
-    public TicketView findById(Integer id) {
+    public TicketView findById(Long id) {
         logger.info("FindById: {}", id);
         if (id == null) {
             return null;
@@ -70,7 +70,7 @@ public class TicketViewServiceImpl implements TicketViewService {
     }
 
     @Override
-    public void deleteDataById(Integer id) {
+    public void deleteDataById(Long id) {
         /*dao.deleteById(id);*/
     }
 
@@ -85,7 +85,7 @@ public class TicketViewServiceImpl implements TicketViewService {
     }
 
     @Override
-    public List<TicketView> findTicketsForUser(Integer userID) {
+    public List<TicketView> findTicketsForUser(Long userID) {
         return dao.findTicketsForUser(userID);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.helpdesk.entities.User;
+import ua.helpdesk.entity.User;
 import ua.helpdesk.repository.UserRepository;
 
 import java.util.HashSet;

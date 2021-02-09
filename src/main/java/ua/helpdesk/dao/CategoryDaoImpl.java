@@ -7,22 +7,22 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import ua.helpdesk.entities.Category;
-import ua.helpdesk.entities.Service;
+import ua.helpdesk.entity.Category;
+import ua.helpdesk.entity.Service;
 import ua.helpdesk.service.TableDataService;
 
 import java.util.List;
 
 //@Repository("categoryDao")
 //public class CategoryDaoImpl extends AbstractDao<Integer, Category> implements TableDateDao<Category> {
-public class CategoryDaoImpl extends AbstractDao<Integer, Category> implements CategoryDao {
+public class CategoryDaoImpl extends AbstractDao<Long, Category> implements CategoryDao {
     static final Logger logger = LoggerFactory.getLogger(CategoryDaoImpl.class);
 
     @Autowired
     TableDataService<Service> serviceService;
 
     @Override
-    public Category findById(Integer id) {
+    public Category findById(Long id) {
         logger.info("FindByID : {}", id);
         Category category = getByKey(id);
         return category;
@@ -54,7 +54,7 @@ public class CategoryDaoImpl extends AbstractDao<Integer, Category> implements C
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         logger.info("DeleteByID : {}", id);
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("id", id));
@@ -87,12 +87,12 @@ public class CategoryDaoImpl extends AbstractDao<Integer, Category> implements C
     }
 
     @Override
-    public List<Category> findCategoryForService(Integer serviceID) {
+    public List<Category> findCategoryForService(Long serviceID) {
         logger.info("Find by ID: " + serviceID);
 
         Service service = serviceService.findById(serviceID);
         //logger.info("Find by ID: " + serviceID + " SERVICE:" + service);
-        if (service==null){
+        if (service == null) {
             return null;
         }
 

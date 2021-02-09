@@ -1,13 +1,13 @@
 package ua.helpdesk.dao;
 
-import ua.helpdesk.entities.User;
+import ua.helpdesk.entity.User;
 
 import java.util.List;
 
 
 public interface UserDao {
 
-    User findById(Integer id);
+    User findById(Long id);
 
     User findByLogin(String login);
 

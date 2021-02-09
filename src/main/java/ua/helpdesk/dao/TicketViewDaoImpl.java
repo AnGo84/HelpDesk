@@ -7,14 +7,14 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import ua.helpdesk.entities.TicketView;
-import ua.helpdesk.entities.User;
+import ua.helpdesk.entity.TicketView;
+import ua.helpdesk.entity.User;
 import ua.helpdesk.service.UserService;
 
 import java.util.List;
 
 //@Repository("ticketViewDao")
-public class TicketViewDaoImpl extends AbstractDao<Integer, TicketView> implements TicketViewDao {
+public class TicketViewDaoImpl extends AbstractDao<Long, TicketView> implements TicketViewDao {
 
     static final Logger logger = LoggerFactory.getLogger(TicketViewDaoImpl.class);
 
@@ -22,7 +22,7 @@ public class TicketViewDaoImpl extends AbstractDao<Integer, TicketView> implemen
     UserService userService;
 
     @Override
-    public TicketView findById(Integer id) {
+    public TicketView findById(Long id) {
         logger.info("FindByID : {}", id);
         TicketView ticket = getByKey(id);
         return ticket;
@@ -54,7 +54,7 @@ public class TicketViewDaoImpl extends AbstractDao<Integer, TicketView> implemen
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         logger.info("DeleteByID : {}", id);
 //        Criteria criteria = createEntityCriteria();
 //        criteria.add(Restrictions.eq("id", id));
@@ -88,7 +88,7 @@ public class TicketViewDaoImpl extends AbstractDao<Integer, TicketView> implemen
     }
 
     @Override
-    public List<TicketView> findTicketsForUser(Integer userID) {
+    public List<TicketView> findTicketsForUser(Long userID) {
         logger.info("Find by ID: " + userID);
         User user = userService.findById(userID);
         //logger.info("Find by ID: " + userID + " | USER:" + user);

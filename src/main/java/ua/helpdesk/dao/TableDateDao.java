@@ -3,7 +3,7 @@ package ua.helpdesk.dao;
 import java.util.List;
 
 public interface TableDateDao<T> {
-    T findById(Integer id);
+    T findById(Long id);
 
     T findByName(String name);
 
@@ -11,7 +11,7 @@ public interface TableDateDao<T> {
 
     void deleteByName(String name);
 
-    void deleteById(Integer id);
+    void deleteById(Long id);
 
     List<T> findAllData();
 }

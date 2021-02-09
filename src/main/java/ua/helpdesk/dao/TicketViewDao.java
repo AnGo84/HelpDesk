@@ -1,11 +1,11 @@
 package ua.helpdesk.dao;
 
-import ua.helpdesk.entities.TicketView;
+import ua.helpdesk.entity.TicketView;
 
 import java.util.List;
 
 public interface TicketViewDao {
-    TicketView findById(Integer id);
+    TicketView findById(Long id);
 
     TicketView findByName(String name);
 
@@ -13,11 +13,11 @@ public interface TicketViewDao {
 
     void deleteByName(String name);
 
-    void deleteById(Integer id);
+    void deleteById(Long id);
 
     List<TicketView> findAllData();
 
     List<TicketView> findTicketsForUser(String userName);
 
-    List<TicketView> findTicketsForUser(Integer userID);
+    List<TicketView> findTicketsForUser(Long userID);
 }

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.entities.Group;
+import ua.helpdesk.entity.Group;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class GroupServiceImpl implements TableDataService<Group> {
 
     @Override
     //@Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
-    public Group findById(Integer id) {
+    public Group findById(Long id) {
         logger.info("FindById: {}", id);
         if (id == null) {
             return null;
@@ -58,7 +58,7 @@ public class GroupServiceImpl implements TableDataService<Group> {
     }
 
     @Override
-    public void deleteDataById(Integer id) {
+    public void deleteDataById(Long id) {
         dao.deleteById(id);
     }
 
@@ -68,13 +68,13 @@ public class GroupServiceImpl implements TableDataService<Group> {
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name) {
+    public boolean isDataUnique(Long id, String name) {
         Group group = findByName(name);
         return (group == null || ((id != null) && (group.getId() == id && group.getName().equals(name))));
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name, Integer type_id) {
+    public boolean isDataUnique(Long id, String name, Long type_id) {
         return false;
     }
 }

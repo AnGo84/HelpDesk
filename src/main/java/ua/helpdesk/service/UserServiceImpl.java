@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
-import ua.helpdesk.entities.User;
+import ua.helpdesk.entity.User;
 import ua.helpdesk.exception.EntityErrorType;
 import ua.helpdesk.exception.EntityException;
 import ua.helpdesk.repository.UserRepository;

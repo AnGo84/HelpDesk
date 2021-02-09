@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.dao.CategoryDao;
-import ua.helpdesk.entities.Category;
+import ua.helpdesk.entity.Category;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryDao dao;
 
     @Override
-    public Category findById(Integer id) {
+    public Category findById(Long id) {
         if (id == null) {
             return null;
         }
@@ -54,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteDataById(Integer id) {
+    public void deleteDataById(Long id) {
         dao.deleteById(id);
     }
 
@@ -64,12 +64,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name) {
+    public boolean isDataUnique(Long id, String name) {
         return false;
     }
 
     @Override
-    public boolean isDataUnique(Integer id, String name, Integer serviceId) {
+    public boolean isDataUnique(Long id, String name, Long serviceId) {
         logger.info("Get id: " + id + ", name: " + name + ", serviceId: " + serviceId);
         Category category = findById(id);
         return (category == null || ((id != null) && (category.getId() == id && category.getName().equals(name) && category.getService().getId() == serviceId)));
@@ -81,7 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findCategoryForService(Integer serviceID){
+    public List<Category> findCategoryForService(Long serviceID) {
         return dao.findCategoryForService(serviceID);
     }
 
