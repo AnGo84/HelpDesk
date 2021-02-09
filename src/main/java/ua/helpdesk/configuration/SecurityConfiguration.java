@@ -45,8 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				//.antMatchers("/resources/**").permitAll()
 				.antMatchers("/", "/index").permitAll()
 
-				//.antMatchers("/admin/**").hasAnyRole("ADMIN")
-				//.antMatchers("/user/**").hasAnyRole("USER")
+				.antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
+				.antMatchers("/user/**").hasAnyRole("ROLE_USER")
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
@@ -57,7 +57,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.and()
 				.logout()
-				.permitAll();
+				.permitAll()
+
+				// Config Remember Me.
+				.and() //
+				.rememberMe()//
+				.rememberMeCookieName("helpdesk-remember-me")//
+				.tokenRepository(this.persistentTokenRepository()) //
+				.tokenValiditySeconds(1 * 24 * 60 * 60); // 24h
 	}
 
 	@Autowired

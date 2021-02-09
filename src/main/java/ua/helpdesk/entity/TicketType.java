@@ -9,7 +9,9 @@ public enum TicketType {
 
     ERROR(1l),
     IMPROVEMENT(2l),
-    INNOVATION(3l);
+    INNOVATION(3l),
+    CONSULTATION(4l),
+    OTHER(5l);
 
     private final Long dbIndex;
 

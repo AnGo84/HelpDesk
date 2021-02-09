@@ -12,7 +12,9 @@ public enum TicketState {
     PENDING(3l),
     SOLVED(4l),
     REJECTED(5l),
-    CLOSE(6l);
+    CLOSE(6l),
+    PROCESSED(7l),
+    TESTING(8l);
 
     private final Long dbIndex;
 }

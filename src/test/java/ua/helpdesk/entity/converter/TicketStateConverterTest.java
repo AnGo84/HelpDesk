@@ -20,6 +20,8 @@ class TicketStateConverterTest {
         assertEquals(4, converter.convertToDatabaseColumn(TicketState.SOLVED));
         assertEquals(5, converter.convertToDatabaseColumn(TicketState.REJECTED));
         assertEquals(6, converter.convertToDatabaseColumn(TicketState.CLOSE));
+        assertEquals(7, converter.convertToDatabaseColumn(TicketState.PROCESSED));
+        assertEquals(8, converter.convertToDatabaseColumn(TicketState.TESTING));
 
         //
         assertEquals(null, converter.convertToEntityAttribute(null));
@@ -29,6 +31,8 @@ class TicketStateConverterTest {
         assertEquals(TicketState.SOLVED, converter.convertToEntityAttribute(4l));
         assertEquals(TicketState.REJECTED, converter.convertToEntityAttribute(5l));
         assertEquals(TicketState.CLOSE, converter.convertToEntityAttribute(6l));
+        assertEquals(TicketState.PROCESSED, converter.convertToEntityAttribute(7l));
+        assertEquals(TicketState.TESTING, converter.convertToEntityAttribute(8l));
 
         //
         Long lVal = 2l;
