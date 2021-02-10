@@ -4,7 +4,9 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -30,7 +32,8 @@ public class TicketMessage {
 	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	private Date date;
 
-	@NotNull
+	@NotEmpty
+	@Size(max = 1000)
 	@Column(name = "TEXT", nullable = false)
 	private String text;
 }

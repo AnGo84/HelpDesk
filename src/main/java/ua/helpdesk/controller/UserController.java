@@ -2,45 +2,36 @@ package ua.helpdesk.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ua.com.vetal.entity.User;
-import ua.com.vetal.entity.UserRole;
-import ua.com.vetal.service.UserRoleServiceImpl;
-import ua.com.vetal.service.UserServiceImpl;
-import ua.com.vetal.utils.LoggerUtils;
+import ua.helpdesk.entity.User;
+import ua.helpdesk.service.UserServiceImpl;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/users")
 @Slf4j
-@PropertySource(ignoreResourceNotFound = true, value = "classpath:vetal.properties")
+//@PropertySource(ignoreResourceNotFound = true, value = "classpath:app.properties")
 public class UserController {
 	private String title = "user";
 
-	@Value("${user.password.default}")
+	//@Value("${user.password.default}")
 	private String userPasswordDefault;
 
 	@Autowired
 	private final UserServiceImpl userService;
 	@Autowired
 	private MessageSource messageSource;
-	@Autowired
-	private UserRoleServiceImpl userRoleService;
+	/*@Autowired
+	private UserRoleServiceImpl userRoleService;*/
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -51,17 +42,17 @@ public class UserController {
 
 	@RequestMapping(value = {"", "/all", "/list"}, method = RequestMethod.GET)
 	public String personList(Model model) {
-		model.addAttribute("users", userService.findAllObjects());
+		//model.addAttribute("users", userService.findAllObjects());
 		return "usersPage";
 	}
 
 	@RequestMapping(value = {"/add"}, method = RequestMethod.GET)
 	public String showAddUserPage(Model model) {
 		log.info("Add new user");
-		User user = new User();
+		/*User user = new User();
 		user.setEnabled(true);
 		model.addAttribute("edit", false);
-		model.addAttribute("user", user);
+		model.addAttribute("user", user);*/
 		return "userPage";
 	}
 
@@ -69,7 +60,7 @@ public class UserController {
 	public String editUser(@PathVariable Long id, Model model) {
 		log.info("Edit user with ID= {}", id);
 		model.addAttribute("edit", true);
-		model.addAttribute("user", userService.findById(id));
+		//model.addAttribute("user", userService.findById(id));
 		return "userPage";
 	}
 
@@ -77,11 +68,11 @@ public class UserController {
 	public String updateUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
 		log.info("Update User: {}", user);
 		if (bindingResult.hasErrors()) {
-			LoggerUtils.loggingBindingResultsErrors(bindingResult, log);
+			//LoggerUtils.loggingBindingResultsErrors(bindingResult, log);
 			return "userPage";
 		}
 
-		try {
+		/*try {
 			if (user.getEncryptedPassword() == null) {
 				user.setEncryptedPassword(passwordEncoder.encode(userPasswordDefault));
 			}
@@ -93,7 +84,7 @@ public class UserController {
 			bindingResult.addError(ssoError);
 			model.addAttribute("edit", (user.getId() != null));
 			return "userPage";
-		}
+		}*/
 		return "redirect:/users";
 	}
 
@@ -107,7 +98,7 @@ public class UserController {
 	@RequestMapping(value = "/resetPassword-{id}", method = RequestMethod.GET)
 	public String resetUserPassword(@PathVariable Long id, Model model) {
 		log.info("Reset Pass for user with ID= {}", id);
-		User user = userService.findById(id);
+		/*User user = userService.findById(id);
 
 		model.addAttribute("edit", true);
 		model.addAttribute("user", user);
@@ -116,14 +107,16 @@ public class UserController {
 			user.setEncryptedPassword(passwordEncoder.encode(userPasswordDefault));
 			userService.saveObject(user);
 			return "redirect:/users/edit-" + user.getId() + "?resetSuccess";
-		}
-		return "redirect:/users/edit-" + user.getId();
+		}*/
+		//return "redirect:/users/edit-" + user.getId();
+		return "redirect:/users/edit-1";
+
 	}
 
-	@ModelAttribute("userRolesList")
+	/*@ModelAttribute("userRolesList")
 	public List<UserRole> initializeRoles() {
 		return userRoleService.findAllObjects();
-	}
+	}*/
 
 	@ModelAttribute("title")
 	public String initializeTitle() {

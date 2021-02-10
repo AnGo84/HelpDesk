@@ -3,73 +3,71 @@ package ua.helpdesk.entity;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import ua.helpdesk.entity.converter.TicketStateConverter;
+import ua.helpdesk.entity.converter.TicketTypeConverter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Date;
 
-@Data
 @Entity
 @Table(name = "TICKETS")
-public class Ticket implements Serializable {
+@Data
+public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(name = "NUMBER", unique = true, nullable = false)
     private String number;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
-    @NotBlank
+    @NotEmpty
     @Column(name = "THEME", nullable = false)
     private String theme;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SERVICE_ID")
+    @JoinColumn(name = "SERVICE_ID", nullable = false)
     private Service service;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "CATEGORY_ID")
+    @JoinColumn(name = "CATEGORY_ID", nullable = false)
     private Category category;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "PRIORITY_ID")
+    @JoinColumn(name = "PRIORITY_ID", nullable = false)
     private TicketPriority ticketPriority;
 
-    @NotNull
     @Column(name = "TICKET_STATE_ID")
     @Convert(converter = TicketStateConverter.class)
     private TicketState ticketState;
 
     @NotNull
     @Column(name = "TICKET_TYPE_ID")
-    @Convert(converter = TicketStateConverter.class)
+    @Convert(converter = TicketTypeConverter.class)
     private TicketType ticketType;
 
     @NotNull
-    @Column(name = "DATE", nullable = true)
+    @Column(name = "DATE", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private Date date;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PERFORMER_ID")
     private User performer;
 
-    @Column(name = "SOLUTION", nullable = false)
+    @Column(name = "SOLUTION")
     @Size(max = 1000)
     private String solution;
 

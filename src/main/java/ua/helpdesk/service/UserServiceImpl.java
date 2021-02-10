@@ -6,7 +6,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.util.StringUtils;
 import ua.helpdesk.entity.User;
 import ua.helpdesk.exception.EntityErrorType;
 import ua.helpdesk.exception.EntityException;
@@ -15,17 +14,14 @@ import ua.helpdesk.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Objects.isNull;
 
-
-@Service("userService")
+@Service
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements CommonService<User> {
 
     private final UserRepository userRepository;
-
 
     public String getPrincipal() {
         String userName;
@@ -65,6 +61,10 @@ public class UserServiceImpl implements CommonService<User> {
         return null;
     }
 
+    public User findByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
@@ -86,9 +86,16 @@ public class UserServiceImpl implements CommonService<User> {
 
     @Override
     public Boolean isExist(User entity) {
-        if (isNull(entity) || StringUtils.isEmpty(entity.getLogin())) {
-            throw new EntityException(EntityErrorType.ENTITY_NOT_FOUND.getDescription());
+        log.debug("Check on exist: {}", entity);
+        if (entity == null) {
+            return false;
         }
-        return userRepository.findByLogin(entity.getLogin()) != null;
+        User foundEntity = userRepository.findByLogin(entity.getLogin());
+        if (foundEntity == null) {
+            return false;
+        } else if (entity.getId() == null || !entity.getId().equals(foundEntity.getId())) {
+            return true;
+        }
+        return false;
     }
 }

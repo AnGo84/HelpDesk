@@ -59,4 +59,22 @@ public class TestDataUtils {
 
         return ticket;
     }
+
+    public static TicketMessage getTicketMessage(Long id, Ticket ticket, User user, Date date, String text) {
+        TicketMessage ticketMessage = new TicketMessage();
+        ticketMessage.setId(id);
+        ticketMessage.setTicket(ticket);
+        ticketMessage.setUser(user);
+        ticketMessage.setDate(date);
+        ticketMessage.setText(text);
+        return ticketMessage;
+    }
+
+    public static String getMockStringWithLength(int length) {
+        StringBuilder result = new StringBuilder();
+        while ((length--) >= 0) {
+            result.append("a");
+        }
+        return result.toString();
+    }
 }

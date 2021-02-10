@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class UserRepositoryTest {
     @Autowired
-    private TestEntityManager entityManager;
+    private TestEntityManager testEntityManager;
 
     @Autowired
     private UserRepository userRepository;
@@ -40,7 +40,7 @@ class UserRepositoryTest {
         // given
         user = TestDataUtils.getUser(null, "User", "password", true, UserType.USER);
 
-        entityManager.persistAndFlush(user);
+        testEntityManager.persistAndFlush(user);
     }
 
     @AfterEach
@@ -96,7 +96,7 @@ class UserRepositoryTest {
     public void whenFindAll_thenReturnListOfUser() {
         //given
         User user = TestDataUtils.getUser(null, "User2", "second pass", true, UserType.ADMIN);
-        entityManager.persistAndFlush(user);
+        testEntityManager.persistAndFlush(user);
         // when
         List<User> users = userRepository.findAll();
         // then
@@ -175,7 +175,7 @@ class UserRepositoryTest {
     public void whenDeleteById_thenOk() {
         //given
         User user = TestDataUtils.getUser(null, "User2", "second pass", true, UserType.USER);
-        entityManager.persistAndFlush(user);
+        testEntityManager.persistAndFlush(user);
         assertEquals(userRepository.findAll().size(), 2);
 
         User foundUser = userRepository.findByLogin("User2");

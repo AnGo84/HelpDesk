@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class TicketPriorityRepositoryTest {
     @Autowired
-    private TestEntityManager entityManager;
+    private TestEntityManager testEntityManager;
 
     @Autowired
     private TicketPriorityRepository ticketPriorityRepository;
@@ -40,7 +40,7 @@ class TicketPriorityRepositoryTest {
         // given
         ticketPriority = TestDataUtils.getTicketPriority(null, "Priority_Name", 1);
 
-        entityManager.persistAndFlush(ticketPriority);
+        testEntityManager.persistAndFlush(ticketPriority);
     }
 
     @AfterEach
@@ -92,7 +92,7 @@ class TicketPriorityRepositoryTest {
     public void whenFindAll_thenReturnListOfTicketPriority() {
         //given
         TicketPriority ticketPriority = TestDataUtils.getTicketPriority(null, "TicketPriority2", 23);
-        entityManager.persistAndFlush(ticketPriority);
+        testEntityManager.persistAndFlush(ticketPriority);
         // when
         List<TicketPriority> ticketPriorities = ticketPriorityRepository.findAll();
         // then
@@ -159,7 +159,7 @@ class TicketPriorityRepositoryTest {
     public void whenDeleteById_thenOk() {
         //given
         TicketPriority ticketPriority = TestDataUtils.getTicketPriority(null, "TicketPriority2", 12);
-        entityManager.persistAndFlush(ticketPriority);
+        testEntityManager.persistAndFlush(ticketPriority);
         assertEquals(ticketPriorityRepository.findAll().size(), 2);
 
         TicketPriority foundTicketPriority = ticketPriorityRepository.findByName("TicketPriority2");

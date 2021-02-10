@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 class ServiceRepositoryTest {
     @Autowired
-    private TestEntityManager entityManager;
+    private TestEntityManager testEntityManager;
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -40,7 +40,7 @@ class ServiceRepositoryTest {
         // given
         service = TestDataUtils.getService(null, "name");
 
-        entityManager.persistAndFlush(service);
+        testEntityManager.persistAndFlush(service);
     }
 
     @AfterEach
@@ -90,8 +90,8 @@ class ServiceRepositoryTest {
     @Test
     public void whenFindAll_thenReturnListOfService() {
         //given
-        Service Service = TestDataUtils.getService(null, "Service2");
-        entityManager.persistAndFlush(Service);
+        Service service = TestDataUtils.getService(null, "Service2");
+        testEntityManager.persistAndFlush(service);
         // when
         List<Service> ticketPriorities = serviceRepository.findAll();
         // then
@@ -115,41 +115,41 @@ class ServiceRepositoryTest {
 
     @Test
     public void whenSaveServiceWithNameTooLong_thenThrowConstraintViolationException() {
-        Service Service = TestDataUtils.getService(null, "NameWithLengthMoreThen100SymbolsIsTooLongForSavingNameWithLengthMoreThen100SymbolsIsTooLongForSaving!");
+        Service service = TestDataUtils.getService(null, "NameWithLengthMoreThen100SymbolsIsTooLongForSavingNameWithLengthMoreThen100SymbolsIsTooLongForSaving!");
         assertThrows(ConstraintViolationException.class, () -> {
-            serviceRepository.save(Service);
+            serviceRepository.save(service);
         });
     }
 
     @Test
     public void whenSaveServiceWithNameTooShortLength_thenThrowConstraintViolationException() {
         {
-            Service Service = TestDataUtils.getService(null, null);
+            Service service = TestDataUtils.getService(null, null);
             assertThrows(ConstraintViolationException.class, () -> {
-                serviceRepository.save(Service);
+                serviceRepository.save(service);
             });
         }
         {
-            Service Service = TestDataUtils.getService(null, "");
+            Service service = TestDataUtils.getService(null, "");
             assertThrows(ConstraintViolationException.class, () -> {
-                serviceRepository.save(Service);
+                serviceRepository.save(service);
             });
         }
     }
 
     @Test
     public void whenSaveServiceWithExistName_thenThrowDataIntegrityViolationException() {
-        Service Service = TestDataUtils.getService(null, "name");
+        Service service = TestDataUtils.getService(null, "name");
         assertThrows(DataIntegrityViolationException.class, () -> {
-            serviceRepository.save(Service);
+            serviceRepository.save(service);
         });
     }
 
     @Test
     public void whenDeleteById_thenOk() {
         //given
-        Service Service = TestDataUtils.getService(null, "Service2");
-        entityManager.persistAndFlush(Service);
+        Service service = TestDataUtils.getService(null, "Service2");
+        testEntityManager.persistAndFlush(service);
         assertEquals(serviceRepository.findAll().size(), 2);
 
         Service foundService = serviceRepository.findByName("Service2");
