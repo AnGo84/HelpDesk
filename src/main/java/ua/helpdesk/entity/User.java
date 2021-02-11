@@ -1,60 +1,132 @@
 package ua.helpdesk.entity;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 import ua.helpdesk.entity.converter.UserTypeConverter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-@Data
-public class User {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class User extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String login;
+
+    private String password;
+
+    private String lastName;
+
+    private String firstName;
+
+    private String middleName;
+
+    private String email;
+
+    private String phone;
+
+    private UserType userType;
+
+    private Boolean active;
 
     @NotBlank
     @Column(name = "LOGIN", unique = true, nullable = false)
     @Size(min = 4, max = 36)
-    private String login;
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
     @NotBlank
     @Column(name = "PASSWORD", nullable = false)
-    private String password;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @NotBlank
     @Column(name = "LASTNAME", nullable = false)
-    private String lastName;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     @NotBlank
     @Column(name = "FIRSTNAME", nullable = false)
-    private String firstName;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     @NotBlank
     @Column(name = "MIDDLENAME")
-    private String middleName;
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
 
     @Size(max = 100)
     @Column(name = "EMAIL")
-    private String email;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Size(max = 50)
     @Column(name = "PHONE")
-    private String phone;
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     @NotNull
     @Column(name = "USER_TYPE_ID")
     @Convert(converter = UserTypeConverter.class)
-    private UserType userType;
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
 
     @NotNull
     @Column(name = "active", nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean active;
+    public Boolean getActive() {
+        return active;
+    }
 
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

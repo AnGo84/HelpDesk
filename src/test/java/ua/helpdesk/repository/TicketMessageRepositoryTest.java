@@ -57,10 +57,10 @@ class TicketMessageRepositoryTest {
     @BeforeEach
     public void beforeEach() {
         ticketRepository.deleteAll();
-
-        serviceRepository.deleteAll();
         categoryRepository.deleteAll();
+        serviceRepository.deleteAll();
         ticketPriorityRepository.deleteAll();
+
         userRepository.deleteAll();
 
         service = testEntityManager.persistAndFlush(TestDataUtils.getService(null, "TicketName"));
@@ -77,13 +77,13 @@ class TicketMessageRepositoryTest {
         performer = TestDataUtils.getUser(null, "User Performer", "pass2", true, UserType.SUPPORT);
         performer = testEntityManager.persistAndFlush(performer);
         // given
-        ticket = TestDataUtils.getTicket(null, "Ticket Number", "Ticket description", "Ticket theme"
-                , category, ticketPriority, TicketState.NEW, TicketType.INNOVATION, user, performer, "Solution");
+        ticket = TestDataUtils.getTicket(null, "Ticket Number", "Ticket description", "Ticket theme",
+                category, ticketPriority, TicketState.NEW, TicketType.INNOVATION, user, performer, "Solution");
 
         ticket = testEntityManager.persistAndFlush(ticket);
 
-        ticketNew = TestDataUtils.getTicket(null, "Ticket Number2", "Ticket description2", "Ticket theme"
-                , category, ticketPriority, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution");
+        ticketNew = TestDataUtils.getTicket(null, "Ticket Number2", "Ticket description2", "Ticket theme",
+                category, ticketPriority, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution");
 
         ticketMessage = TestDataUtils.getTicketMessage(null, ticket, user, new Date(), "Some text");
         testEntityManager.persistAndFlush(ticketMessage);

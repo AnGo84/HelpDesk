@@ -1,27 +1,24 @@
 package ua.helpdesk.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.entity.User;
-import ua.helpdesk.exception.EntityErrorType;
-import ua.helpdesk.exception.EntityException;
 import ua.helpdesk.repository.UserRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements CommonService<User> {
+public class UserServiceImpl extends AbstractService<User, UserRepository> {
 
-    private final UserRepository userRepository;
+    public UserServiceImpl(UserRepository repository) {
+        super(repository);
+    }
+
+    //private final UserRepository userRepository;
 
     public String getPrincipal() {
         String userName;
@@ -35,16 +32,11 @@ public class UserServiceImpl implements CommonService<User> {
         return userName;
     }
 
-    @Override
+    /*@Override
     public User save(User entity) {
         log.info("Save entity: {}", entity);
         User savedEntity = userRepository.save(entity);
         return savedEntity;
-    }
-
-    @Override
-    public List<User> saveAll(List<User> entities) {
-        return userRepository.saveAll(entities);
     }
 
     @Override
@@ -59,13 +51,13 @@ public class UserServiceImpl implements CommonService<User> {
             return entity.get();
         }
         return null;
-    }
+    }*/
 
     public User findByLogin(String login) {
-        return userRepository.findByLogin(login);
+        return repository.findByLogin(login);
     }
 
-    @Override
+    /*@Override
     public List<User> getAll() {
         return userRepository.findAll();
     }
@@ -82,7 +74,7 @@ public class UserServiceImpl implements CommonService<User> {
     public Boolean deleteAll() {
         userRepository.deleteAll();
         return userRepository.findAll().isEmpty();
-    }
+    }*/
 
     @Override
     public Boolean isExist(User entity) {
@@ -90,7 +82,7 @@ public class UserServiceImpl implements CommonService<User> {
         if (entity == null) {
             return false;
         }
-        User foundEntity = userRepository.findByLogin(entity.getLogin());
+        User foundEntity = repository.findByLogin(entity.getLogin());
         if (foundEntity == null) {
             return false;
         } else if (entity.getId() == null || !entity.getId().equals(foundEntity.getId())) {

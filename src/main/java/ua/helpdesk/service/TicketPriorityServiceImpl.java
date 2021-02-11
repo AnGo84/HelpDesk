@@ -1,27 +1,25 @@
 package ua.helpdesk.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.entity.TicketPriority;
-import ua.helpdesk.exception.EntityErrorType;
-import ua.helpdesk.exception.EntityException;
 import ua.helpdesk.repository.TicketPriorityRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Slf4j
-public class TicketPriorityServiceImpl implements CommonService<TicketPriority> {
+public class TicketPriorityServiceImpl extends AbstractService<TicketPriority, TicketPriorityRepository> {
 
-    private final TicketPriorityRepository repository;
+    public TicketPriorityServiceImpl(TicketPriorityRepository repository) {
+        super(repository);
+    }
 
-    @Override
+    /*private final TicketPriorityRepository repository;*/
+
+    /*@Override
     public TicketPriority save(TicketPriority entity) {
         log.info("Save entity: {}", entity);
         TicketPriority savedEntity = repository.save(entity);
@@ -45,13 +43,13 @@ public class TicketPriorityServiceImpl implements CommonService<TicketPriority> 
             return entity.get();
         }
         return null;
-    }
+    }*/
 
     public TicketPriority findByName(String login) {
         return repository.findByName(login);
     }
 
-    @Override
+    /*@Override
     public List<TicketPriority> getAll() {
         return repository.findAll();
     }
@@ -68,7 +66,7 @@ public class TicketPriorityServiceImpl implements CommonService<TicketPriority> 
     public Boolean deleteAll() {
         repository.deleteAll();
         return repository.findAll().isEmpty();
-    }
+    }*/
 
     @Override
     public Boolean isExist(TicketPriority entity) {

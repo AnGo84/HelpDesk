@@ -1,6 +1,7 @@
 package ua.helpdesk.entity;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -9,31 +10,61 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Data
 @Entity
 @Table(name = "Ticket_messages")
-public class TicketMessage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class TicketMessage extends AbstractEntity {
+
+	private Ticket ticket;
+
+	private User user;
+
+	private Date date;
+
+	private String text;
 
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TICKET_ID")
-	private Ticket ticket;
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+	}
 
 	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USER_ID")
-	private User user;
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	@NotNull
 	@Column(name = "DATE", nullable = false)
 	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-	private Date date;
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
 	@NotEmpty
 	@Size(max = 1000)
 	@Column(name = "TEXT", nullable = false)
-	private String text;
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 }

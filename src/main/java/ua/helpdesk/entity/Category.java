@@ -1,6 +1,7 @@
 package ua.helpdesk.entity;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -9,21 +10,35 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "CATEGORIES")
-@Data
-public class Category {
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class Category extends AbstractEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String name;
+
+
+    private Service service;
 
     @NotEmpty
     @Size(max = 100)
     @Column(name = "NAME", unique = true, nullable = false)
-    private String name;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "SERVICE_ID")
-    private Service service;
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
 
 }

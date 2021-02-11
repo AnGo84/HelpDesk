@@ -1,19 +1,19 @@
 package ua.helpdesk.service;
 
+import ua.helpdesk.entity.AbstractEntity;
+
 import java.util.List;
 
-public interface CommonService<T> {
-    T save(T entity);
+public interface CommonService<T extends AbstractEntity> {
+	T save(T entity);
 
-    List<T> saveAll(List<T> entities);
+	T update(T entity);
 
-    T update(T entity);
+	T get(Long id);
 
-    T get(Long id);
+	List<T> getAll();
 
-    List<T> getAll();
-
-    Boolean deleteById(Long id);
+	Boolean deleteById(Long id);
 
     Boolean deleteAll();
 

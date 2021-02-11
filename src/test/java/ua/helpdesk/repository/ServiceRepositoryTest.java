@@ -40,7 +40,7 @@ class ServiceRepositoryTest {
         // given
         service = TestDataUtils.getService(null, "name");
 
-        testEntityManager.persistAndFlush(service);
+        service = testEntityManager.persistAndFlush(service);
     }
 
     @AfterEach
@@ -139,9 +139,10 @@ class ServiceRepositoryTest {
 
     @Test
     public void whenSaveServiceWithExistName_thenThrowDataIntegrityViolationException() {
-        Service service = TestDataUtils.getService(null, "name");
+        Service newService = TestDataUtils.getService(null, "name");
+        System.out.println("newService: " + serviceRepository.findByName(newService.getName()));
         assertThrows(DataIntegrityViolationException.class, () -> {
-            serviceRepository.save(service);
+            serviceRepository.save(newService);
         });
     }
 

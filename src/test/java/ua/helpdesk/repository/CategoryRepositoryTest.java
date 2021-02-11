@@ -155,7 +155,7 @@ class CategoryRepositoryTest {
             Service notExistService = new Service();
             notExistService.setId(134l);
             notExistService.setName("Not Exist");
-            Category newCategory = TestDataUtils.getCategory(null, "CategoryName2", new Service());
+            Category newCategory = TestDataUtils.getCategory(null, "CategoryName2", notExistService);
 
             assertThrows(InvalidDataAccessApiUsageException.class, () -> {
                 categoryRepository.save(newCategory);
