@@ -11,6 +11,7 @@ import ua.helpdesk.entity.User;
 import ua.helpdesk.service.UserServiceImpl;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -38,7 +39,13 @@ public class UserController extends AbstractController<User, UserServiceImpl> {
 	public String updateRecord(@Valid User object, BindingResult bindingResult, Model model) {
 		log.info("Update '{}': {}", User.class, object);
 		if (bindingResult.hasErrors()) {
-			//LoggerUtils.loggingBindingResultsErrors(bindingResult, log);
+			List<FieldError> errors = bindingResult.getFieldErrors();
+			for (FieldError error : errors) {
+				log.error(error.getObjectName() +
+						" - " + error.getField() +
+						" - " + error.getDefaultMessage() +
+						" - " + error.getCode());
+			}
 
 			return dataType.getRecordPage();
 		}

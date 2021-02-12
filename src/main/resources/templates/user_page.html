@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-
     <meta charset="UTF-8">
-    <!-- <title th:utext="${title}">Edit user</title> -->
-    <title>User Registration</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
 
-    <link rel="shortcut icon" th:href="@{/image/logo.ico}" type="image/x-icon">
 
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
-    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <link rel="shortcut icon" th:href="@{/images/logo_16.ico}" type="image/x-icon">
+
+    <!--<div th:replace="fragments/_header :: header-css"/>-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/helpdesk.css}" type="text/css">
+
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
 
 </head>
 <body>
-<div class="container bg-light" style="margin-top: 30px">
+<!-- Include _header.html -->
+<div th:replace="fragments/_header :: header"/>
+
+<div class="container page_container">
     <div class="well">
-        <!-- <h1 th:text="${title}">user</h1> -->
-        <!--<h1><span th:text="#{label.user}">User Registration Form</span></h1>-->
-
         <div class="row">
-
             <div class="col-sm-2">
                 <h3><span th:text="#{label.user}">User Registration Form</span></h3>
             </div>
             <div class="col-sm-6"></div>
             <div class="col-sm-4 align-self-center">
                 <!--<div th:if="${edit or user.id != null}">-->
-                <div th:if="${edit}">
+                <div th:if="${readOnly == true && object.id !=null}">
                     <!--th:href="@{'/users/resetPassword-' + ${user.id}}"
                     th:href="@{/users/resetPassword}"-->
-                    <a th:href="@{'/users/resetPassword-' + ${user.id}}"
-                       class="btn btn-danger btn-sm custom-width float-right "
-                       style="width: 200px;" role="button" th:text="#{label.reset_password}">Reset Password</a>
+                    <a class="btn btn-danger btn-sm custom-width float-right btn-action-lg" role="button"
+                       th:href="@{'/users/resetPassword-' + ${object.id}}">
+                        <i class="fa fa-repeat"></i><span th:text="#{label.action.reset_password}"/>
+                    </a>
                 </div>
             </div>
         </div>
@@ -45,132 +49,169 @@
 
         <div th:if="${param.resetSuccess}">
             <div class="alert alert-info">
-                <span th:text="#{message.password_reset_successfully}">You successfully reset your password.</span>
+                <span th:text="#{message.action.password_reset.success}">You successfully reset your password.</span>
             </div>
         </div>
 
-        <form action="#" th:action="@{/users/update}" th:object="${user}"
-              method="POST">
-
-            <input type="hidden" id="userId" th:field="*{id}"/>
-            <div class="col-sm-6">
-
-                <div class="form-group row">
-
-                    <label for="userName" class="col-sm-4 col-form-label"><span
-                            th:text="#{label.userName}">User Name</span>: </label>
-                    <div class="col-sm-8">
-                        <input
-                                class="form-control"
-                                type="text"
-                                id="userName"
-                                th:field="*{name}"/>
-                    </div>
-                    <!-- <span class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Here there is an error</span> -->
-
-                </div>
-
-                <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}">
-                    <p th:text="${#fields.errors('name')}"></p>
-                    <!-- th:text="${#fields.errors('name')}" -->
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-
-                <div class="form-group row">
-                    <label for="enableCheck" class="col-sm-4 col-form-label"><span
-                            th:text="#{label.active}">Active</span>: </label>
-
-                    <div class="col-sm-8 align-self-center">
-                        <input type="checkbox"
-                               id="enableCheck"
-                               th:field="*{enabled}"/>
-                    </div>
-                    <!--class="custom-control-label"  class="custom-control-input" -->
-
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-
-                <div class="form-group row">
-                    <label for="rolesSelect" class="col-sm-4 col-form-label"><span th:text="#{label.roles}">Roles</span>:
-                    </label>
-                    <div class="col-sm-8"><select id="rolesSelect"
-                                                  class="form-control"
-                                                  th:field="*{userRoles}"
-                                                  multiple="multiple"
-                                                  size="5">
-                        <!--
-                            Enable the SpringOptionFieldAttrProcessor .
-                            th:field value of option must be equal to that of the select tag
-                                -->
-                        <option th:each="role : ${userRolesList}" th:value="${{role}}"
-                                th:text="${role.name}"/>
-                        <!-- Part name and serial No.</option> th:text="${part.name} + ${part.serial}" -->
-
-                    </select>
-                    </div>
-
-                    <div class="alert alert-danger"
-                         th:if="${#fields.hasErrors('userRoles')}">
-                        <p th:text="${#fields.errors('userRoles')}"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-6">
-                    <label for="recordEmail" th:text="#{label.email}">Email: </label>
-                    <input class="form-control" type="email" id="recordEmail"
-                           th:field="*{email}" placeholder="Enter email"/>
-                </div>
-
-            </div>
-
-            <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}">
-                <p th:text="${#fields.errors('email')}"></p>
-            </div>
-
+        <form action="#" method="POST" th:action="@{/users/update}" th:object="${object}">
             <div class="row">
 
-                <div class="col-sm-6">
-                    <input type="submit" style="width: 100px;"
-                           class="btn btn-info btn-sm" value="OK"/>
+                <input id="recordId" th:field="*{id?}" type="hidden"/>
+
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="recordLogin" th:text="#{label.field.login}">Last name: </label>
+                            <input autofocus="autofocus" class="form-control" id="recordLogin"
+                                   placeholder="Enter Login" th:disabled="${readOnly}"
+                                   th:field="*{login}" type="text"/>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('login')}">
+                        <p th:text="${#fields.errors('login')}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="recordLastName" th:text="#{label.field.lastname}">Last name: </label>
+                            <input class="form-control" id="recordLastName"
+                                   placeholder="Enter Last Name" th:disabled="${readOnly}"
+                                   th:field="*{lastName}" type="text"/>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('lastName')}">
+                        <p th:text="${#fields.errors('lastName')}"></p>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="recordFirstName" th:text="#{label.field.firstname}">First name: </label>
+                            <input class="form-control" id="recordFirstName" placeholder="Enter First Name"
+                                   th:disabled="${readOnly}" th:field="*{firstName}" type="text"/>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('firstName')}">
+                        <p th:text="${#fields.errors('firstName')}"></p>
+                    </div>
                 </div>
 
-                <div class="col-sm-6">
-                    <a th:href="@{/users}" style="width: 100px;"
-                       class="btn btn-info btn-outline-danger btn-sm"
-                       role="button" th:text="#{label.cancel}">Cancel</a>
-                </div>
-                <!--class="btn btn-info btn-outline-danger btn-sm float-right"-->
-                <!-- IF -->
-                <!-- <div th:if="${edit}">
-                    <div class="col-sm-6">
-                        <input type="submit" style="width: 120px;"
-                            class="btn btn-info btn-sm" value="Update" />
-                    </div>
-                    <div class="col-sm-6">
-                        <a th:href="@{/users}" style="width: 120px;"
-                            class="btn btn-info btn-outline-danger btn-sm float-right"
-                            role="button">Cancel</a>
-                    </div>
-                </div> -->
-                <!-- ELSE -->
-                <!-- <div th:unless="${edit}">
-                    <div class="col-sm-6">
-                        <input type="submit" style="width: 120px;"
-                            class="btn btn-info btn-sm" value="Register" />
-                    </div>
-                    <div class="col-sm-6">
-                        <a th:href="@{/users}" style="width: 120px;"
-                            class="btn btn-info btn-outline-danger btn-sm float-right"
-                            role="button">Cancel</a>
-                    </div>
-                </div> -->
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="recordMiddleName" th:text="#{label.field.middlename}">Middle name: </label>
+                            <input class="form-control" id="recordMiddleName" placeholder="Enter Middle Name"
+                                   th:disabled="${readOnly}" th:field="*{middleName}" type="text"/>
+                        </div>
 
+                    </div>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('middleName')}">
+                        <p th:text="${#fields.errors('middleName')}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="recordEmail" th:text="#{label.field.email}">Email: </label>
+                            <input class="form-control" id="recordEmail" placeholder="Enter email"
+                                   th:disabled="${readOnly}" th:field="*{email}" type="email"/>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}">
+                        <p th:text="${#fields.errors('email')}"></p>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="recordPhone" th:text="#{label.field.phone}">Phone: </label>
+                            <input class="form-control" id="recordPhone" placeholder="Enter phone number"
+                                   th:disabled="${readOnly}" th:field="*{phone}" type="text"/>
+                        </div>
+
+                    </div>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('phone')}">
+                        <p th:text="${#fields.errors('phone')}"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label for="rolesSelect" th:text="#{label.field.role}">Role: </label>
+                            <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                    id="rolesSelect" th:disabled="${readOnly}" th:field="*{userType}">
+                                <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+                                <option th:attr="data-tokens=${dropDownItem.name}"
+                                        th:each="dropDownItem : ${T(ua.helpdesk.entity.UserType).values()}"
+                                        th:text="${dropDownItem}" th:value="${dropDownItem}"/>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('userType')}">
+                        <p style="margin-bottom: 0rem" th:text="${#fields.errors('userType')}"></p>
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-sm-6 col-lg-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="activeCheck">
+                            <span th:text="#{label.field.active}">Active</span>:
+                        </label>
+
+                        <div class="col-sm-8 align-self-center">
+                            <input id="activeCheck" th:disabled="${readOnly}" th:field="*{active}" type="checkbox"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons  -->
+            <div th:if="${readOnly}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a class="btn btn-outline-info btn-sm btn-action" role="button" th:href="@{/users}">
+                            <i class="fa fa-arrow-left"></i><span th:text="#{label.action.back}"/></a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a class="btn btn-info btn-sm btn-action float-right" role="button"
+                           th:href="@{'/users/edit-' + ${object.id}}">
+                            <i class="fa fa-pencil"><span th:text="#{label.action.edit}"/></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="!${readOnly}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button id="buttonSubmit" type="submit"
+                                class="btn btn-info btn-sm btn-action">
+                            <i class="fa fa-check"></i><span th:text="Ok"/>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <a class="btn btn-outline-danger btn-sm btn-action float-right" role="button"
+                           th:href="@{/users}">
+                            <i class="fa fa-times"></i><span th:text="#{label.action.cancel}"/></a>
+                    </div>
+                </div>
             </div>
 
         </form>

@@ -16,15 +16,16 @@
             </div>
             <div class="modal-footer">
                 <div class="col-sm-6">
-                    <button type="button" class="btn btn-default btn-sm btn-action"
-                            data-dismiss="modal" th:text="#{label.action.cancel}">Cancel
+                    <button type="button" class="btn btn-danger btn-sm btn-action-md"
+                            data-dismiss="modal">
+                        <i class="fa fa-times"></i><span th:text="#{label.action.cancel}"/>
                     </button>
                 </div>
 
                 <div class="col-sm-6">
                     <button id="confirm" type="button"
-                            class="btn btn-success btn-sm btn-action custom-width float-right"
-                            th:text="#{label.action.confirm}">Confirm
+                            class="btn btn-success btn-sm btn-action-md custom-width float-right">
+                        <i class="fa fa-check"></i><span th:text="#{label.action.confirm}"/>
                     </button>
                 </div>
 

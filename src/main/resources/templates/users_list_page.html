@@ -7,7 +7,6 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
 
-
     <link rel="shortcut icon" th:href="@{/images/logo_16.ico}" type="image/x-icon">
 
     <!--<div th:replace="fragments/_header :: header-css"/>-->
@@ -34,8 +33,9 @@
         <div class="col-sm-8"></div>
         <div class="col-sm-2 align-self-center">
             <a class="btn btn-primary btn-sm custom-width float-right btn-action" role="button"
-               th:href="@{/users/add}"
-               th:text="#{label.action.new}">Add</a>
+               th:href="@{/users/add}">
+                <i class="fa fa-plus"></i><span th:text="#{label.action.new}"/>
+            </a>
         </div>
     </div>
 
@@ -53,24 +53,22 @@
                     <th th:text="#{label.field.email}">Email</th>
                     <th class="no-sort" th:text="#{label.field.active}" width="150">Active</th>
                     <th class="no-sort" width="100"></th>
-                    <th class="no-sort" width="100"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- align-items-center -->
                 <tr th:each="user : ${objectsList}">
-                    <td th:text="${user.id}"></td>
+                    <td class="text-center">
+                        <a th:href="@{'/users/view-' + ${user.id}}"
+                           th:text="${user.id}" th:title="#{label.record.view.title}"></a>
+
+                    </td>
                     <td th:text="${user.login}"></td>
                     <td th:text="${user.userType.name}"></td>
                     <td th:text="${user.email}"></td>
                     <td class="text-center">
                         <input th:checked="${user.active}" th:disabled="true"
                                th:value="*{user.active}" type="checkbox"/>
-                    </td>
-                    <td class="text-center align-self-center"><a
-                            class="btn btn-success btn-sm custom-width" role="button"
-                            style="width: 100px;" th:href="@{'/users/edit-' + ${user.id}}"
-                            th:text="#{label.action.edit}">Edit</a>
                     </td>
                     <td class="text-center align-self-center column-v-center">
 
@@ -80,18 +78,19 @@
                                role="button" th:href="@{'/stencils/copy-' + ${stencil.id}}"
                                th:title="#{message.record.clone}"><i class="fa fa-clone"></i></a>-->
 
-                            <a class="btn btn-success btn-sm mx-sm-1"
+                            <a class="btn btn-info btn-sm mx-sm-1"
                                role="button" th:href="@{'/users/edit-' + ${user.id}}"
-                               th:title="#{label.action.edit.record}"><i class="fa fa-pencil"></i></a>
+                               th:title="#{label.action.edit.record}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
 
                             <form accept-charset="UTF-8" action="#" method="GET" style="display: inline"
                                   th:action="@{'/users/delete-' + ${user.id}}">
-                                <button class="btn btn-sm btn-info" type="button"
+                                <button class="btn btn-sm btn-danger" type="button"
                                         data-target="#confirmAction" data-toggle="modal"
-                                        th:attr="data-title=''+#{label.action.delete.record} +'', data-action-info=''+ #{label.user}+' №'+${user.login}+ ''"
-                                        th:title="#{label.action.delete.record}"
-                                >
-                                    <i class="fa fa-trash-o"></i>
+                                        th:attr="data-title=''+#{label.action.delete.record} +'', data-action-info=''+ #{label.user}+' '+${user.login}+ ''"
+                                        th:title="#{label.action.delete.record}">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>
                             </form>
 

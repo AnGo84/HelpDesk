@@ -29,6 +29,14 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 	}
 
 	@Override
+	public String viewRecord(Long id, Model model) {
+		log.info("View '{}' with ID= {}", objectClass, id);
+		model.addAttribute(ATTRIBUTE_READ_ONLY, true);
+		model.addAttribute(OBJECT_ATTRIBUTE, service.get(id));
+		return controllerData.getRecordPage();
+	}
+
+	@Override
 	public String addRecord(Model model) {
 		log.info("Add new '{}' record", objectClass);
 		model.addAttribute(ATTRIBUTE_READ_ONLY, false);
@@ -39,7 +47,7 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 	@Override
 	public String editRecord(Long id, Model model) {
 		log.info("Edit '{}' with ID= {}", objectClass, id);
-		model.addAttribute(ATTRIBUTE_READ_ONLY, true);
+		model.addAttribute(ATTRIBUTE_READ_ONLY, false);
 		model.addAttribute(OBJECT_ATTRIBUTE, service.get(id));
 		return controllerData.getRecordPage();
 	}

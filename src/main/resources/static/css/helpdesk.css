@@ -7,6 +7,18 @@
     width: 100px;
 }
 
+.btn-action-md {
+    width: 120px;
+}
+
+.btn-action-lg {
+    width: 150px;
+}
+
 td .column-v-center {
     vertical-align: middle;
+}
+
+.action_info {
+    font-size: 16px;
 }

@@ -15,6 +15,9 @@ public interface CommonController<E extends AbstractEntity> {
     @GetMapping(value = {"", "/list", "/all"})
     String allRecords(Model model);
 
+    @GetMapping(value = {"/view-{id}"})
+    String viewRecord(@PathVariable Long id, Model model);
+
     @GetMapping(value = {"/add"})
     String addRecord(Model model);
 

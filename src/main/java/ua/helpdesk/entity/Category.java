@@ -16,7 +16,6 @@ public class Category extends AbstractEntity {
 
     private String name;
 
-
     private Service service;
 
     @NotEmpty
