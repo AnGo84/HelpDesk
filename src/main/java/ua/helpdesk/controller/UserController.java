@@ -2,23 +2,25 @@ package ua.helpdesk.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.helpdesk.entity.User;
 import ua.helpdesk.service.UserServiceImpl;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/users")
 @Slf4j
 public class UserController extends AbstractController<User, UserServiceImpl> {
 
-	private final ControllerDataType dataType;
+	private static final String ATTRIBUTE_FOR_USER = "ForUser";
 	private final UserServiceImpl service;
 
 	//@Value("${user.password.default}")
@@ -26,43 +28,44 @@ public class UserController extends AbstractController<User, UserServiceImpl> {
 	/*@Autowired
 	private BCryptPasswordEncoder passwordEncoder;*/
 
-	private MessageSource messageSource;
-
 	public UserController(UserServiceImpl service, MessageSource messageSource) {
-		super(ControllerDataType.USER, User.class, service);
+		super(ControllerDataType.USER, User.class, service, messageSource);
 		this.service = service;
-		this.messageSource = messageSource;
-		this.dataType = ControllerDataType.USER;
 	}
 
+	//TODO refresh pass https://www.baeldung.com/updating-your-password/
+
 	@Override
-	public String updateRecord(@Valid User object, BindingResult bindingResult, Model model) {
+	public String updateRecord(@Valid User object, BindingResult bindingResult, Model model, Locale locale) {
 		log.info("Update '{}': {}", User.class, object);
 		if (bindingResult.hasErrors()) {
-			List<FieldError> errors = bindingResult.getFieldErrors();
-			for (FieldError error : errors) {
-				log.error(error.getObjectName() +
-						" - " + error.getField() +
-						" - " + error.getDefaultMessage() +
-						" - " + error.getCode());
-			}
-
-			return dataType.getRecordPage();
+			log.debug("Errors: %n {}", getFieldErrors(bindingResult));
+			return getControllerData().getRecordPage();
 		}
 		if (service.isExist(object)) {
-			log.error("Object '{}' exist", object.getLogin());
-			String fieldName = messageSource.getMessage("label.login", new String[]{}, getSpringWebLocale());
-			FieldError fieldError = new FieldError(OBJECT_ATTRIBUTE, "login",
-					messageSource.getMessage("validation.field.non_unique", new String[]{fieldName, object.getLogin()}, getSpringWebLocale()));
-
-
+			FieldError fieldError = constructFieldError("validation.field.non_unique", "label.login", object.getLogin(), locale);
+			log.error("Object exist: {}", fieldError);
 			bindingResult.addError(fieldError);
-			return dataType.getRecordPage();
+			return getControllerData().getRecordPage();
 		}
 
 		User updated = service.update(object);
-		log.info("Updated: {}", updated);
-		return "redirect:" + dataType.getListPage();
+		log.debug("Updated: {}", updated);
+		return "redirect:" + getControllerData().getListPage();
+	}
+
+
+	@GetMapping(value = {"/viewCurrent"})
+	public String viewCurrentUser(Model model) {
+		//TODO refactor with getting from view param
+		// https://www.baeldung.com/get-user-in-spring-security
+		User user = service.findByLogin(
+				SecurityContextHolder.getContext().getAuthentication().getName());
+		log.debug("View current user: '{}'", user);
+		model.addAttribute(ATTRIBUTE_READ_ONLY, false);
+		model.addAttribute(ATTRIBUTE_FOR_USER, true);
+		model.addAttribute(OBJECT_ATTRIBUTE, user);
+		return getControllerData().getRecordPage();
 	}
 
 }

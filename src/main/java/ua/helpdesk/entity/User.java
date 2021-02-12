@@ -33,7 +33,7 @@ public class User extends AbstractEntity {
 
     private String phone;
 
-    private UserType userType;
+    private UserType userType = UserType.USER;
 
     private Boolean active;
 
@@ -48,7 +48,6 @@ public class User extends AbstractEntity {
         this.login = login;
     }
 
-    @NotBlank
     @Column(name = "PASSWORD", nullable = false)
     public String getPassword() {
         return password;
@@ -78,7 +77,6 @@ public class User extends AbstractEntity {
         this.firstName = firstName;
     }
 
-    @NotBlank
     @Column(name = "MIDDLENAME")
     public String getMiddleName() {
         return middleName;

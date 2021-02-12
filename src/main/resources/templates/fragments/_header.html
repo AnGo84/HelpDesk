@@ -51,7 +51,7 @@
             </ul>
             <ul class="navbar-nav" sec:authorize="isAuthenticated()">
                 <li class="nav-item">
-                    <a class="nav-link text-light" th:href="@{/user/view}">
+                    <a class="nav-link text-light" th:href="@{/users/viewCurrent}">
                         <i class="fa fa-user"></i>
                         <span th:text="#{label.user}">User</span>
                         "<span sec:authentication="name"></span>"
