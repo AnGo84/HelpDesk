@@ -33,7 +33,7 @@ public class User extends AbstractEntity {
 
     private String phone;
 
-    private UserType userType = UserType.USER;
+    private UserType userType;
 
     private Boolean active;
 

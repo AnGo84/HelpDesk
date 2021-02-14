@@ -1,17 +1,15 @@
 package ua.helpdesk.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public enum ControllerDataType {
-	USER("users_list_page", "user_page");
-
+	USER("users_list_page", "/users", "user_page");
 
 	private String listPage;
+	private String listPageURL;
 	private String recordPage;
 
-	ControllerDataType(String listPage, String recordPage) {
-		this.listPage = listPage;
-		this.recordPage = recordPage;
-	}
 }

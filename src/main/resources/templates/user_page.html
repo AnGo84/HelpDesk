@@ -29,20 +29,32 @@
             <div class="col-sm-12 col-md-6">
                 <h3><span th:text="#{label.user}">User Registration Form</span></h3>
             </div>
+
             <div class="col-sm-12 col-md-6 align-self-center float-right">
-                <div th:if="${forUser == false && object.id !=null}">
+                <div th:if="${forUser !=true and object.id !=null}">
+
                     <a class="btn btn-danger btn-sm custom-width float-right" role="button"
                        th:href="@{'/users/resetPassword-' + ${object.id}}">
                         <i class="fa fa-repeat"></i><span th:text="#{label.action.password.reset}"/>
                     </a>
+
                 </div>
                 <div th:if="${forUser}">
                     <a class="btn btn-primary btn-sm custom-width float-right" role="button"
-                       th:href="@{'/users/changePassword-' + ${object.login}}">
+                       th:href="@{'/users/change_password'}">
                         <i class="fa fa-repeat"></i><span th:text="#{label.action.password.change}"/>
                     </a>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div th:if="${viewError != null}">
+                <p class="text-danger">[[${viewError}]]</p>
+            </div>
+            <div th:if="${viewMessage != null}">
+                <p class="text-success">[[${viewMessage}]]</p>
             </div>
         </div>
 
@@ -54,7 +66,9 @@
 
         <form action="#" method="POST" th:action="@{/users/update}" th:object="${object}">
 
-            <input id="recordId" th:field="*{id?}" type="hidden"/>
+            <input id="recordId" th:field="*{id}" type="hidden"/>
+            <input id="recordPass" th:field="*{password}" type="hidden"/>
+
             <div class="row form-group">
                 <div class="col-xs-12 col-sm-6 col-lg-4">
                     <label for="recordLogin" th:text="#{label.field.login}">Last name: </label>
@@ -146,37 +160,47 @@
             </div>
 
             <!-- Buttons  -->
-            <div th:if="${readOnly}">
+            <div th:if="${forUser}">
                 <div class="row">
                     <div class="col-sm-6">
-                        <a class="btn btn-outline-info btn-sm btn-action" role="button" th:href="@{/users}">
+                        <a class="btn btn-outline-info btn-sm btn-action" role="button" th:href="@{/}">
                             <i class="fa fa-arrow-left"></i><span th:text="#{label.action.back}"/></a>
                     </div>
-                    <div class="col-sm-6">
-                        <a class="btn btn-info btn-sm btn-action float-right" role="button"
-                           th:href="@{'/users/edit-' + ${object.id}}">
-                            <i class="fa fa-pencil"><span th:text="#{label.action.edit}"/></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div th:if="!${readOnly}">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <button id="buttonSubmit" type="submit"
-                                class="btn btn-info btn-sm btn-action">
-                            <i class="fa fa-check"></i><span th:text="Ok"/>
-                        </button>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <a class="btn btn-outline-danger btn-sm btn-action float-right" role="button"
-                           th:href="@{/users}">
-                            <i class="fa fa-times"></i><span th:text="#{label.action.cancel}"/></a>
-                    </div>
                 </div>
             </div>
 
+            <div th:unless="${forUser}">
+                <div th:if="${readOnly}">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a class="btn btn-outline-info btn-sm btn-action" role="button" th:href="@{/users}">
+                                <i class="fa fa-arrow-left"></i><span th:text="#{label.action.back}"/></a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a class="btn btn-info btn-sm btn-action float-right" role="button"
+                               th:href="@{'/users/edit-' + ${object.id}}">
+                                <i class="fa fa-pencil"><span th:text="#{label.action.edit}"/></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div th:unless="${readOnly}">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="btn btn-info btn-sm btn-action" id="buttonSubmit"
+                                    type="submit">
+                                <i class="fa fa-check"></i><span th:text="Ok"/>
+                            </button>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <a class="btn btn-outline-danger btn-sm btn-action float-right" role="button"
+                               th:href="@{/users}">
+                                <i class="fa fa-times"></i><span th:text="#{label.action.cancel}"/></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <!--<br />-->

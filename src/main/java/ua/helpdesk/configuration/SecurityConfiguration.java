@@ -20,12 +20,14 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Qualifier("userDetailsServiceImpl")
-	@Autowired
-	private UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
 
-	@Autowired
-	private DataSource dataSource;
+	private final DataSource dataSource;
+
+	public SecurityConfiguration(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, DataSource dataSource) {
+		this.userDetailsService = userDetailsService;
+		this.dataSource = dataSource;
+	}
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -43,10 +45,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
 				//.antMatchers("/resources/**").permitAll()
-				.antMatchers("/", "/index").permitAll()
+				//.antMatchers("/", "/index").permitAll()
 
-				.antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
-				.antMatchers("/user/**").hasAnyRole("ROLE_USER")
+				.antMatchers("/admin**").access("hasAnyRole('ROLE_ADMIN','ROLE_SUPPORT')")
+				.antMatchers("/users", "/users/add", "/users/update", "/users/edit-**", "/users/delete-**", "/users/view-**", "/users/resetPassword-**").access("hasAnyRole('ROLE_ADMIN','ROLE_SUPPORT')")
+
+				.antMatchers("/users/viewCurrent").authenticated()
+				.antMatchers("/users/change_password").authenticated()
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()

@@ -22,3 +22,12 @@ td .column-v-center {
 .action_info {
     font-size: 16px;
 }
+
+.page_container .alert {
+    padding: 0;
+}
+
+.container_login_form {
+    max-width: 350px;
+    margin: 0 auto;
+}

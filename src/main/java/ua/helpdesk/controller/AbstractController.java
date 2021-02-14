@@ -35,13 +35,14 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 
 	@Override
 	public String allRecords(Model model) {
+		log.info("Get all abjects '{}'", objectClass.getName());
 		model.addAttribute("objectsList", service.getAll());
 		return controllerData.getListPage();
 	}
 
 	@Override
 	public String viewRecord(Long id, Model model) {
-		log.info("View '{}' with ID= {}", objectClass, id);
+		log.info("View '{}' with ID= {}", objectClass.getName(), id);
 		model.addAttribute(ATTRIBUTE_READ_ONLY, true);
 		model.addAttribute(OBJECT_ATTRIBUTE, service.get(id));
 		return controllerData.getRecordPage();
@@ -49,7 +50,7 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 
 	@Override
 	public String addRecord(Model model) {
-		log.info("Add new '{}' record", objectClass);
+		log.info("Add new '{}' record", objectClass.getName());
 		model.addAttribute(ATTRIBUTE_READ_ONLY, false);
 		model.addAttribute(OBJECT_ATTRIBUTE, createInstance(objectClass));
 		return controllerData.getRecordPage();
@@ -57,7 +58,7 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 
 	@Override
 	public String editRecord(Long id, Model model) {
-		log.info("Edit '{}' with ID= {}", objectClass, id);
+		log.info("Edit '{}' with ID= {}", objectClass.getName(), id);
 		model.addAttribute(ATTRIBUTE_READ_ONLY, false);
 		model.addAttribute(OBJECT_ATTRIBUTE, service.get(id));
 		return controllerData.getRecordPage();
@@ -67,7 +68,7 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 	public String deleteRecord(Long id) {
 		log.info("Delete {} with ID= {}", objectClass, id);
 		service.deleteById(id);
-		return "redirect:" + controllerData.getListPage();
+		return "redirect:" + controllerData.getListPageURL();
 	}
 
 	protected Locale getSpringWebLocale() {
@@ -84,9 +85,13 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 	}
 
 	protected FieldError constructFieldError(String messageProperty, String fieldLabel, String fieldValue, Locale locale) {
-		String fieldName = messageSource.getMessage(fieldLabel, new String[]{}, locale);
+		String fieldName = getMessageSourceMessage(fieldLabel, locale);
 		FieldError fieldError = new FieldError(OBJECT_ATTRIBUTE, "login",
 				messageSource.getMessage(messageProperty, new String[]{fieldName, fieldValue}, locale));
 		return fieldError;
+	}
+
+	protected String getMessageSourceMessage(String label, Locale locale) {
+		return messageSource.getMessage(label, new String[]{}, locale);
 	}
 }
