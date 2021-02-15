@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <title>Services</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
 
@@ -28,12 +28,12 @@
     <div class="row">
 
         <div class="col-sm-2">
-            <h2><span th:text="#{label.user.users}">User List</span></h2>
+            <h2><span th:text="#{label.service.services}">Services List</span></h2>
         </div>
         <div class="col-sm-8"></div>
         <div class="col-sm-2 align-self-center">
             <a class="btn btn-primary btn-sm custom-width float-right btn-action" role="button"
-               th:href="@{/users/add}">
+               th:href="@{/services/add}">
                 <i class="fa fa-plus"></i><span th:text="#{label.action.new}"/>
             </a>
         </div>
@@ -43,35 +43,25 @@
     <div th:if="${objectsList != null and not #lists.isEmpty(objectsList)}">
         <div class="table-responsive">
 
-            <!--<table id="usersTable" class="table table-bordered table-sm">-->
-            <table class="table table-sm table-bordered table-hover display compact" id="usersTable">
+            <!--<table id="servicesTable" class="table table-bordered table-sm">-->
+            <table class="table table-sm table-bordered table-hover display compact" id="servicesTable">
                 <thead>
                 <tr class="text-center">
-                    <th th:text="#{label.field.id}" width="100">Id</th>
-                    <th th:text="#{label.field.login}">Login</th>
-                    <th th:text="#{label.field.role}">Role</th>
-                    <th th:text="#{label.field.email}">Email</th>
-                    <th class="no-sort" th:text="#{label.field.active}" width="150">Active</th>
+                    <th th:text="#{label.field.id}" width="120">Id</th>
+                    <th th:text="#{label.field.name}">Name</th>
                     <th class="no-sort" width="100"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- align-items-center -->
-                <tr th:each="user : ${objectsList}">
+                <tr th:each="service : ${objectsList}">
                     <td class="text-center">
-                        <a th:href="@{'/users/view-' + ${user.id}}"
-                           th:text="${user.id}" th:title="#{label.record.view.title}"></a>
+                        <a th:href="@{'/services/view-' + ${service.id}}"
+                           th:text="${service.id}" th:title="#{label.record.view.title}"></a>
 
                     </td>
-                    <td th:text="${user.login}"></td>
-                    <td th:text="${user.userType.name}"></td>
-                    <td th:text="${user.email}"></td>
-                    <td class="text-center">
-                        <input th:checked="${user.active}" th:disabled="true"
-                               th:value="*{user.active}" type="checkbox"/>
-                    </td>
+                    <td th:text="${service.name}"></td>
                     <td class="text-center align-self-center column-v-center">
-
                         <div class="btn-group btn-group-sm"
                              sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPPORT')">
                             <!--<a class="btn btn-primary btn-sm mx-sm-1"
@@ -79,16 +69,16 @@
                                th:title="#{message.record.clone}"><i class="fa fa-clone"></i></a>-->
 
                             <a class="btn btn-info btn-sm mx-sm-1"
-                               role="button" th:href="@{'/users/edit-' + ${user.id}}"
+                               role="button" th:href="@{'/services/edit-' + ${service.id}}"
                                th:title="#{label.action.edit.record}">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
 
                             <form accept-charset="UTF-8" action="#" method="GET" style="display: inline"
-                                  th:action="@{'/users/delete-' + ${user.id}}">
+                                  th:action="@{'/services/delete-' + ${service.id}}">
                                 <button class="btn btn-sm btn-danger" type="button"
                                         data-target="#confirmAction" data-toggle="modal"
-                                        th:attr="data-title=''+#{label.action.delete.record} +'', data-action-info=''+ #{label.user}+': '+${user.login}+ ''"
+                                        th:attr="data-title=''+#{label.action.delete.record} +'', data-action-info=''+ #{label.service}+': '+${service.name}+ ''"
                                         th:title="#{label.action.delete.record}">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>
@@ -107,6 +97,7 @@
     </div>
 </div>
 
+
 <!-- Include _footer.html -->
 <div th:replace="fragments/_footer :: footer"/>
 
@@ -115,7 +106,7 @@
 
 
 <!--<script>
-    $(document).ready(initTable('#usersTable'));
+    $(document).ready(initTable('#servicesTable'));
 </script>-->
 
 </body>

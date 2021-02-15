@@ -41,7 +41,7 @@ public class OldAppController {
 	UserTypeService userTypeService;*/
 
     @Autowired
-    TableDataService<Service> serviceService;
+    TableDataService<AppService> serviceService;
     @Autowired
     CategoryService categoryService;
     //TableDataService<Category> categoryService;
@@ -209,7 +209,7 @@ public class OldAppController {
      */
     @RequestMapping(value = {"/serviceslist"}, method = RequestMethod.GET)
     public String listServices(ModelMap model) {
-        List<Service> services = serviceService.findAllData();
+        List<AppService> services = serviceService.findAllData();
         model.addAttribute("services", services);
         model.addAttribute("loggedinuser", getPrincipal());
         return "serviceslist";
@@ -221,7 +221,7 @@ public class OldAppController {
     @RequestMapping(value = {"/newservice"}, method = RequestMethod.GET)
     public String newService(ModelMap model) {
         logger.info("New SERVICE");
-        Service service = new Service();
+        AppService service = new AppService();
         model.addAttribute("service", service);
         model.addAttribute("edit", false);
         model.addAttribute("loggedinuser", getPrincipal());
@@ -233,7 +233,7 @@ public class OldAppController {
      * saving service in database. It also validates the service input
      */
     @RequestMapping(value = {"/newservice"}, method = RequestMethod.POST)
-    public String saveService(@Valid Service service, BindingResult result,
+    public String saveService(@Valid AppService service, BindingResult result,
                               ModelMap model) {
         logger.info("NEW SERVICE: " + service.toString());
         if (result.hasErrors()) {
@@ -262,7 +262,7 @@ public class OldAppController {
     @RequestMapping(value = {"/edit-service-{id}"}, method = RequestMethod.GET)
     public String editService(@PathVariable Long id, ModelMap model) {
         logger.info("EDIT SERVICE: " + id);
-        Service service = serviceService.findById(id);
+        AppService service = serviceService.findById(id);
 
         model.addAttribute("service", service);
         model.addAttribute("edit", true);
@@ -275,7 +275,7 @@ public class OldAppController {
      * updating service in database. It also validates the service input
      */
     @RequestMapping(value = {"/edit-service-{id}"}, method = RequestMethod.POST)
-    public String updateService(@Valid Service service, BindingResult result,
+    public String updateService(@Valid AppService service, BindingResult result,
                                 ModelMap model, @PathVariable Integer id) {
         logger.info("EDIT SERVICE: " + service);
         if (result.hasErrors()) {
@@ -339,7 +339,7 @@ public class OldAppController {
             logger.error(result.getAllErrors().toString());
             return "category";
         }
-        if (!categoryService.isDataUnique(category.getId(), category.getName(), category.getService().getId())) {
+        if (!categoryService.isDataUnique(category.getId(), category.getName(), category.getAppService().getId())) {
             FieldError nameError = new FieldError("category", "name", messageSource.getMessage("non.unique.name", new String[]{category.getName()}, Locale.getDefault()));
             result.addError(nameError);
             return "category";
@@ -626,11 +626,13 @@ public class OldAppController {
         return userTypeService.findAll();
     }
 */
+
     /**
      * This method will provide Services list to views
      */
     @ModelAttribute("servicesList")
-    public @ResponseBody List<Service> initializeServices() {
+    public @ResponseBody
+    List<AppService> initializeServices() {
         return serviceService.findAllData();
     }
 

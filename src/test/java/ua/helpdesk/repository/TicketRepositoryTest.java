@@ -27,20 +27,20 @@ class TicketRepositoryTest {
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private ServiceRepository serviceRepository;
-    @Autowired
-    private TicketPriorityRepository ticketPriorityRepository;
+	private CategoryRepository categoryRepository;
+	@Autowired
+	private AppServiceRepository appServiceRepository;
+	@Autowired
+	private TicketPriorityRepository ticketPriorityRepository;
     @Autowired
     private UserRepository userRepository;
 
     private Ticket ticket;
     private Ticket ticketNew;
 
-    private Category category;
-    private Service service;
-    private TicketPriority ticketPriority;
+	private Category category;
+	private AppService service;
+	private TicketPriority ticketPriority;
     private User user;
     private User performer;
 
@@ -53,13 +53,13 @@ class TicketRepositoryTest {
     public void beforeEach() {
         ticketRepository.deleteAll();
 
-        serviceRepository.deleteAll();
-        categoryRepository.deleteAll();
+		appServiceRepository.deleteAll();
+		categoryRepository.deleteAll();
         ticketPriorityRepository.deleteAll();
         userRepository.deleteAll();
 
-        service = testEntityManager.persistAndFlush(TestDataUtils.getService(null, "TicketName"));
-        service = testEntityManager.persistAndFlush(service);
+		service = testEntityManager.persistAndFlush(TestDataUtils.getAppService(null, "TicketName"));
+		service = testEntityManager.persistAndFlush(service);
 
         category = TestDataUtils.getCategory(null, "CategoryName", service);
         category = testEntityManager.persistAndFlush(category);

@@ -11,7 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import ua.helpdesk.TestDataUtils;
-import ua.helpdesk.entity.Service;
+import ua.helpdesk.entity.AppService;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -20,14 +20,14 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class ServiceRepositoryTest {
+class AppServiceRepositoryTest {
     @Autowired
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private ServiceRepository serviceRepository;
+    private AppServiceRepository appServiceRepository;
 
-    private Service service;
+    private AppService appService;
 
     @BeforeAll
     public static void beforeAll() {
@@ -36,11 +36,11 @@ class ServiceRepositoryTest {
 
     @BeforeEach
     public void beforeEach() {
-        serviceRepository.deleteAll();
+        appServiceRepository.deleteAll();
         // given
-        service = TestDataUtils.getService(null, "name");
+        appService = TestDataUtils.getAppService(null, "name");
 
-        service = testEntityManager.persistAndFlush(service);
+        appService = testEntityManager.persistAndFlush(appService);
     }
 
     @AfterEach
@@ -50,31 +50,31 @@ class ServiceRepositoryTest {
     @Test
     public void whenFindByServiceName_thenReturnService() {
         // when
-        Service foundService = serviceRepository.findByName(service.getName());
+        AppService foundService = appServiceRepository.findByName(appService.getName());
         // then
         assertNotNull(foundService);
         assertNotNull(foundService.getId());
-        assertEquals(foundService.getName(), service.getName());
+        assertEquals(foundService.getName(), appService.getName());
     }
 
     @Test
     public void whenFindByServiceName_thenReturnEmpty() {
-        assertNull(serviceRepository.findByName("wrong name"));
+        assertNull(appServiceRepository.findByName("wrong name"));
     }
 
     @Test
     public void whenFindByID_thenReturnService() {
         // when
-        Optional<Service> foundService = serviceRepository.findById(service.getId());
+        Optional<AppService> foundService = appServiceRepository.findById(appService.getId());
         // then
         assertTrue(foundService.isPresent());
-        assertEquals(service, foundService.get());
+        assertEquals(appService, foundService.get());
     }
 
     @Test
     public void whenFindByIDByNull_thenThrowInvalidDataAccessApiUsageException() {
         assertThrows(InvalidDataAccessApiUsageException.class, () -> {
-            serviceRepository.findById(null);
+            appServiceRepository.findById(null);
         });
 
     }
@@ -82,7 +82,7 @@ class ServiceRepositoryTest {
     @Test
     public void whenFindByID_thenReturnEmpty() {
         // when
-        Optional<Service> foundService = serviceRepository.findById(10l);
+        Optional<AppService> foundService = appServiceRepository.findById(10l);
         // then
         assertFalse(foundService.isPresent());
     }
@@ -90,10 +90,10 @@ class ServiceRepositoryTest {
     @Test
     public void whenFindAll_thenReturnListOfService() {
         //given
-        Service service = TestDataUtils.getService(null, "Service2");
+        AppService service = TestDataUtils.getAppService(null, "Service2");
         testEntityManager.persistAndFlush(service);
         // when
-        List<Service> ticketPriorities = serviceRepository.findAll();
+        List<AppService> ticketPriorities = appServiceRepository.findAll();
         // then
         assertNotNull(ticketPriorities);
         assertFalse(ticketPriorities.isEmpty());
@@ -103,9 +103,9 @@ class ServiceRepositoryTest {
 
     @Test
     public void it_should_save_Service() {
-        Service newService = TestDataUtils.getService(null, "Service2");
-        serviceRepository.save(newService);
-        Service foundService = serviceRepository.findByName(newService.getName());
+        AppService newService = TestDataUtils.getAppService(null, "Service2");
+        appServiceRepository.save(newService);
+        AppService foundService = appServiceRepository.findByName(newService.getName());
 
         // then
         assertNotNull(foundService);
@@ -115,56 +115,56 @@ class ServiceRepositoryTest {
 
     @Test
     public void whenSaveServiceWithNameTooLong_thenThrowConstraintViolationException() {
-        Service service = TestDataUtils.getService(null, "NameWithLengthMoreThen100SymbolsIsTooLongForSavingNameWithLengthMoreThen100SymbolsIsTooLongForSaving!");
+        AppService service = TestDataUtils.getAppService(null, "NameWithLengthMoreThen100SymbolsIsTooLongForSavingNameWithLengthMoreThen100SymbolsIsTooLongForSaving!");
         assertThrows(ConstraintViolationException.class, () -> {
-            serviceRepository.save(service);
+            appServiceRepository.save(service);
         });
     }
 
     @Test
     public void whenSaveServiceWithNameTooShortLength_thenThrowConstraintViolationException() {
         {
-            Service service = TestDataUtils.getService(null, null);
+            AppService service = TestDataUtils.getAppService(null, null);
             assertThrows(ConstraintViolationException.class, () -> {
-                serviceRepository.save(service);
+                appServiceRepository.save(service);
             });
         }
         {
-            Service service = TestDataUtils.getService(null, "");
+            AppService service = TestDataUtils.getAppService(null, "");
             assertThrows(ConstraintViolationException.class, () -> {
-                serviceRepository.save(service);
+                appServiceRepository.save(service);
             });
         }
     }
 
     @Test
     public void whenSaveServiceWithExistName_thenThrowDataIntegrityViolationException() {
-        Service newService = TestDataUtils.getService(null, "name");
-        System.out.println("newService: " + serviceRepository.findByName(newService.getName()));
+        AppService newService = TestDataUtils.getAppService(null, "name");
+        System.out.println("newService: " + appServiceRepository.findByName(newService.getName()));
         assertThrows(DataIntegrityViolationException.class, () -> {
-            serviceRepository.save(newService);
+            appServiceRepository.save(newService);
         });
     }
 
     @Test
     public void whenDeleteById_thenOk() {
         //given
-        Service service = TestDataUtils.getService(null, "Service2");
+        AppService service = TestDataUtils.getAppService(null, "Service2");
         testEntityManager.persistAndFlush(service);
-        assertEquals(serviceRepository.findAll().size(), 2);
+        assertEquals(appServiceRepository.findAll().size(), 2);
 
-        Service foundService = serviceRepository.findByName("Service2");
+        AppService foundService = appServiceRepository.findByName("Service2");
 
         // when
-        serviceRepository.deleteById(foundService.getId());
+        appServiceRepository.deleteById(foundService.getId());
         // then
-        assertEquals(serviceRepository.findAll().size(), 1);
+        assertEquals(appServiceRepository.findAll().size(), 1);
     }
 
     @Test
     public void whenDeleteById_thenThrowEmptyResultDataAccessException() {
         assertThrows(EmptyResultDataAccessException.class, () -> {
-            serviceRepository.deleteById(10000000l);
+            appServiceRepository.deleteById(10000000l);
         });
     }
 }

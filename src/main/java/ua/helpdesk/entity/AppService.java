@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Table(name = "SERVICES")
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class Service extends AbstractEntity {
+public class AppService extends AbstractEntity {
 
     private String name;
 

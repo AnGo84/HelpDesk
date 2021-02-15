@@ -26,18 +26,18 @@ public class TestDataUtils {
         return ticketPriority;
     }
 
-    public static Service getService(Long id, String name) {
-        Service service = new Service();
+    public static AppService getAppService(Long id, String name) {
+        AppService service = new AppService();
         service.setId(id);
         service.setName(name);
         return service;
     }
 
-    public static Category getCategory(Long id, String name, Service service) {
+    public static Category getCategory(Long id, String name, AppService service) {
         Category category = new Category();
         category.setId(id);
         category.setName(name);
-        category.setService(service);
+        category.setAppService(service);
         return category;
     }
 
@@ -47,7 +47,7 @@ public class TestDataUtils {
         ticket.setNumber(number);
         ticket.setDescription(description);
         ticket.setTheme(theme);
-        ticket.setService(category.getService());
+        ticket.setService(category.getAppService());
         ticket.setCategory(category);
         ticket.setTicketPriority(ticketPriority);
         ticket.setTicketState(ticketState);

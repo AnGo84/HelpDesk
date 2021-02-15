@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (entity != null) {
             entity.setId(category.getId());
             entity.setName(category.getName());
-            entity.setService(category.getService());
+            entity.setAppService(category.getAppService());
         }
     }
 
@@ -72,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean isDataUnique(Long id, String name, Long serviceId) {
         logger.info("Get id: " + id + ", name: " + name + ", serviceId: " + serviceId);
         Category category = findById(id);
-        return (category == null || ((id != null) && (category.getId() == id && category.getName().equals(name) && category.getService().getId() == serviceId)));
+        return (category == null || ((id != null) && (category.getId() == id && category.getName().equals(name) && category.getAppService().getId() == serviceId)));
     }
 
     @Override

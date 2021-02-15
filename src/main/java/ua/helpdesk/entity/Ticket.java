@@ -24,7 +24,7 @@ public class Ticket extends AbstractEntity {
 
     private String description;
 
-    private Service service;
+    private AppService service;
 
     private Category category;
 
@@ -75,16 +75,16 @@ public class Ticket extends AbstractEntity {
         this.description = description;
     }
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SERVICE_ID", nullable = false)
-    public Service getService() {
-        return service;
-    }
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "SERVICE_ID", nullable = false)
+	public AppService getService() {
+		return service;
+	}
 
-    public void setService(Service service) {
-        this.service = service;
-    }
+	public void setService(AppService service) {
+		this.service = service;
+	}
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
