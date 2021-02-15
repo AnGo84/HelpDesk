@@ -3,7 +3,7 @@ package ua.helpdesk.service;
 import ua.helpdesk.entity.Category;
 
 import java.util.List;
-
+@Deprecated
 public interface CategoryService {
 
     Category findById(Long id);

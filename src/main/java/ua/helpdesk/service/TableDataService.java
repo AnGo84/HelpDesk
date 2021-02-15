@@ -2,6 +2,7 @@ package ua.helpdesk.service;
 
 import java.util.List;
 
+@Deprecated
 public interface TableDataService<T> {
 
     T findById(Long id);

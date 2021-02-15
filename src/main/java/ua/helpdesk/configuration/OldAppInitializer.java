@@ -1,5 +1,6 @@
 package ua.helpdesk.configuration;
 
+@Deprecated
 public class OldAppInitializer //extends AbstractAnnotationConfigDispatcherServletInitializer
 {
     //@Override

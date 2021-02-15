@@ -5,7 +5,7 @@ import javax.servlet.*;
 import javax.transaction.UserTransaction;
 import java.io.IOException;
 
-
+@Deprecated
 public class OldConnectionFilter {
     //public class OldConnectionFilter implements Filter {
     //@Override

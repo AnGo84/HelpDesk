@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-
+@Deprecated
 //@Controller
 //@RequestMapping("/")
 @SessionAttributes("roles")

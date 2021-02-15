@@ -1,7 +1,7 @@
 package ua.helpdesk.dao;
 
 import java.util.List;
-
+@Deprecated
 public interface TableDateDao<T> {
     T findById(Long id);
 

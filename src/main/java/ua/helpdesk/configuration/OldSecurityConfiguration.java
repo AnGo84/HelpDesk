@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+@Deprecated
 //@Configuration
 
 //@EnableWebSecurity

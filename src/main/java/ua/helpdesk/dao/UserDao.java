@@ -4,7 +4,7 @@ import ua.helpdesk.entity.User;
 
 import java.util.List;
 
-
+@Deprecated
 public interface UserDao {
 
     User findById(Long id);

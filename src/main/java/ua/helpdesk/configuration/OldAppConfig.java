@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-
+@Deprecated
 //@Configuration
 //@EnableWebMvc
 //@EnableTransactionManagement

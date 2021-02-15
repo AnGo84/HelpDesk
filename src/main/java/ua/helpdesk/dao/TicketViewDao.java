@@ -3,7 +3,7 @@ package ua.helpdesk.dao;
 import ua.helpdesk.entity.TicketView;
 
 import java.util.List;
-
+@Deprecated
 public interface TicketViewDao {
     TicketView findById(Long id);
 

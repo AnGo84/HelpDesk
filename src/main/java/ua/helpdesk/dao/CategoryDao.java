@@ -4,6 +4,7 @@ import ua.helpdesk.entity.Category;
 
 import java.util.List;
 
+@Deprecated
 public interface CategoryDao {
     Category findById(Long id);
 
