@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import ua.helpdesk.TestDataUtils;
@@ -95,8 +96,8 @@ class UserRepositoryTest {
     @Test
     public void whenFindAll_thenReturnListOfUser() {
         //given
-        User user = TestDataUtils.getUser(null, "User2", "second pass", true, UserType.ADMIN);
-        testEntityManager.persistAndFlush(user);
+        User newUser = TestDataUtils.getUser(null, "User2", "second pass", true, UserType.ADMIN);
+        testEntityManager.persistAndFlush(newUser);
         // when
         List<User> users = userRepository.findAll();
         // then
@@ -122,43 +123,43 @@ class UserRepositoryTest {
 
     @Test
     public void whenSaveUserWithLoginTooLong_thenThrowConstraintViolationException() {
-        User user = TestDataUtils.getUser(null, "NameWithLengthMoreThen36SymbolsIsTooLongForSaving", "second pass", true, UserType.USER);
+        User newUser = TestDataUtils.getUser(null, "NameWithLengthMoreThen36SymbolsIsTooLongForSaving", "second pass", true, UserType.USER);
         assertThrows(ConstraintViolationException.class, () -> {
-            userRepository.save(user);
+            userRepository.save(newUser);
         });
     }
 
     @Test
     public void whenSaveUserWithLoginTooShortLength_thenThrowConstraintViolationException() {
-        User user = TestDataUtils.getUser(null, "1", "second pass", true, UserType.SUPPORT);
+        User newUser = TestDataUtils.getUser(null, "1", "second pass", true, UserType.SUPPORT);
         assertThrows(ConstraintViolationException.class, () -> {
-            userRepository.save(user);
+            userRepository.save(newUser);
         });
     }
 
     @Test
     public void whenSaveUserWithEmailWrongLength_thenThrowConstraintViolationException() {
-        User user = TestDataUtils.getUser(null, "New Name", "", true, UserType.USER);
-        user.setEmail("Email_With_Length_More_Then_100_Symbols_Is_Too_Long_For_Saving_And_Should_be_an_error_on_saving_attempt");
+        User newUser = TestDataUtils.getUser(null, "New Name", "", true, UserType.USER);
+        newUser.setEmail("Email_With_Length_More_Then_100_Symbols_Is_Too_Long_For_Saving_And_Should_be_an_error_on_saving_attempt");
         assertThrows(ConstraintViolationException.class, () -> {
-            userRepository.save(user);
+            userRepository.save(newUser);
         });
     }
 
     @Test
     public void whenSaveUserWithPhoneWrongLength_thenThrowConstraintViolationException() {
-        User user = TestDataUtils.getUser(null, "New Name", "", true, UserType.USER);
-        user.setPhone("Phone_With_Length_More_Then_50_Symbols_Is_Too_Long");
+        User newUser = TestDataUtils.getUser(null, "New Name", "", true, UserType.USER);
+        newUser.setPhone("Phone_With_Length_More_Then_50_Symbols_Is_Too_Long1");
         assertThrows(ConstraintViolationException.class, () -> {
-            userRepository.save(user);
+            userRepository.save(newUser);
         });
     }
 
     @Test
     public void whenSaveUserWithExistLogin_thenThrowDataIntegrityViolationException() {
-        User user = TestDataUtils.getUser(null, "User", "", true, UserType.SUPPORT);
-        assertThrows(ConstraintViolationException.class, () -> {
-            userRepository.save(user);
+        User newUser = TestDataUtils.getUser(null, "User", "", true, UserType.SUPPORT);
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            userRepository.save(newUser);
         });
     }
 

@@ -1,9 +1,13 @@
 package ua.helpdesk.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.entity.User;
+import ua.helpdesk.entity.UserType;
 import ua.helpdesk.repository.UserRepository;
 
 
@@ -12,8 +16,15 @@ import ua.helpdesk.repository.UserRepository;
 @Slf4j
 public class UserServiceImpl extends AbstractService<User, UserRepository> {
 
-	public UserServiceImpl(UserRepository repository) {
+	@Value("${user.password.default:123}")
+	private String userPasswordDefault;
+
+	@Autowired
+	private final BCryptPasswordEncoder passwordEncoder;
+
+	public UserServiceImpl(UserRepository repository, BCryptPasswordEncoder passwordEncoder) {
 		super(repository);
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public User findByLogin(String login) {
@@ -32,4 +43,24 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> {
 		} else return entity.getId() == null || !entity.getId().equals(foundEntity.getId());
 	}
 
+	public User createDefaultInstance() {
+		log.debug("Create new USER");
+		User newUser = new User();
+		newUser.setUserType(UserType.USER);
+		newUser.setActive(true);
+		newUser.setPassword(passwordEncoder.encode(userPasswordDefault));
+		return newUser;
+	}
+
+	public User resetPassword(User user) {
+		log.debug("Reset user password");
+		user.setPassword(passwordEncoder.encode(userPasswordDefault));
+		return update(user);
+	}
+
+	public User updatePassword(User user, String password) {
+		log.debug("Reset user password");
+		user.setPassword(passwordEncoder.encode(password));
+		return update(user);
+	}
 }

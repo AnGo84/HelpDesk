@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.helpdesk.TestDataUtils;
 import ua.helpdesk.entity.User;
 import ua.helpdesk.entity.UserType;
@@ -22,8 +23,13 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserServiceImplTest {
+    public static final String DEFAULT_PASSWORD = "123";
     @Autowired
     private UserServiceImpl userService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @MockBean
     private UserRepository mockUserRepository;
     private User user;
@@ -150,6 +156,64 @@ class UserServiceImplTest {
 
         when(mockUserRepository.findByLogin(anyString())).thenReturn(null);
         assertFalse(userService.isExist(user));
+    }
+
+    @Test
+    void whenCreateDefaultInstance_thenReturnObject() {
+        User newUser = userService.createDefaultInstance();
+        assertNotNull(newUser);
+        assertNull(newUser.getId());
+        assertNull(newUser.getLogin());
+        assertNull(newUser.getLastName());
+        assertNull(newUser.getFirstName());
+        assertNull(newUser.getMiddleName());
+        assertNull(newUser.getPhone());
+        assertNull(newUser.getEmail());
+        assertNotNull(newUser.getPassword());
+        assertTrue(passwordEncoder.matches(DEFAULT_PASSWORD, newUser.getPassword()));
+        assertEquals(UserType.USER, newUser.getUserType());
+        assertTrue(newUser.getActive());
+    }
+
+    @Test
+    void whenResetPassword_thenReturnUpdatedObject() {
+        User userWithNewPass = TestDataUtils.getUser(1l, "Login", passwordEncoder.encode(DEFAULT_PASSWORD), true, UserType.USER);
+        when(mockUserRepository.save(user)).thenReturn(userWithNewPass);
+
+        User updatedUser = userService.resetPassword(user);
+        assertNotNull(updatedUser);
+        assertEquals(user.getId(), updatedUser.getId());
+        assertEquals(user.getLogin(), updatedUser.getLogin());
+        assertEquals(user.getLastName(), updatedUser.getLastName());
+        assertEquals(user.getFirstName(), updatedUser.getFirstName());
+        assertEquals(user.getMiddleName(), updatedUser.getMiddleName());
+        assertEquals(user.getPhone(), updatedUser.getPhone());
+        assertEquals(user.getEmail(), updatedUser.getEmail());
+        assertEquals(user.getActive(), updatedUser.getActive());
+        assertEquals(user.getUserType(), updatedUser.getUserType());
+        assertNotEquals(user.getPassword(), updatedUser.getPassword());
+        assertTrue(passwordEncoder.matches(DEFAULT_PASSWORD, updatedUser.getPassword()));
+    }
+
+    @Test
+    void whenUpdatePassword_thenReturnUpdatedObject() {
+        String newPass = "newPAss";
+        User userWithNewPass = TestDataUtils.getUser(1l, "Login", passwordEncoder.encode(newPass), true, UserType.USER);
+        when(mockUserRepository.save(user)).thenReturn(userWithNewPass);
+
+        User updatedUser = userService.updatePassword(user, newPass);
+        assertNotNull(updatedUser);
+        assertEquals(user.getId(), updatedUser.getId());
+        assertEquals(user.getLogin(), updatedUser.getLogin());
+        assertEquals(user.getLastName(), updatedUser.getLastName());
+        assertEquals(user.getFirstName(), updatedUser.getFirstName());
+        assertEquals(user.getMiddleName(), updatedUser.getMiddleName());
+        assertEquals(user.getPhone(), updatedUser.getPhone());
+        assertEquals(user.getEmail(), updatedUser.getEmail());
+        assertEquals(user.getActive(), updatedUser.getActive());
+        assertEquals(user.getUserType(), updatedUser.getUserType());
+        assertNotEquals(user.getPassword(), updatedUser.getPassword());
+        assertTrue(passwordEncoder.matches(newPass, updatedUser.getPassword()));
     }
 
 }
