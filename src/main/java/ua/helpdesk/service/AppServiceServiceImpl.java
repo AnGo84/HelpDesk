@@ -12,7 +12,6 @@ import ua.helpdesk.repository.AppServiceRepository;
 @Slf4j
 public class AppServiceServiceImpl extends AbstractService<AppService, AppServiceRepository> {
 	public AppServiceServiceImpl(AppServiceRepository repository) {
-
 		super(repository);
 	}
 
