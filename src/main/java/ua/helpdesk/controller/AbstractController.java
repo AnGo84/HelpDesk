@@ -67,7 +67,7 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 		return "redirect:" + controllerData.getListPageURL();
 	}
 
-	protected String getFieldErrors(BindingResult bindingResult) {
+	protected String buildFieldErrorsLog(BindingResult bindingResult) {
 		StringBuilder errorText = new StringBuilder("");
 		List<FieldError> errors = bindingResult.getFieldErrors();
 		for (FieldError error : errors) {

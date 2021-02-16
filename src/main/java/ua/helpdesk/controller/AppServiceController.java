@@ -30,7 +30,7 @@ public class AppServiceController extends AbstractController<AppService, AppServ
 	public String updateRecord(@Valid @ModelAttribute("object") AppService object, BindingResult bindingResult, Model model, Locale locale) {
 		log.debug("Update: {}", object);
 		if (bindingResult.hasErrors()) {
-			log.debug("Errors: %n {}", getFieldErrors(bindingResult));
+			log.debug("Errors: %n {}", buildFieldErrorsLog(bindingResult));
 			return getControllerData().getRecordPage();
 		}
 

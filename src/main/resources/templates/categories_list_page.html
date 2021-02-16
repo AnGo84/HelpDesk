@@ -49,7 +49,7 @@
                 <tr class="text-center">
                     <th th:text="#{label.field.id}" width="120">Id</th>
                     <th th:text="#{label.field.name}">Name</th>
-                    <th><span th:text="#{label.field.service}">Service</span></th>
+                    <th><span th:text="#{label.service}">Service</span></th>
                     <th class="no-sort" width="100"></th>
                 </tr>
                 </thead>
@@ -62,7 +62,8 @@
 
                     </td>
                     <td th:text="${category.name}"></td>
-                    <td th:text="${category.service?.name}"></td>
+                    <td th:text="${category.appService?.name}"></td>
+
                     <td class="text-center align-self-center column-v-center">
                         <div class="btn-group btn-group-sm"
                              sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPPORT')">

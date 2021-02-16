@@ -44,7 +44,7 @@ class AppServiceControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_MANAGER"})
-    public void whenGetDirectoryListAsAuthorized_thenOk() throws Exception {
+    public void whenGetListAsAuthorized_thenOk() throws Exception {
         mockMvc.perform(get(MAPPED_URL))
                 //.andDo
                 .andExpect(status().isOk())
@@ -65,7 +65,7 @@ class AppServiceControllerTest {
     }
 
     @Test
-    public void whenGetDirectoryListAsNoAuthorized_thenOk() throws Exception {
+    public void whenGetListAsNoAuthorized_thenOk() throws Exception {
         mockMvc.perform(get(MAPPED_URL))
                 ////.andDo(print())
                 .andExpect(status().isFound())
@@ -74,7 +74,7 @@ class AppServiceControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
-    public void whenGetShowAddRecordPageAsAuthorized_thenOk() throws Exception {
+    public void whenShowAddRecordPageAsAuthorized_thenOk() throws Exception {
         mockMvc.perform(get(MAPPED_URL + "/add"))
                 //.andDo
                 .andExpect(status().isOk())
@@ -86,7 +86,7 @@ class AppServiceControllerTest {
 
     @Test
     @WithMockUser(username = "user", authorities = {"ROLE_USER"})
-    public void whenGetShowAddRecordPageAsUser_then403() throws Exception {
+    public void whenShowAddRecordPageAsUser_then403() throws Exception {
         mockMvc.perform(get(MAPPED_URL + "/add"))
                 //.andDo
                 .andExpect(status().isForbidden());

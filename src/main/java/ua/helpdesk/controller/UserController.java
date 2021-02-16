@@ -32,7 +32,7 @@ public class UserController extends AbstractController<User, UserServiceImpl> {
     public String updateRecord(@Valid @ModelAttribute("object") User object, BindingResult bindingResult, Model model, Locale locale) {
         log.debug("Update: {}", object);
         if (bindingResult.hasErrors()) {
-            log.debug("Errors: %n {}", getFieldErrors(bindingResult));
+            log.debug("Errors: %n {}", buildFieldErrorsLog(bindingResult));
             return getControllerData().getRecordPage();
         }
 

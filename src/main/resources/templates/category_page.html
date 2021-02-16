@@ -52,11 +52,11 @@
                 <div class="col-xs-12 col-md-6">
                     <label for="servicesList"
                            class="col-form-label col-form-label-sm"><span
-                            th:text="#{label.productionType}">Production type</span>:</label>
+                            th:text="#{label.service}">Service</span>:</label>
 
-                    <select id="servicesList" th:field="*{appService}"
+                    <select id="servicesList" data-live-search="true"
                             class="form-control form-control-sm selectpicker"
-                            data-live-search="true">
+                            th:field="*{appService}" th:disabled="${readOnly}">
                         <option th:each="appService : ${appServicesList}"
                                 th:value="${appService.id}" th:text="${appService.name}"
                                 th:attr="data-tokens=${appService.name}"/>
