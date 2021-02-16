@@ -144,4 +144,16 @@ class CategoryServiceImplTest {
         when(mockCategoryRepository.findByName(anyString())).thenReturn(findCategory);
         assertFalse(service.isExist(category));
     }
+
+    @Test
+    void isObjectExistByName() {
+        assertFalse(service.isExistByName(null));
+        assertFalse(service.isExistByName(""));
+
+        when(mockCategoryRepository.findByName(category.getName())).thenReturn(null);
+        assertFalse(service.isExistByName(category.getName()));
+
+        when(mockCategoryRepository.findByName(category.getName())).thenReturn(category);
+        assertTrue(service.isExistByName(category.getName()));
+    }
 }

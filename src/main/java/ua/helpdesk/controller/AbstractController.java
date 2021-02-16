@@ -6,9 +6,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import ua.helpdesk.entity.AbstractEntity;
 import ua.helpdesk.service.CommonService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,7 +33,7 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 
 	@Override
 	public String allRecords(Model model) {
-		log.info("Get all abjects '{}'", objectClass.getName());
+		log.info("Get all objects '{}'", objectClass.getName());
 		model.addAttribute("objectsList", service.getAll());
 		return controllerData.getListPage();
 	}
@@ -66,6 +68,28 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 		service.deleteById(id);
 		return "redirect:" + controllerData.getListPageURL();
 	}
+
+	@Override
+	public String updateRecord(@Valid @ModelAttribute("object") E object, BindingResult bindingResult, Model model, Locale locale) {
+		log.debug("Update: {}", object);
+		if (bindingResult.hasErrors()) {
+			log.debug("Errors: %n {}", buildFieldErrorsLog(bindingResult));
+			return getControllerData().getRecordPage();
+		}
+
+		if (service.isExist(object)) {
+			FieldError fieldError = buildFieldErrorOnIsExist(object, locale);
+			log.error("Object exist: {}", fieldError);
+			bindingResult.addError(fieldError);
+			return getControllerData().getRecordPage();
+		}
+
+		E updated = service.update(object);
+		log.debug("Updated: {}", updated);
+		return "redirect:" + getControllerData().getListPageURL();
+	}
+
+	public abstract FieldError buildFieldErrorOnIsExist(E object, Locale locale);
 
 	protected String buildFieldErrorsLog(BindingResult bindingResult) {
 		StringBuilder errorText = new StringBuilder("");

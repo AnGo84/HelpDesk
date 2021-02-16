@@ -127,16 +127,25 @@ class TicketPriorityServiceImplTest {
 
     @Test
     void whenIsObjectExist() {
+
         assertFalse(ticketPriorityService.isExist(null));
+
+        when(mockTicketPriorityRepository.findByName(ticketPriority.getName())).thenReturn(ticketPriority);
+        assertFalse(ticketPriorityService.isExist(ticketPriority));
+
         TicketPriority existTicketPriority = TestDataUtils.getTicketPriority(2l, "NameExist", 18);
 
         when(mockTicketPriorityRepository.findByName(ticketPriority.getName())).thenReturn(existTicketPriority);
-        existTicketPriority.setId(null);
+        assertTrue(ticketPriorityService.isExist(ticketPriority));
+
+        ticketPriority.setId(null);
         when(mockTicketPriorityRepository.findByName(ticketPriority.getName())).thenReturn(existTicketPriority);
         assertTrue(ticketPriorityService.isExist(ticketPriority));
 
         when(mockTicketPriorityRepository.findByName(anyString())).thenReturn(null);
         assertFalse(ticketPriorityService.isExist(ticketPriority));
+
+
     }
 
 

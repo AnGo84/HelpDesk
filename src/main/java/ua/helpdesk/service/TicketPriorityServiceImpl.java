@@ -9,7 +9,6 @@ import ua.helpdesk.repository.TicketPriorityRepository;
 
 @Service
 @Transactional
-//@RequiredArgsConstructor
 @Slf4j
 public class TicketPriorityServiceImpl extends AbstractService<TicketPriority, TicketPriorityRepository> {
 
@@ -17,56 +16,11 @@ public class TicketPriorityServiceImpl extends AbstractService<TicketPriority, T
         super(repository);
     }
 
-    /*private final TicketPriorityRepository repository;*/
 
-    /*@Override
-    public TicketPriority save(TicketPriority entity) {
-        log.info("Save entity: {}", entity);
-        TicketPriority savedEntity = repository.save(entity);
-        return savedEntity;
+    public TicketPriority findByName(String name) {
+        log.debug("Find by name: {}", name);
+        return repository.findByName(name);
     }
-
-    @Override
-    public List<TicketPriority> saveAll(List<TicketPriority> entities) {
-        return repository.saveAll(entities);
-    }
-
-    @Override
-    public TicketPriority update(TicketPriority entity) {
-        return repository.save(entity);
-    }
-
-    @Override
-    public TicketPriority get(Long id) {
-        Optional<TicketPriority> entity = repository.findById(id);
-        if (entity.isPresent()) {
-            return entity.get();
-        }
-        return null;
-    }*/
-
-    public TicketPriority findByName(String login) {
-        return repository.findByName(login);
-    }
-
-    /*@Override
-    public List<TicketPriority> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public Boolean deleteById(Long id) {
-        TicketPriority entity = repository.findById(id)
-                .orElseThrow(() -> new EntityException(String.format(EntityErrorType.ENTITY_NOT_FOUND_BY_ID.getDescription(), id)));
-        repository.deleteById(id);
-        return !repository.findById(entity.getId()).isPresent();
-    }
-
-    @Override
-    public Boolean deleteAll() {
-        repository.deleteAll();
-        return repository.findAll().isEmpty();
-    }*/
 
     @Override
     public Boolean isExist(TicketPriority entity) {

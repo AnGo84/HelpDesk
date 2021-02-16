@@ -267,6 +267,22 @@ class UserControllerTest {
         verify(mockUserService, times(0)).update(user);
     }
 
+
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
+    public void whenUpdateRecordAsAuthorizedWithExistName_thenError() throws Exception {
+        when(mockUserService.isExist(any())).thenReturn(true);
+
+        mockMvc.perform(post(MAPPED_URL + "/update")
+                .flashAttr("object", user))
+                //.andDo
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("object"))
+                .andExpect(model().attributeHasFieldErrors("object", "login"))
+                .andExpect(view().name("user_page"));
+        verify(mockUserService, times(0)).update(user);
+    }
+
     @Test
     @WithMockUser(username = "user", authorities = {"ROLE_USER"})
     public void whenUpdateRecordAsAuthorizedUser_then403() throws Exception {

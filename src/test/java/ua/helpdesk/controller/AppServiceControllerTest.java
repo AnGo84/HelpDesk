@@ -185,7 +185,7 @@ class AppServiceControllerTest {
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
-    public void whenUpdateRecordAsAuthorizedWithNotNullDirectory_thenOk() throws Exception {
+    public void whenUpdateRecordAsAuthorizedWithNotNullObject_thenOk() throws Exception {
 
         mockMvc.perform(post(MAPPED_URL + "/update")
                 .param("id", String.valueOf(appService.getId()))
@@ -196,7 +196,6 @@ class AppServiceControllerTest {
                 .andExpect(redirectedUrl(MAPPED_URL));
         verify(mockAppServiceService, times(1)).update(appService);
     }
-
 
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})

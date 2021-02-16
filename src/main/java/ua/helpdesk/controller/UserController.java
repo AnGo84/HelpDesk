@@ -4,14 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ua.helpdesk.entity.User;
 import ua.helpdesk.service.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Locale;
 
@@ -29,28 +30,14 @@ public class UserController extends AbstractController<User, UserServiceImpl> {
     }
 
     @Override
-    public String updateRecord(@Valid @ModelAttribute("object") User object, BindingResult bindingResult, Model model, Locale locale) {
-        log.debug("Update: {}", object);
-        if (bindingResult.hasErrors()) {
-            log.debug("Errors: %n {}", buildFieldErrorsLog(bindingResult));
-            return getControllerData().getRecordPage();
-        }
-
-		if (service.isExist(object)) {
-			FieldErrorData fieldErrorData = FieldErrorData.builder()
-					.fieldName("login")
-					.fieldLabel("label.field.login")
-					.fieldValue(object.getLogin())
-					.build();
-			FieldError fieldError = constructFieldError("validation.field.non_unique", fieldErrorData, locale);
-			log.error("Object exist: {}", fieldError);
-			bindingResult.addError(fieldError);
-			return getControllerData().getRecordPage();
-		}
-
-        User updated = service.update(object);
-        log.debug("Updated: {}", updated);
-        return "redirect:" + getControllerData().getListPageURL();
+    public FieldError buildFieldErrorOnIsExist(User object, Locale locale) {
+        FieldErrorData fieldErrorData = FieldErrorData.builder()
+                .fieldName("login")
+                .fieldLabel("label.field.login")
+                .fieldValue(object.getLogin())
+                .build();
+        FieldError fieldError = constructFieldError("validation.field.non_unique", fieldErrorData, locale);
+        return fieldError;
     }
 
     @Override

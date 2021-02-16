@@ -139,4 +139,16 @@ class AppServiceServiceImplTest {
 		assertFalse(service.isExist(appService));
 	}
 
+	@Test
+	void isObjectExistByName() {
+		assertFalse(service.isExistByName(null));
+		assertFalse(service.isExistByName(""));
+
+		when(mockAppServiceRepository.findByName(appService.getName())).thenReturn(null);
+		assertFalse(service.isExistByName(appService.getName()));
+
+		when(mockAppServiceRepository.findByName(appService.getName())).thenReturn(appService);
+		assertTrue(service.isExistByName(appService.getName()));
+	}
+
 }
