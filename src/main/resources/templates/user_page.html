@@ -31,13 +31,16 @@
             </div>
 
             <div class="col-sm-12 col-md-6 align-self-center float-right">
-                <div th:if="${forUser !=true and object.id !=null}">
 
-                    <a class="btn btn-danger btn-sm custom-width float-right" role="button"
-                       th:href="@{'/users/resetPassword-' + ${object.id}}">
-                        <i class="fa fa-repeat"></i><span th:text="#{label.action.password.reset}"/>
-                    </a>
+                <div th:unless="${forUser}">
+                    <div th:if="${object !=null and object.id !=null}">
 
+                        <a class="btn btn-danger btn-sm custom-width float-right" role="button"
+                           th:href="@{'/users/resetPassword-' + ${object.id}}">
+                            <i class="fa fa-repeat"></i><span th:text="#{label.action.password.reset}"/>
+                        </a>
+
+                    </div>
                 </div>
                 <div th:if="${forUser}">
                     <a class="btn btn-primary btn-sm custom-width float-right" role="button"

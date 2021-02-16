@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.entity.AppService;
 import ua.helpdesk.repository.AppServiceRepository;
 
-
 @Service
 @Transactional
 @Slf4j

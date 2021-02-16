@@ -197,7 +197,7 @@ class UserServiceImplTest {
 
     @Test
     void whenUpdatePassword_thenReturnUpdatedObject() {
-        String newPass = "newPAss";
+        String newPass = "newPass";
         User userWithNewPass = TestDataUtils.getUser(1l, "Login", passwordEncoder.encode(newPass), true, UserType.USER);
         when(mockUserRepository.save(user)).thenReturn(userWithNewPass);
 

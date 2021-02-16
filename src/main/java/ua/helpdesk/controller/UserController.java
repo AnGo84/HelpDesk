@@ -87,15 +87,8 @@ public class UserController extends AbstractController<User, UserServiceImpl> {
         return getControllerData().getRecordPage();
     }
 
-	/*
-	@GetMapping("/change_password")
-	public String showResetPasswordForm(Model model) {
-		log.debug("Show change current user pass view");
-		return "change_password_page";
-	}*/
-
     @PostMapping("/change_password")
-    public String processResetPassword(HttpServletRequest request, Model model, Principal principal, Locale locale) {
+    public String processChangePassword(HttpServletRequest request, Model model, Principal principal, Locale locale) {
         log.debug("Change current user pass");
         String password = request.getParameter("password");
 
