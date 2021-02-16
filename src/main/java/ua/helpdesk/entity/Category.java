@@ -16,7 +16,7 @@ public class Category extends AbstractEntity {
 
     private String name;
 
-    private Service service;
+    private AppService appService;
 
     @NotEmpty
     @Size(max = 100)
@@ -26,18 +26,18 @@ public class Category extends AbstractEntity {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
+		this.name = name;
+	}
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SERVICE_ID")
-    public Service getService() {
-        return service;
-    }
+	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "SERVICE_ID")
+	public AppService getAppService() {
+		return appService;
+	}
 
-    public void setService(Service service) {
-        this.service = service;
-    }
+	public void setAppService(AppService service) {
+		this.appService = service;
+	}
 
 }

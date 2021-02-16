@@ -7,8 +7,8 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import ua.helpdesk.entity.AppService;
 import ua.helpdesk.entity.Category;
-import ua.helpdesk.entity.Service;
 import ua.helpdesk.service.TableDataService;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class CategoryDaoImpl extends AbstractDao<Long, Category> implements Cate
     static final Logger logger = LoggerFactory.getLogger(CategoryDaoImpl.class);
 
     @Autowired
-    TableDataService<Service> serviceService;
+    TableDataService<AppService> serviceService;
 
     @Override
     public Category findById(Long id) {
@@ -74,7 +74,7 @@ public class CategoryDaoImpl extends AbstractDao<Long, Category> implements Cate
     public List<Category> findCategoryForService(String serviceName){
         logger.info("Find by name: " + serviceName);
         ServiceDaoImpl serviceDao = new ServiceDaoImpl();
-        Service service = serviceDao.findByName(serviceName);
+        AppService service = serviceDao.findByName(serviceName);
         if (service==null){
             return null;
         }
@@ -90,7 +90,7 @@ public class CategoryDaoImpl extends AbstractDao<Long, Category> implements Cate
     public List<Category> findCategoryForService(Long serviceID) {
         logger.info("Find by ID: " + serviceID);
 
-        Service service = serviceService.findById(serviceID);
+        AppService service = serviceService.findById(serviceID);
         //logger.info("Find by ID: " + serviceID + " SERVICE:" + service);
         if (service == null) {
             return null;

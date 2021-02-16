@@ -8,8 +8,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import ua.helpdesk.TestDataUtils;
+import ua.helpdesk.entity.AppService;
 import ua.helpdesk.entity.Category;
-import ua.helpdesk.entity.Service;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -24,17 +24,17 @@ class CategoryRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    private ServiceRepository serviceRepository;
+    private AppServiceRepository appServiceRepository;
 
     private Category category;
 
-    private Service service;
+    private AppService service;
 
     @BeforeEach
     public void beforeEach() {
         categoryRepository.deleteAll();
-        serviceRepository.deleteAll();
-        service = testEntityManager.persistAndFlush(TestDataUtils.getService(null, "ServiceName"));
+        appServiceRepository.deleteAll();
+        service = testEntityManager.persistAndFlush(TestDataUtils.getAppService(null, "ServiceName"));
 
         category = TestDataUtils.getCategory(null, "CategoryName", service);
         category = testEntityManager.persistAndFlush(category);
@@ -47,8 +47,8 @@ class CategoryRepositoryTest {
         assertNotNull(foundCategory);
         assertNotNull(foundCategory.getId());
         assertEquals(foundCategory.getName(), category.getName());
-        assertNotNull(foundCategory.getService());
-        assertEquals(foundCategory.getService(), category.getService());
+        assertNotNull(foundCategory.getAppService());
+        assertEquals(foundCategory.getAppService(), category.getAppService());
     }
 
     @Test
@@ -105,8 +105,8 @@ class CategoryRepositoryTest {
         assertNotNull(foundCategory);
         assertNotNull(foundCategory.getId());
         assertEquals(foundCategory.getName(), newCategory.getName());
-        assertNotNull(foundCategory.getService());
-        assertEquals(foundCategory.getService(), newCategory.getService());
+        assertNotNull(foundCategory.getAppService());
+        assertEquals(foundCategory.getAppService(), newCategory.getAppService());
     }
 
     @Test
@@ -145,14 +145,14 @@ class CategoryRepositoryTest {
     @Test
     public void whenSaveCategoryWithNotExistService_thenThrowInvalidDataAccessApiUsageException() {
         {
-            Category newCategory = TestDataUtils.getCategory(null, "CategoryName2", new Service());
+            Category newCategory = TestDataUtils.getCategory(null, "CategoryName2", new AppService());
 
             assertThrows(InvalidDataAccessApiUsageException.class, () -> {
                 categoryRepository.save(newCategory);
             });
         }
         {
-            Service notExistService = new Service();
+            AppService notExistService = new AppService();
             notExistService.setId(134l);
             notExistService.setName("Not Exist");
             Category newCategory = TestDataUtils.getCategory(null, "CategoryName2", notExistService);

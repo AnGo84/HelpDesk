@@ -2,7 +2,6 @@ package ua.helpdesk.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,9 +24,6 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 	private final Class<E> objectClass;
 	private final S service;
 	private final MessageSource messageSource;
-
-	@Value("${spring.web.locale:en}")
-	private String springLocale;
 
 	public ControllerDataType getControllerData() {
 		return controllerData;
@@ -71,10 +67,6 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 		return "redirect:" + controllerData.getListPageURL();
 	}
 
-	protected Locale getSpringWebLocale() {
-		return new Locale(springLocale);
-	}
-
 	protected String getFieldErrors(BindingResult bindingResult) {
 		StringBuilder errorText = new StringBuilder("");
 		List<FieldError> errors = bindingResult.getFieldErrors();
@@ -84,14 +76,14 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 		return errorText.toString();
 	}
 
-	protected FieldError constructFieldError(String messageProperty, String fieldLabel, String fieldValue, Locale locale) {
-		String fieldName = getMessageSourceMessage(fieldLabel, locale);
-		FieldError fieldError = new FieldError(OBJECT_ATTRIBUTE, "login",
-				messageSource.getMessage(messageProperty, new String[]{fieldName, fieldValue}, locale));
+	protected FieldError constructFieldError(String messageProperty, FieldErrorData fieldErrorData, Locale locale) {
+		String fieldLabelName = getMessageSourceMessage(fieldErrorData.getFieldLabel(), locale);
+		FieldError fieldError = new FieldError(OBJECT_ATTRIBUTE, fieldErrorData.getFieldName(),
+				messageSource.getMessage(messageProperty, new Object[]{fieldLabelName, fieldErrorData.getFieldValue()}, locale));
 		return fieldError;
 	}
 
 	protected String getMessageSourceMessage(String label, Locale locale) {
-		return messageSource.getMessage(label, new String[]{}, locale);
+		return messageSource.getMessage(label, new Object[]{}, locale);
 	}
 }

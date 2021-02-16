@@ -49,9 +49,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 				.antMatchers("/admin**").access("hasAnyRole('ROLE_ADMIN','ROLE_SUPPORT')")
 				.antMatchers("/users", "/users/add", "/users/update", "/users/edit-**", "/users/delete-**", "/users/view-**", "/users/resetPassword-**").access("hasAnyRole('ROLE_ADMIN','ROLE_SUPPORT')")
+				.antMatchers("/services/add", "/services/update", "/services/edit-**", "/services/delete-**").access("hasAnyRole('ROLE_ADMIN','ROLE_SUPPORT')")
 
-				.antMatchers("/users/viewCurrent").authenticated()
-				.antMatchers("/users/change_password").authenticated()
+				.antMatchers("/users/viewCurrent", "/users/change_password").authenticated()
+				.antMatchers("/services", "/services/view**").authenticated()
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()

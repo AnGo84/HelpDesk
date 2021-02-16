@@ -28,8 +28,8 @@ public class TicketView implements Serializable {
     private String theme;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SERVICE_ID")
-    private Service service;
+	@JoinColumn(name = "SERVICE_ID")
+	private AppService service;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CATEGORY_ID")
@@ -95,13 +95,13 @@ public class TicketView implements Serializable {
         this.theme = theme;
     }
 
-    public Service getService() {
-        return service;
-    }
+	public AppService getService() {
+		return service;
+	}
 
-    public void setService(Service service) {
-        this.service = service;
-    }
+	public void setService(AppService service) {
+		this.service = service;
+	}
 
     public Category getCategory() {
         return category;

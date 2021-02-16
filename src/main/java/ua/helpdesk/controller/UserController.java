@@ -36,12 +36,17 @@ public class UserController extends AbstractController<User, UserServiceImpl> {
             return getControllerData().getRecordPage();
         }
 
-        if (service.isExist(object)) {
-            FieldError fieldError = constructFieldError("validation.field.non_unique", "label.login", object.getLogin(), locale);
-            log.error("Object exist: {}", fieldError);
-            bindingResult.addError(fieldError);
-            return getControllerData().getRecordPage();
-        }
+		if (service.isExist(object)) {
+			FieldErrorData fieldErrorData = FieldErrorData.builder()
+					.fieldName("login")
+					.fieldLabel("label.field.login")
+					.fieldValue(object.getLogin())
+					.build();
+			FieldError fieldError = constructFieldError("validation.field.non_unique", fieldErrorData, locale);
+			log.error("Object exist: {}", fieldError);
+			bindingResult.addError(fieldError);
+			return getControllerData().getRecordPage();
+		}
 
         User updated = service.update(object);
         log.debug("Updated: {}", updated);
