@@ -24,15 +24,59 @@
 
 <div class="container page_container">
 
-    <div class="starter-template">
-        <h1>Spring Boot Web Thymeleaf + Spring Security</h1>
-        <h2>1. Посетите <a th:href="@{/admin}">страницу Admin (Защищено с помошью Spring Security, нужны права
-            Администратора(Admin Role))</a></h2>
-        <h2>2. Посетите <a th:href="@{/user}">страницу User (Защищено с помошью Spring Security, нужны права
-            пользователя(User Role))</a></h2>
-        <h2>3. Посетите <a th:href="@{/about}">Открытую страницу(доступна всем)</a></h2>
+    <div class="row">
+
+        <div class="col-sm-2">
+            <h2><span th:text="#{label.ticket.tickets}">Ticket List</span></h2>
+        </div>
+        <div class="col-sm-8"></div>
+        <div class="col-sm-2 align-self-center">
+            <a class="btn btn-primary btn-sm custom-width float-right btn-action" role="button"
+               th:href="@{/tickets/add}">
+                <i class="fa fa-plus"></i><span th:text="#{label.action.new}"/>
+            </a>
+        </div>
     </div>
 
+    <!--https://www.w3schools.com/bootstrap4/bootstrap_tables.asp-->
+    <div th:if="${objectsList != null and not #lists.isEmpty(objectsList)}">
+        <div class="table-responsive">
+
+            <!--<table id="ticketsTable" class="table table-bordered table-sm">-->
+            <table class="table table-sm table-bordered table-hover display compact" id="ticketsTable">
+                <thead>
+                <tr class="text-center">
+                    <th th:text="#{label.field.id}" width="120">Id</th>
+                    <th th:text="#{label.field.number}">Number</th>
+                    <th th:text="#{label.field.theme}">Theme</th>
+                    <th th:text="#{label.field.type}">Type</th>
+                    <th th:text="#{label.field.priority}">Priority</th>
+                    <th th:text="#{label.field.date}">Date</th>
+                    <th th:text="#{label.field.state}">State</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- align-items-center -->
+                <tr th:each="ticket : ${objectsList}">
+                    <td class="text-center">
+                        <a th:href="@{'/tickets/view-' + ${ticket.id}}"
+                           th:text="${ticket.id}" th:title="#{label.record.view.title}"></a>
+                    </td>
+                    <td th:text="${ticket.number}"></td>
+                    <td th:text="${ticket.theme}"></td>
+                    <td th:text="#{${'label.field.type.' + ticket.ticketType.name}}"></td>
+                    <td th:text="${ticket.ticketPriority.name}"></td>
+                    <td th:text="${ticket.date}"></td>
+                    <td th:text="#{${'label.field.state.' + ticket.ticketState.name}}"></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div th:if="${objectsList == null or #lists.isEmpty(objectsList)}">
+        <div><span th:text="#{label.table.data.not_found}">"No data found"</span></div>
+    </div>
 </div>
 <!-- /.container -->
 

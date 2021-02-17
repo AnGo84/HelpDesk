@@ -53,13 +53,13 @@ class TicketRepositoryTest {
     public void beforeEach() {
         ticketRepository.deleteAll();
 
-		appServiceRepository.deleteAll();
-		categoryRepository.deleteAll();
+        appServiceRepository.deleteAll();
+        categoryRepository.deleteAll();
         ticketPriorityRepository.deleteAll();
         userRepository.deleteAll();
 
-		service = testEntityManager.persistAndFlush(TestDataUtils.getAppService(null, "TicketName"));
-		service = testEntityManager.persistAndFlush(service);
+        service = testEntityManager.persistAndFlush(TestDataUtils.getAppService(null, "ServiceName"));
+        service = testEntityManager.persistAndFlush(service);
 
         category = TestDataUtils.getCategory(null, "CategoryName", service);
         category = testEntityManager.persistAndFlush(category);
@@ -152,17 +152,6 @@ class TicketRepositoryTest {
 
     @Test
     public void whenSaveTicketWithWrongParams_thenThrowException() {
-       /* Ticket wrongTicket = TestDataUtils.getTicket(null, "Ticket Number3", "Ticket description3", "Ticket theme3"
-                , category, ticketPriority, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution3");
-        */
-        /*ticket.setNumber(null);
-        assertThrows(ConstraintViolationException.class, () -> {
-            ticketRepository.save(ticket);
-        });
-        ticket.setNumber("");
-        assertThrows(ConstraintViolationException.class, () -> {
-            ticketRepository.save(ticket);
-        });*/
         {
             Ticket wrongTicket = TestDataUtils.getTicket(null, "Ticket Number3", null, "Ticket theme3"
                     , category, ticketPriority, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution3");
