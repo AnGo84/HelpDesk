@@ -61,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.loginPage("/login")
 				.usernameParameter("login")
 				.passwordParameter("pass")
+				//.defaultSuccessUrl("/tickets_list_page.html", true)
 				//.loginProcessingUrl("/doLogin")
 				.permitAll()
 				.and()

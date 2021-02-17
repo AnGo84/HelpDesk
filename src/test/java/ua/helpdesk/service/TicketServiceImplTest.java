@@ -20,164 +20,182 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class TicketServiceImplTest {
-    @Autowired
-    private TicketServiceImpl ticketService;
-    @MockBean
-    private TicketRepository mockTicketRepository;
+	@Autowired
+	private TicketServiceImpl ticketService;
+	@MockBean
+	private TicketRepository mockTicketRepository;
 
-    private Ticket ticket;
-    private Ticket newTicket;
+	private Ticket ticket;
+	private Ticket newTicket;
 
-    private Category category;
-    private AppService service;
-    private TicketPriority ticketPriority;
-    private User user;
-    private User performer;
+	private Category category;
+	private AppService service;
+	private TicketPriority ticketPriority;
+	private User user;
+	private User performer;
 
-    @BeforeEach
-    public void beforeEach() {
+	@BeforeEach
+	public void beforeEach() {
 
-        service = TestDataUtils.getAppService(1l, "ServiceName");
-        category = TestDataUtils.getCategory(1l, "CategoryName", service);
+		service = TestDataUtils.getAppService(1l, "ServiceName");
+		category = TestDataUtils.getCategory(1l, "CategoryName", service);
 
-        ticketPriority = TestDataUtils.getTicketPriority(1l, "Priority", 24);
+		ticketPriority = TestDataUtils.getTicketPriority(1l, "Priority", 24);
 
-        user = TestDataUtils.getUser(1l, "User", "pass1", true, UserType.USER);
-        performer = TestDataUtils.getUser(2l, "User Performer", "pass2", true, UserType.SUPPORT);
-        // given
-        ticket = TestDataUtils.getTicket(1l, "Ticket Number", "Ticket description", "Ticket theme"
-                , category, ticketPriority, TicketState.NEW, TicketType.INNOVATION, user, performer, "Solution");
+		user = TestDataUtils.getUser(1l, "User", "pass1", true, UserType.USER);
+		performer = TestDataUtils.getUser(2l, "User Performer", "pass2", true, UserType.SUPPORT);
+		// given
+		ticket = TestDataUtils.getTicket(1l, "Ticket Number", "Ticket description", "Ticket theme"
+				, category, ticketPriority, TicketState.NEW, TicketType.INNOVATION, user, performer, "Solution");
 
-        newTicket = TestDataUtils.getTicket(2l, "Ticket Number2", "Ticket description2", "Ticket theme"
-                , category, ticketPriority, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution");
+		newTicket = TestDataUtils.getTicket(2l, "Ticket Number2", "Ticket description2", "Ticket theme"
+				, category, ticketPriority, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution");
 
-    }
+	}
 
-    @Test
-    void whenFindById_thenReturnUser() {
-        when(mockTicketRepository.findById(1L)).thenReturn(Optional.of(ticket));
-        long id = 1;
-        Ticket foundTicket = ticketService.get(id);
+	@Test
+	void whenFindById_thenReturnUser() {
+		when(mockTicketRepository.findById(1L)).thenReturn(Optional.of(ticket));
+		long id = 1;
+		Ticket foundTicket = ticketService.get(id);
 
-        // then
-        assertNotNull(foundTicket);
-        assertNotNull(foundTicket.getId());
-        assertEquals(foundTicket.getNumber(), ticket.getNumber());
-        assertEquals(foundTicket.getTheme(), ticket.getTheme());
-        assertEquals(foundTicket.getDescription(), ticket.getDescription());
-        assertEquals(foundTicket.getTicketPriority(), ticket.getTicketPriority());
-        assertEquals(foundTicket.getTicketType(), ticket.getTicketType());
-        assertEquals(foundTicket.getTicketState(), ticket.getTicketState());
-        assertEquals(foundTicket.getCategory(), ticket.getCategory());
-        assertEquals(foundTicket.getService(), ticket.getService());
-        assertEquals(foundTicket.getUser(), ticket.getUser());
-        assertEquals(foundTicket.getPerformer(), ticket.getPerformer());
-        assertEquals(foundTicket.getSolution(), ticket.getSolution());
-    }
+		// then
+		assertNotNull(foundTicket);
+		assertNotNull(foundTicket.getId());
+		assertEquals(foundTicket.getNumber(), ticket.getNumber());
+		assertEquals(foundTicket.getTheme(), ticket.getTheme());
+		assertEquals(foundTicket.getDescription(), ticket.getDescription());
+		assertEquals(foundTicket.getTicketPriority(), ticket.getTicketPriority());
+		assertEquals(foundTicket.getTicketType(), ticket.getTicketType());
+		assertEquals(foundTicket.getTicketState(), ticket.getTicketState());
+		assertEquals(foundTicket.getCategory(), ticket.getCategory());
+		assertEquals(foundTicket.getService(), ticket.getService());
+		assertEquals(foundTicket.getUser(), ticket.getUser());
+		assertEquals(foundTicket.getPerformer(), ticket.getPerformer());
+		assertEquals(foundTicket.getSolution(), ticket.getSolution());
+	}
 
-    @Test
-    void whenFindById_thenReturnNull() {
-        when(mockTicketRepository.getOne(anyLong())).thenReturn(null);
+	@Test
+	void whenFindById_thenReturnNull() {
+		when(mockTicketRepository.getOne(anyLong())).thenReturn(null);
 
-        Ticket found = ticketService.get(ticket.getId());
-        assertNull(found);
-    }
+		Ticket found = ticketService.get(ticket.getId());
+		assertNull(found);
+	}
 
-    @Test
-    void whenFindByName_thenReturnUser() {
-        when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
-        Ticket foundTicket = ticketService.findByNumber(ticket.getNumber());
+	@Test
+	void whenFindByName_thenReturnUser() {
+		when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
+		Ticket foundTicket = ticketService.findByNumber(ticket.getNumber());
 
-        assertNotNull(foundTicket);
-        assertNotNull(foundTicket.getId());
-        assertEquals(foundTicket.getNumber(), ticket.getNumber());
-    }
+		assertNotNull(foundTicket);
+		assertNotNull(foundTicket.getId());
+		assertEquals(foundTicket.getNumber(), ticket.getNumber());
+	}
 
-    @Test
-    void whenFindByName_thenReturnNull() {
-        when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
-        Ticket found = ticketService.findByNumber("wrong number");
-        assertNull(found);
-    }
+	@Test
+	void whenFindByName_thenReturnNull() {
+		when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
+		Ticket found = ticketService.findByNumber("wrong number");
+		assertNull(found);
+	}
 
-    @Test
-    void whenSave_thenSuccess() {
-        ticketService.save(newTicket);
-        verify(mockTicketRepository, times(1)).save(newTicket);
-    }
+	@Test
+	void whenSave_thenSuccess() {
+		ticketService.save(newTicket);
+		verify(mockTicketRepository, times(1)).save(newTicket);
+	}
 
-    @Test
-    void whenSave_thenNPE() {
-        when(mockTicketRepository.save(any(Ticket.class))).thenThrow(NullPointerException.class);
-        assertThrows(NullPointerException.class, () -> {
-            ticketService.save(ticket);
-        });
-    }
+	@Test
+	void whenSave_thenNPE() {
+		when(mockTicketRepository.save(any(Ticket.class))).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> {
+			ticketService.save(ticket);
+		});
+	}
 
-    @Test
-    void whenUpdate_thenSuccess() {
-        ticketService.update(ticket);
-        verify(mockTicketRepository, times(1)).save(ticket);
-    }
+	@Test
+	void whenUpdate_thenSuccess() {
+		ticketService.update(ticket);
+		verify(mockTicketRepository, times(1)).save(ticket);
+	}
 
-    @Test
-    void whenUpdate_thenThrow() {
-        when(mockTicketRepository.save(any(Ticket.class))).thenThrow(NullPointerException.class);
-        assertThrows(NullPointerException.class, () -> {
-            ticketService.update(ticket);
-        });
-    }
+	@Test
+	void whenUpdate_thenThrow() {
+		when(mockTicketRepository.save(any(Ticket.class))).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> {
+			ticketService.update(ticket);
+		});
+	}
 
-    @Test
-    void whenDeleteById_thenThrowForbiddenOperationException() {
-        assertThrows(ForbiddenOperationException.class, () -> {
-            ticketService.deleteById(ticket.getId());
-        });
+	@Test
+	void whenDeleteById_thenThrowForbiddenOperationException() {
+		assertThrows(ForbiddenOperationException.class, () -> {
+			ticketService.deleteById(ticket.getId());
+		});
 
-        Long notExistId = 1000000l;
-        assertThrows(ForbiddenOperationException.class, () -> {
-            ticketService.deleteById(notExistId);
-        });
-    }
+		Long notExistId = 1000000l;
+		assertThrows(ForbiddenOperationException.class, () -> {
+			ticketService.deleteById(notExistId);
+		});
+	}
 
-    @Test
-    void whenDeleteAll_thenThrowForbiddenOperationException() {
-        assertThrows(ForbiddenOperationException.class, () -> {
-            ticketService.deleteAll();
-        });
-    }
+	@Test
+	void whenDeleteAll_thenThrowForbiddenOperationException() {
+		assertThrows(ForbiddenOperationException.class, () -> {
+			ticketService.deleteAll();
+		});
+	}
 
-    @Test
-    void whenFindAllObjects() {
-        when(mockTicketRepository.findAll()).thenReturn(Arrays.asList(ticket));
-        List<Ticket> objects = ticketService.getAll();
-        assertNotNull(objects);
-        assertFalse(objects.isEmpty());
-        assertEquals(objects.size(), 1);
-    }
+	@Test
+	void whenFindAllObjects() {
+		when(mockTicketRepository.findAll()).thenReturn(Arrays.asList(ticket));
+		List<Ticket> objects = ticketService.getAll();
+		assertNotNull(objects);
+		assertFalse(objects.isEmpty());
+		assertEquals(objects.size(), 1);
+	}
 
-    @Test
-    void whenIsObjectExist() {
+	@Test
+	void whenIsObjectExist() {
 
-        assertFalse(ticketService.isExist(null));
+		assertFalse(ticketService.isExist(null));
 
-        when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
-        assertFalse(ticketService.isExist(ticket));
+		when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
+		assertFalse(ticketService.isExist(ticket));
 
-        Ticket existTicket = newTicket;
+		Ticket existTicket = newTicket;
 
-        when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(existTicket);
-        assertTrue(ticketService.isExist(ticket));
+		when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(existTicket);
+		assertTrue(ticketService.isExist(ticket));
 
-        ticket.setId(null);
-        when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(existTicket);
-        assertTrue(ticketService.isExist(ticket));
+		ticket.setId(null);
+		when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(existTicket);
+		assertTrue(ticketService.isExist(ticket));
 
-        when(mockTicketRepository.findByNumber(anyString())).thenReturn(null);
-        assertFalse(ticketService.isExist(ticket));
+		when(mockTicketRepository.findByNumber(anyString())).thenReturn(null);
+		assertFalse(ticketService.isExist(ticket));
 
 
-    }
+	}
 
+	@Test
+	void whenCreateDefaultInstance_thenReturnObject() {
+		Ticket newTicket = ticketService.createDefaultInstance();
+		assertNotNull(newTicket);
+		assertNull(newTicket.getId());
+		assertNull(newTicket.getTheme());
+		assertNull(newTicket.getDescription());
+		assertNull(newTicket.getTicketType());
+		assertNull(newTicket.getTicketPriority());
+		assertNull(newTicket.getService());
+		assertNull(newTicket.getCategory());
+		assertNull(newTicket.getDate());
+		assertNull(newTicket.getUser());
+		assertNull(newTicket.getPerformer());
+
+		assertNotNull(newTicket.getTicketState());
+		assertEquals(TicketState.NEW, newTicket.getTicketState());
+	}
 
 }

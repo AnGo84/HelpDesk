@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.helpdesk.entity.Ticket;
+import ua.helpdesk.entity.TicketState;
 import ua.helpdesk.exception.ForbiddenOperationException;
 import ua.helpdesk.repository.TicketRepository;
 
@@ -36,6 +37,13 @@ public class TicketServiceImpl extends AbstractService<Ticket, TicketRepository>
             return true;
         }
         return false;
+    }
+
+    public Ticket createDefaultInstance() {
+        log.debug("Create new ticket");
+        Ticket newTicket = new Ticket();
+        newTicket.setTicketState(TicketState.NEW);
+        return newTicket;
     }
 
     @Override
