@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexPageController {
 
 	@GetMapping(value = {"/"})
-	public String addRecord(Model model) {
+	public String showMainPage(Model model) {
 		log.debug("Redirect to tickets page");
 		return "redirect:/tickets";
 	}
