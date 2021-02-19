@@ -11,6 +11,7 @@ import ua.helpdesk.entity.Ticket;
 import ua.helpdesk.service.TicketServiceImpl;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,6 +37,7 @@ public class TicketController {
 	public String allRecords(Model model) {
 		log.info("Get all tickets");
 		model.addAttribute("objectsList", service.getAll());
+		model.addAttribute("ticket", service.createDefaultInstance());
 		return controllerData.getListPage();
 	}
 
@@ -48,11 +50,11 @@ public class TicketController {
 	}
 
 	@GetMapping(value = {"/add"})
-	public String addRecord(Model model) {
+	public String addRecord(@ModelAttribute("ticket") Ticket ticket, Model model) {
 		log.info("Add new ticket record");
-		model.addAttribute(ATTRIBUTE_READ_ONLY, false);
-		//model.addAttribute(OBJECT_ATTRIBUTE, createInstance(objectClass));
-		return controllerData.getRecordPage();
+		ticket.setDate(new Date());
+		service.save(ticket);
+		return "redirect:" + controllerData.getListPageURL();
 	}
 
 	@PostMapping(value = "/update")

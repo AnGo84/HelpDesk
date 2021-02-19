@@ -5,35 +5,98 @@ https://blog.nazrulkabir.com/2018/04/dynamic-modal-with-spring-boot-and-thymelea
 -->
 
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="modal fade" id="addClassModal" tabindex="-1" role="dialog" aria-labelledby="addClassModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="addTicketModal" tabindex="-2" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addClassModalLabel">Add new class</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h4 class="modal-title" th:text="#{label.action.add}">[[#{label.action.add}]]</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <!--×-->
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form th:action="@{/addClass}" th:object="${class}" method="post">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" th:value="*{name}"/>
+                <form th:object="${ticket}" th:action="@{/add}" method="post">
+
+                    <div class="row form-group ">
+                        <label for="ticketTheme" th:text="#{label.field.theme}">Theme</label>
+                        <input class="form-control form-control-sm" type="text"
+                               id="ticketTheme" th:field="*{theme}"
+                               placeholder="Enter theme"/>
                     </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <input type="text" class="form-control" id="description" th:value="*{description}"/>
+
+                    <div class="row form-group ">
+                        <label for="ticketDescription" th:text="#{label.field.description}">Description</label>
+                        <textarea class="form-control form-control-sm" id="ticketDescription"
+                                  th:field="*{description}" placeholder="Enter description"
+                                  rows="3">
+                        </textarea>
                     </div>
-                    <div class="form-group">
-                        <label for="teacher">Teacher:</label>
-                        <input type="text" class="form-control" id="teacher" th:value="*{teacherName}"/>
+
+                    <div class="row form-group">
+                        <label for="servicesSelect" th:text="#{label.service}">Service </label>
+                        <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                id="servicesSelect" th:field="*{service}">
+                            <option th:each="dropDownItem : ${servicesList}"
+                                    th:value="${dropDownItem.id}"
+                                    th:text="${dropDownItem.name}"
+                                    th:attr="data-tokens=${dropDownItem.name}"/>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label for="minutes">Minutes:</label>
-                        <input type="number" class="form-control" id="minutes" th:value="*{timeMinutes}"/>
+
+                    <div class="row form-group">
+                        <label for="categoriesSelect" th:text="#{label.category}">Category </label>
+                        <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                id="categoriesSelect" th:field="*{service}">
+                            <option th:each="dropDownItem : ${categoriesList}"
+                                    th:value="${dropDownItem.id}"
+                                    th:text="${dropDownItem.name}"
+                                    th:attr="data-tokens=${dropDownItem.name}"/>
+                        </select>
                     </div>
-                    <input type="submit" value="Submit"/>
+
+                    <div class="row form-group">
+                        <label for="typesSelect" th:text="#{label.field.type}">Type: </label>
+                        <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                id="typesSelect" th:field="*{ticketType}">
+                            <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                            <option th:each="typeItem : ${T(ua.helpdesk.entity.TicketType).values()}"
+                                    th:attr="data-tokens=${typeItem.name}"
+                                    th:text="#{${'label.field.type.' + typeItem.name}}"
+                                    th:text="${typeItem}" th:value="${typeItem}"/>
+                        </select>
+                    </div>
+
+                    <div class="row form-group">
+                        <label for="prioritiesSelect" th:text="#{label.field.priority}">Priority: </label>
+                        <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                id="prioritiesSelect" th:field="*{ticketPriority}">
+                            <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                            <option th:each="priorityItem : ${prioritiesList}"
+                                    th:value="${priorityItem.id}"
+                                    th:text="${priorityItem.name}"
+                                    th:attr="data-tokens=${priorityItem.name}"/>
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-danger btn-sm btn-action-md"
+                                    data-dismiss="modal">
+                                <i class="fa fa-times"></i><span th:text="#{label.action.cancel}"/>
+                            </button>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <button id="confirm" type="submit"
+                                    class="btn btn-success btn-sm btn-action-md custom-width float-right">
+                                <i class="fa fa-check"></i><span th:text="#{label.action.confirm}"/>
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -57,6 +120,7 @@ https://blog.nazrulkabir.com/2018/04/dynamic-modal-with-spring-boot-and-thymelea
     $('#confirmAction').find('.modal-footer #confirm').on('click', function () {
         $(this).data('form').submit();
     });
+
 
 
 
