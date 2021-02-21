@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Sort;
 import ua.helpdesk.TestDataUtils;
 import ua.helpdesk.entity.*;
 import ua.helpdesk.exception.ForbiddenOperationException;
@@ -150,6 +151,15 @@ class TicketServiceImplTest {
 	@Test
 	void whenFindAllObjects() {
 		when(mockTicketRepository.findAll()).thenReturn(Arrays.asList(ticket));
+		List<Ticket> objects = ticketService.getAll();
+		assertNotNull(objects);
+		assertFalse(objects.isEmpty());
+		assertEquals(objects.size(), 1);
+	}
+
+	@Test
+	void whenFindAllSortedObjects() {
+		when(mockTicketRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))).thenReturn(Arrays.asList(ticket));
 		List<Ticket> objects = ticketService.getAll();
 		assertNotNull(objects);
 		assertFalse(objects.isEmpty());

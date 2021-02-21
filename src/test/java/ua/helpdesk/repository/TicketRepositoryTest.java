@@ -201,8 +201,14 @@ class TicketRepositoryTest {
         }
         {
             Ticket wrongTicket = TestDataUtils.getTicket(null, "Ticket Number3", "Description 3", ""
-                    , category, ticketPriority, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution3");
-            wrongTicket.setTicketPriority(null);
+                    , category, null, TicketState.REJECTED, TicketType.IMPROVEMENT, user, performer, "Solution3");
+            assertThrows(ConstraintViolationException.class, () -> {
+                ticketRepository.save(wrongTicket);
+            });
+        }
+        {
+            Ticket wrongTicket = TestDataUtils.getTicket(null, "Ticket Number3", "Description 3", ""
+                    , category, ticketPriority, null, TicketType.IMPROVEMENT, user, performer, "Solution3");
             assertThrows(ConstraintViolationException.class, () -> {
                 ticketRepository.save(wrongTicket);
             });

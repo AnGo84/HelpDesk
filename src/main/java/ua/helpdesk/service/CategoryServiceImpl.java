@@ -4,8 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import ua.helpdesk.entity.Category;
 import ua.helpdesk.repository.CategoryRepository;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,6 +30,14 @@ public class CategoryServiceImpl extends AbstractService<Category, CategoryRepos
             return false;
         }
         return repository.findByName(name) != null;
+    }
+
+    public List<Category> findByAppService(Long serviceId) {
+        List<Category> allCategories = getAll();
+        if (CollectionUtils.isEmpty(allCategories)) {
+            return Collections.emptyList();
+        }
+        return allCategories.stream().filter(category -> category.getAppService().getId().equals(serviceId)).collect(Collectors.toList());
     }
 
     @Override

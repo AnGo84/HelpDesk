@@ -8,10 +8,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ua.helpdesk.entity.Ticket;
+import ua.helpdesk.entity.User;
 import ua.helpdesk.service.TicketServiceImpl;
+import ua.helpdesk.service.UserServiceImpl;
 
 import javax.validation.Valid;
-import java.util.Date;
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,11 +26,13 @@ public class TicketController {
 	public static final String OBJECT_ATTRIBUTE = "object";
 
 	private ControllerDataType controllerData;
-	private final TicketServiceImpl service;
+	private final TicketServiceImpl ticketService;
+	private final UserServiceImpl userService;
 	private final MessageSource messageSource;
 
-	public TicketController(TicketServiceImpl service, MessageSource messageSource) {
-		this.service = service;
+	public TicketController(TicketServiceImpl ticketService, UserServiceImpl userService, MessageSource messageSource) {
+		this.ticketService = ticketService;
+		this.userService = userService;
 		this.messageSource = messageSource;
 		this.controllerData = ControllerDataType.TICKET;
 	}
@@ -36,8 +40,8 @@ public class TicketController {
 	@GetMapping(value = {"", "/list", "/all"})
 	public String allRecords(Model model) {
 		log.info("Get all tickets");
-		model.addAttribute("objectsList", service.getAll());
-		model.addAttribute("ticket", service.createDefaultInstance());
+		model.addAttribute("objectsList", ticketService.getAllSortedByIdDESC());
+		model.addAttribute("newTicket", ticketService.createDefaultInstance());
 		return controllerData.getListPage();
 	}
 
@@ -45,15 +49,17 @@ public class TicketController {
 	public String viewRecord(@PathVariable Long id, Model model) {
 		log.info("View ticket with ID= {}", id);
 		model.addAttribute(ATTRIBUTE_READ_ONLY, true);
-		model.addAttribute(OBJECT_ATTRIBUTE, service.get(id));
+		model.addAttribute(OBJECT_ATTRIBUTE, ticketService.get(id));
 		return controllerData.getRecordPage();
 	}
 
-	@GetMapping(value = {"/add"})
-	public String addRecord(@ModelAttribute("ticket") Ticket ticket, Model model) {
-		log.info("Add new ticket record");
-		ticket.setDate(new Date());
-		service.save(ticket);
+	@PostMapping(value = {"/add"})
+	public String addRecord(@ModelAttribute("newTicket") Ticket ticket, Principal principal) {
+		log.info("Add new ticket record: {}", ticket);
+
+		User user = userService.findByLogin(principal.getName());
+		ticket.setUser(user);
+		ticketService.addNew(ticket);
 		return "redirect:" + controllerData.getListPageURL();
 	}
 
@@ -72,13 +78,13 @@ public class TicketController {
 			return controllerData.getRecordPage();
 		}*/
 
-		Ticket updated = service.update(object);
+		Ticket updated = ticketService.update(object);
 		log.debug("Updated: {}", updated);
 		return "redirect:" + controllerData.getListPageURL();
 	}
 
 	protected String buildFieldErrorsLog(BindingResult bindingResult) {
-		StringBuilder errorText = new StringBuilder("");
+		StringBuilder errorText = new StringBuilder();
 		List<FieldError> errors = bindingResult.getFieldErrors();
 		for (FieldError error : errors) {
 			errorText.append(String.format(ERROR_LINE_FORMAT, error.getObjectName(), error.getField(), error.getDefaultMessage(), error.getCode()));

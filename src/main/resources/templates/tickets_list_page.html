@@ -31,10 +31,14 @@
         </div>
         <div class="col-sm-8"></div>
         <div class="col-sm-2 align-self-center">
-            <a class="btn btn-primary btn-sm custom-width float-right btn-action" role="button"
+            <!--<a class="btn btn-primary btn-sm custom-width float-right btn-action" role="button"
                th:href="@{/tickets/add}">
                 <i class="fa fa-plus"></i><span th:text="#{label.action.new}"/>
-            </a>
+            </a>-->
+            <button type="button" class="btn btn-primary btn-sm custom-width float-right btn-action"
+                    data-toggle="modal" data-target="#addTicketModal">
+                <i class="fa fa-plus"></i><span th:text="#{label.action.add}"/>
+            </button>
         </div>
     </div>
 
@@ -64,10 +68,13 @@
                     </td>
                     <td th:text="${ticket.number}"></td>
                     <td th:text="${ticket.theme}"></td>
+                    <!--<td th:text="${ticket?.ticketType?.name}"></td>-->
                     <td th:text="#{${'label.field.type.' + ticket.ticketType.name}}"></td>
                     <td th:text="${ticket.ticketPriority.name}"></td>
-                    <td th:text="${ticket.date}"></td>
+                    <!--<td th:text="${ticket.date}"></td>-->
+                    <td th:text="${#dates.format(ticket.date, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:text="#{${'label.field.state.' + ticket.ticketState.name}}"></td>
+                    <!--<td th:text="${ticket?.ticketState?.name}"></td>-->
 
                 </tr>
                 </tbody>

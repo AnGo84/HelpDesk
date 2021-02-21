@@ -108,6 +108,7 @@ public class Ticket extends AbstractEntity {
         this.ticketPriority = ticketPriority;
     }
 
+    @NotNull
     @Column(name = "TICKET_STATE_ID")
     @Convert(converter = TicketStateConverter.class)
     public TicketState getTicketState() {
