@@ -30,9 +30,9 @@ public class IndexPageController {
 	}
 
 	@ResponseBody
-	@GetMapping(value = "loadCategoriesByCountry/{id}")
-	public String loadCategoriesByCountry(@PathVariable("id") Long id) {
-		log.info("Load Categories by Country id={}", id);
+	@GetMapping(value = "loadCategoriesByService/{id}")
+	public String loadCategoriesByService(@PathVariable("id") Long id) {
+		log.info("Load Categories by Service id={}", id);
 		return gson.toJson(categoryService.findByAppService(id));
 	}
 }
