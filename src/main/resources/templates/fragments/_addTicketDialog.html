@@ -111,12 +111,12 @@ https://blog.nazrulkabir.com/2018/04/dynamic-modal-with-spring-boot-and-thymelea
     $(document).ready(function () {
 
         $('#servicesSelect').on('change', function () {
-            var countryId = $(this).val();
-            /*console.log("country:" + countryId);*/
+            var serviceId = $(this).val();
+            /*console.log("country:" + serviceId);*/
             $.ajax({
                 type: 'GET',
-                /*url: '${pageContext.request.contextPath}/loadCategoriesByCountry/' + countryId,*/
-                url: '/loadCategoriesByCountry/' + countryId,
+                /*url: '${pageContext.request.contextPath}/loadCategoriesByCountry/' + serviceId,*/
+                url: '/loadCategoriesByService/' + serviceId,
                 success: function (result) {
                     var result = JSON.parse(result);
                     var s = '';

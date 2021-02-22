@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -36,8 +36,8 @@
             <div class="row form-group">
                 <div class="col-xs-12 col-md-6 col-lg-4">
                     <label for="recordId" th:text="#{label.field.id}">Id: </label>
-                    <input class="form-control" id="recordId" type="text"
-                           th:disabled="true" th:field="*{id}"/>
+                    <input class="form-control form-control-sm" id="recordId"
+                           readonly th:field="*{id}" type="text"/>
 
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('id')}">
                         <p th:text="${#fields.errors('id')}"></p>
@@ -46,8 +46,8 @@
 
                 <div class="col-xs-12 col-md-6 col-lg-4">
                     <label for="recordNumber" th:text="#{label.field.number}">Number: </label>
-                    <input class="form-control" id="recordNumber" type="text"
-                           th:disabled="true" th:field="*{number}"/>
+                    <input class="form-control form-control-sm" id="recordNumber"
+                           readonly th:field="*{number}" type="text"/>
 
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('number')}">
                         <p th:text="${#fields.errors('number')}"></p>
@@ -56,9 +56,11 @@
 
                 <div class="col-xs-12 col-md-6 col-lg-4">
                     <label for="recordDate" th:text="#{label.field.date}">Date: </label>
-                    <input class="form-control" id="recordDate" type="text"
-                           th:disabled="true" th:field="*{date}" th:placeholder="dd-MM-yyyy HH:mm"/>
-                    <!--<td th:text="${#dates.format(ticket.date, 'dd-MM-yyyy HH:mm')}"></td>-->
+
+                    <input id="recordDateHidden" th:field="*{date}" type="hidden"/>
+
+                    <input class="form-control form-control-sm" id="recordDate" readonly
+                           th:value="${#dates.format(ticket.date, 'dd-MM-yyyy HH:mm')}" type="text"/>
 
                     <div class="alert alert-danger" th:if="${#fields.hasErrors('date')}">
                         <p th:text="${#fields.errors('date')}"></p>
@@ -70,8 +72,8 @@
             <div class="row form-group">
                 <div class="col-12">
                     <label for="recordTheme" th:text="#{label.field.name}">Theme: </label>
-                    <input class="form-control" id="recordTheme"
-                           placeholder="Enter Theme" type="text" th:field="*{theme}"/>
+                    <input class="form-control form-control-sm" id="recordTheme"
+                           placeholder="Enter Theme" th:field="*{theme}" type="text"/>
                 </div>
 
                 <div class="alert alert-danger" th:if="${#fields.hasErrors('theme')}">
@@ -82,8 +84,8 @@
             <div class="row form-group">
                 <div class="col-12">
                     <label for="recordDescription" th:text="#{label.field.description}">Description: </label>
-                    <textarea class="form-control" rows="2" id="recordDescription"
-                              maxlength="1000" th:field="*{description}"></textarea>
+                    <textarea class="form-control form-control-sm" id="recordDescription" maxlength="1000"
+                              rows="2" th:field="*{description}"></textarea>
                 </div>
 
                 <div class="alert alert-danger" th:if="${#fields.hasErrors('description')}">
@@ -96,8 +98,8 @@
                     <label for="recordService" th:text="#{label.service}">Service </label>
                     <select class="form-control form-control-sm selectpicker" data-live-search="true"
                             id="recordService" th:field="*{service}">
-                        <option th:attr="data-tokens=${dropDownItem.name}"
-                                th:each="dropDownItem : ${appServicesList}"
+                        <option th:each="dropDownItem : ${appServicesList}"
+                                th:attr="data-tokens=${dropDownItem.name}"
                                 th:text="${dropDownItem.name}"
                                 th:value="${dropDownItem.id}"/>
                     </select>
@@ -125,15 +127,19 @@
 
             <div class="row form-group" sec:authorize="hasRole('ROLE_USER')">
                 <div class="col-xs-12 col-md-6 col-lg-4">
+                    <input id="recordServiceHidden" th:field="*{service}" type="hidden"/>
+
                     <label for="recordServiceText" th:text="#{label.service}">Service </label>
-                    <input class="form-control" id="recordServiceText" type="text"
-                           th:disabled="true" th:field="*{service.name}"/>
+                    <input class="form-control form-control-sm" id="recordServiceText" readonly
+                           th:value="*{service.name}" type="text"/>
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-lg-4">
+                    <input id="recordCategoryHidden" th:field="*{category}" type="hidden"/>
+
                     <label for="recordCategoryText" th:text="#{label.category}">Category </label>
-                    <input class="form-control" id="recordCategoryText" type="text"
-                           th:disabled="true" th:field="*{category.name}"/>
+                    <input class="form-control form-control-sm" id="recordCategoryText" readonly
+                           th:value="*{category.name}" type="text"/>
                 </div>
             </div>
 
@@ -152,9 +158,11 @@
                     </select>
                 </div>
                 <div class="col-xs-12 col-md-6 col-lg-4" sec:authorize="hasRole('ROLE_USER')">
+                    <input id="recordTicketTypeHidden" th:field="*{ticketType}" type="hidden"/>
+
                     <label for="recordTypeText" th:text="#{label.field.type}">Type: </label>
-                    <input class="form-control" id="recordTypeText" type="text"
-                           th:disabled="true" th:text="#{${'label.field.type.' + ticket.ticketType.name}}"/>
+                    <input class="form-control form-control-sm" id="recordTypeText" readonly
+                           th:value="#{${'label.field.type.' + ticket.ticketType.name}}" type="text"/>
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-lg-4"
@@ -170,9 +178,11 @@
                     </select>
                 </div>
                 <div class="col-xs-12 col-md-6 col-lg-4" sec:authorize="hasRole('ROLE_USER')">
+                    <input id="recordTicketPriorityHidden" th:field="*{ticketPriority}" type="hidden"/>
+
                     <label for="recordPriorityText" th:text="#{label.field.priority}">Priority: </label>
-                    <input class="form-control" id="recordPriorityText" type="text"
-                           th:disabled="true" th:text="${ticket.ticketPriority.name}"/>
+                    <input class="form-control form-control-sm" id="recordPriorityText" readonly
+                           th:value="${ticket.ticketPriority.name}" type="text"/>
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-lg-4">
@@ -181,9 +191,9 @@
                             id="recordState" th:field="*{ticketState}">
                         <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
 
-                        <option th:each="stateItem : ${T(ua.helpdesk.entity.TicketState).values()}"
-                                th:attr="data-tokens=${stateItem.name}"
-                                th:text="#{${'label.field.type.' + stateItem.name}}" th:value="${stateItem}"/>
+                        <option th:attr="data-tokens=${stateItem.name}"
+                                th:each="stateItem : ${T(ua.helpdesk.entity.TicketState).values()}"
+                                th:text="#{${'label.field.state.' + stateItem.name}}" th:value="${stateItem}"/>
                     </select>
                 </div>
 
@@ -192,8 +202,8 @@
             <div class="row form-group">
                 <div class="col-12">
                     <label for="recordSolution" th:text="#{label.field.solution}">Solution: </label>
-                    <textarea class="form-control" rows="2" id="recordSolution"
-                              maxlength="1000" th:field="*{solution}"></textarea>
+                    <textarea class="form-control form-control-sm" id="recordSolution" maxlength="1000"
+                              rows="2" th:field="*{solution}"></textarea>
                 </div>
 
                 <div class="alert alert-danger" th:if="${#fields.hasErrors('solution')}">
@@ -203,35 +213,43 @@
 
             <div class="row form-group">
                 <div class="col-sm-12 col-md-6 col-lg-4">
+                    <input id="recordUser" th:field="*{user}" type="hidden"/>
+
                     <label for="recordUserText" th:text="#{label.field.user}">User: </label>
-                    <input class="form-control" id="recordUserText" type="text"
-                           th:disabled="true" th:text="${ticket.user.login}"/>
+                    <input class="form-control form-control-sm" id="recordUserText" readonly
+                           th:value="*{user.login}" type="text"/>
+
                 </div>
 
                 <div class="col-xs-12 col-md-6 col-lg-4"
                      sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPPORT')">
                     <label for="performerSelect" th:text="#{label.field.performer}">Performer: </label>
                     <select class="form-control form-control-sm selectpicker" data-live-search="true"
-                            id="performerSelect" th:field="*{performerType}">
+                            id="performerSelect" th:field="*{performer}">
                         <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
 
-                        <option th:each="dropDownItem : ${performersList}"
-                                th:attr="data-tokens=${dropDownItem.name}"
-                                th:text="#{${dropDownItem.login}+ '('+ ${dropDownItem.lastName}+ ' '+ ${dropDownItem.firstName} + ')'}"
+                        <option th:attr="data-tokens=${dropDownItem.login}"
+                                th:each="dropDownItem : ${performersList}"
+                                th:text="${dropDownItem.login}+ ' ('+ ${dropDownItem.lastName}+ ' '+ ${dropDownItem.firstName} + ')'"
                                 th:value="${dropDownItem.id}"/>
                     </select>
                 </div>
 
                 <div class="col-sm-12 col-md-6 col-lg-4" sec:authorize="hasRole('ROLE_USER')">
+                    <input id="recordPerformerHidden" th:field="*{performer}" type="hidden"/>
+
                     <label for="recordPerformerText" th:text="#{label.field.performer}">Performer: </label>
-                    <input class="form-control" id="recordPerformerText" type="text"
-                           th:disabled="true" th:text="${ticket.performer.login}"/>
+                    <input class="form-control" id="recordPerformerText" readonly
+                           th:value="*{performer?.login}" type="text"/>
                 </div>
 
-                <div class="col-sm-6 col-md-4">
-                    <button class="btn btn-info btn-sm btn-action" id="buttonSubmit" type="submit">
-                        <i class="fa fa-check"></i><span th:text="Edit"/>
-                    </button>
+                <div class="col-sm-6 col-md-4 d-flex">
+                    <div class="align-self-end ml-auto">
+                        <button class="btn btn-info btn-sm btn-action" id="buttonSubmit"
+                                type="submit">
+                            <i class="fa fa-check"></i><span th:text="#{label.action.edit}"/>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -247,7 +265,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
         $('#recordService').on('change', function () {
             var serviceId = $(this).val();
             /*console.log("service:" + serviceId);*/
@@ -266,6 +283,7 @@
                 }
             });
         });
+        $('#recordService').change();
     });
 
 

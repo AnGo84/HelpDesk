@@ -43,16 +43,18 @@
     </div>
 
     <!--https://www.w3schools.com/bootstrap4/bootstrap_tables.asp-->
+    <!--https://datatables.net/examples/styling/compact.html-->
     <div th:if="${objectsList != null and not #lists.isEmpty(objectsList)}">
-        <div class="table-responsive">
+        <div>
+            <!--<div class="table-responsive-md">-->
 
             <!--<table id="ticketsTable" class="table table-bordered table-sm">-->
             <table class="table table-sm table-bordered table-hover display compact" id="ticketsTable">
                 <thead>
                 <tr class="text-center">
-                    <th th:text="#{label.field.id}" width="120">Id</th>
+                    <th th:text="#{label.field.id}" width="100">Id</th>
                     <th th:text="#{label.field.number}">Number</th>
-                    <th th:text="#{label.field.theme}">Theme</th>
+                    <th th:text="#{label.field.theme}" class="w-25">Theme</th>
                     <th th:text="#{label.field.type}">Type</th>
                     <th th:text="#{label.field.priority}">Priority</th>
                     <th th:text="#{label.field.date}">Date</th>

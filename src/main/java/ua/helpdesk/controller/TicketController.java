@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ua.helpdesk.entity.Ticket;
+import ua.helpdesk.entity.TicketMessage;
 import ua.helpdesk.entity.User;
 import ua.helpdesk.service.TicketServiceImpl;
 import ua.helpdesk.service.UserServiceImpl;
@@ -23,7 +24,7 @@ import java.util.Locale;
 public class TicketController {
 	public static final String ERROR_LINE_FORMAT = "%s - %s - %s - %s %n";
 	public static final String ATTRIBUTE_READ_ONLY = "readOnly";
-	public static final String OBJECT_ATTRIBUTE = "object";
+	public static final String OBJECT_ATTRIBUTE = "ticket";
 
 	private ControllerDataType controllerData;
 	private final TicketServiceImpl ticketService;
@@ -48,8 +49,8 @@ public class TicketController {
 	@GetMapping(value = {"/view-{id}"})
 	public String viewRecord(@PathVariable Long id, Model model) {
 		log.info("View ticket with ID= {}", id);
-		model.addAttribute(ATTRIBUTE_READ_ONLY, true);
 		model.addAttribute(OBJECT_ATTRIBUTE, ticketService.get(id));
+		model.addAttribute("newMessage", new TicketMessage());
 		return controllerData.getRecordPage();
 	}
 
@@ -64,22 +65,25 @@ public class TicketController {
 	}
 
 	@PostMapping(value = "/update")
-	public String updateRecord(@Valid @ModelAttribute("object") Ticket object, BindingResult bindingResult, Model model, Locale locale) {
+	public String updateRecord(@Valid @ModelAttribute(OBJECT_ATTRIBUTE) Ticket object, BindingResult bindingResult) {
 		log.debug("Update: {}", object);
 		if (bindingResult.hasErrors()) {
 			log.debug("Errors: %n {}", buildFieldErrorsLog(bindingResult));
 			return controllerData.getRecordPage();
 		}
 
-		/*if (service.isExist(object)) {
-			FieldError fieldError = buildFieldErrorOnIsExist(object, locale);
-			log.error("Object exist: {}", fieldError);
-			bindingResult.addError(fieldError);
-			return controllerData.getRecordPage();
-		}*/
-
 		Ticket updated = ticketService.update(object);
 		log.debug("Updated: {}", updated);
+		return "redirect:" + controllerData.getListPageURL();
+	}
+
+	@PostMapping(value = {"/messages/add"})
+	public String addNewMessage(@ModelAttribute("newMessage") Ticket ticket, Principal principal) {
+		log.info("Add new ticket record: {}", ticket);
+
+		User user = userService.findByLogin(principal.getName());
+		ticket.setUser(user);
+		ticketService.addNew(ticket);
 		return "redirect:" + controllerData.getListPageURL();
 	}
 

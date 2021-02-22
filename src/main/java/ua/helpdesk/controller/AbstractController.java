@@ -70,7 +70,7 @@ public abstract class AbstractController<E extends AbstractEntity, S extends Com
 	}
 
 	@Override
-	public String updateRecord(@Valid @ModelAttribute("object") E object, BindingResult bindingResult, Model model, Locale locale) {
+	public String updateRecord(@Valid @ModelAttribute(OBJECT_ATTRIBUTE) E object, BindingResult bindingResult, Model model, Locale locale) {
 		log.debug("Update: {}", object);
 		if (bindingResult.hasErrors()) {
 			log.debug("Errors: %n {}", buildFieldErrorsLog(bindingResult));

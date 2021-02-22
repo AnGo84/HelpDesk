@@ -25,6 +25,15 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-light"
+                   data-toggle="dropdown" href="#" id="navbarTicketsDrop"
+                   th:text="#{label.ticket.tickets}"> Tickets </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" th:href="@{/tickets}"
+                       th:text="#{label.ticket.tickets}">Tickets</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light"
                    data-toggle="dropdown" href="#" id="navbarDirectoriesDrop"
                    th:text="#{label.directory.directories}"> Directories </a>
                 <div class="dropdown-menu">

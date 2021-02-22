@@ -10,6 +10,9 @@ import ua.helpdesk.entity.User;
 import ua.helpdesk.entity.UserType;
 import ua.helpdesk.repository.UserRepository;
 
+import java.util.Collection;
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -62,5 +65,10 @@ public class UserServiceImpl extends AbstractService<User, UserRepository> {
 		log.debug("Reset user password");
 		user.setPassword(passwordEncoder.encode(password));
 		return update(user);
+	}
+
+	public List<User> getAllByUserTypes(Collection<UserType> userTypes) {
+		log.debug("Get all users by user types: {}", userTypes);
+		return repository.findByUserTypeIn(userTypes);
 	}
 }

@@ -34,6 +34,7 @@ public class Ticket extends AbstractEntity {
 
     private TicketType ticketType;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss:SS")
     private Date date;
 
     private User user;
@@ -132,7 +133,6 @@ public class Ticket extends AbstractEntity {
 
     @NotNull
     @Column(name = "DATE", nullable = false)
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     public Date getDate() {
         return date;
     }
