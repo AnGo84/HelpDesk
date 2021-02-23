@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.helpdesk.entity.Ticket;
 import ua.helpdesk.entity.TicketMessage;
 import ua.helpdesk.entity.User;
+import ua.helpdesk.service.TicketMessageServiceImpl;
 import ua.helpdesk.service.TicketServiceImpl;
 import ua.helpdesk.service.UserServiceImpl;
 
@@ -28,13 +29,16 @@ public class TicketController {
 
 	private ControllerDataType controllerData;
 	private final TicketServiceImpl ticketService;
+	private final TicketMessageServiceImpl ticketMessageService;
 	private final UserServiceImpl userService;
 	private final MessageSource messageSource;
 
-	public TicketController(TicketServiceImpl ticketService, UserServiceImpl userService, MessageSource messageSource) {
+	public TicketController(TicketServiceImpl ticketService, TicketMessageServiceImpl ticketMessageService, UserServiceImpl userService, MessageSource messageSource) {
 		this.ticketService = ticketService;
+		this.ticketMessageService = ticketMessageService;
 		this.userService = userService;
 		this.messageSource = messageSource;
+
 		this.controllerData = ControllerDataType.TICKET;
 	}
 
@@ -49,8 +53,10 @@ public class TicketController {
 	@GetMapping(value = {"/view-{id}"})
 	public String viewRecord(@PathVariable Long id, Model model) {
 		log.info("View ticket with ID= {}", id);
-		model.addAttribute(OBJECT_ATTRIBUTE, ticketService.get(id));
+		Ticket ticket = ticketService.get(id);
+		model.addAttribute(OBJECT_ATTRIBUTE, ticket);
 		model.addAttribute("newMessage", new TicketMessage());
+		model.addAttribute("messagesList", ticketMessageService.getAllByTicket(ticket));
 		return controllerData.getRecordPage();
 	}
 
@@ -78,13 +84,14 @@ public class TicketController {
 	}
 
 	@PostMapping(value = {"/messages/add"})
-	public String addNewMessage(@ModelAttribute("newMessage") Ticket ticket, Principal principal) {
-		log.info("Add new ticket record: {}", ticket);
+	public String addNewMessage(@ModelAttribute("newMessage") TicketMessage ticketMessage, @ModelAttribute(OBJECT_ATTRIBUTE) Ticket ticket, Principal principal) {
+		log.info("Add new ticketMessage record: {}", ticketMessage);
 
 		User user = userService.findByLogin(principal.getName());
-		ticket.setUser(user);
-		ticketService.addNew(ticket);
-		return "redirect:" + controllerData.getListPageURL();
+		ticketMessage.setUser(user);
+		ticketMessage.setTicket(ticket);
+		ticketMessageService.update(ticketMessage);
+		return "redirect:/tickets/view-" + ticket.getId();
 	}
 
 	protected String buildFieldErrorsLog(BindingResult bindingResult) {

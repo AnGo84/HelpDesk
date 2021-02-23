@@ -33,6 +33,6 @@ public class IndexPageController {
 	@GetMapping(value = "loadCategoriesByService/{id}")
 	public String loadCategoriesByService(@PathVariable("id") Long id) {
 		log.info("Load Categories by Service id={}", id);
-		return gson.toJson(categoryService.findByAppService(id));
+		return gson.toJson(categoryService.getAllByAppService(id));
 	}
 }

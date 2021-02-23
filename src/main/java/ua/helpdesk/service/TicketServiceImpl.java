@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
 @Service
 @Transactional
 @Slf4j
@@ -63,10 +62,8 @@ public class TicketServiceImpl extends AbstractService<Ticket, TicketRepository>
 
         entity.setNumber(DATE_FORMAT.format(ticketDate));
 
-        entity.setSolution("solution");
         Ticket savedEntity = repository.save(entity);
         return savedEntity;
-
     }
 
     @Override

@@ -12,6 +12,7 @@ import ua.helpdesk.entity.Category;
 import ua.helpdesk.exception.EntityException;
 import ua.helpdesk.repository.CategoryRepository;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -120,12 +121,35 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void findAllObjects() {
+    void whenFindAllObjects_thenReturnResult() {
         when(mockCategoryRepository.findAll()).thenReturn(Arrays.asList(category));
         List<Category> appServicesList = service.getAll();
         assertNotNull(appServicesList);
         assertFalse(appServicesList.isEmpty());
         assertEquals(appServicesList.size(), 1);
+    }
+
+    @Test
+    void whenFindAllObjectsByAppService_thenReturnResult() {
+        List<Category> appServicesList = service.getAllByAppService(null);
+        assertNotNull(appServicesList);
+        assertTrue(appServicesList.isEmpty());
+
+        when(mockCategoryRepository.findAll()).thenReturn(new ArrayList<>());
+        appServicesList = service.getAllByAppService(1l);
+        assertNotNull(appServicesList);
+        assertTrue(appServicesList.isEmpty());
+
+        when(mockCategoryRepository.findAll()).thenReturn(Arrays.asList(category));
+        appServicesList = service.getAllByAppService(1l);
+        assertNotNull(appServicesList);
+        assertFalse(appServicesList.isEmpty());
+        assertEquals(appServicesList.size(), 1);
+
+        appServicesList = service.getAllByAppService(2l);
+        assertNotNull(appServicesList);
+        assertTrue(appServicesList.isEmpty());
+
     }
 
     @Test

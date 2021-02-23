@@ -85,7 +85,7 @@ class TicketServiceImplTest {
 	}
 
 	@Test
-	void whenFindByName_thenReturnUser() {
+	void whenFindByNumber_thenReturnUser() {
 		when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
 		Ticket foundTicket = ticketService.findByNumber(ticket.getNumber());
 
@@ -95,7 +95,7 @@ class TicketServiceImplTest {
 	}
 
 	@Test
-	void whenFindByName_thenReturnNull() {
+	void whenFindByNumber_thenReturnNull() {
 		when(mockTicketRepository.findByNumber(ticket.getNumber())).thenReturn(ticket);
 		Ticket found = ticketService.findByNumber("wrong number");
 		assertNull(found);
@@ -109,6 +109,30 @@ class TicketServiceImplTest {
 
 	@Test
 	void whenSave_thenNPE() {
+		when(mockTicketRepository.save(any(Ticket.class))).thenThrow(NullPointerException.class);
+		assertThrows(NullPointerException.class, () -> {
+			ticketService.save(ticket);
+		});
+	}
+
+	@Test
+	void whenAddNew_thenSuccess() {
+
+		when(mockTicketRepository.save(any())).thenReturn(ticket);
+
+		newTicket.setNumber(null);
+		newTicket.setDate(null);
+
+		Ticket savedTicket = ticketService.addNew(newTicket);
+
+		assertNotNull(savedTicket.getNumber());
+		assertNotNull(savedTicket.getDate());
+
+		verify(mockTicketRepository, times(1)).save(newTicket);
+	}
+
+	@Test
+	void whenAddNew_thenNPE() {
 		when(mockTicketRepository.save(any(Ticket.class))).thenThrow(NullPointerException.class);
 		assertThrows(NullPointerException.class, () -> {
 			ticketService.save(ticket);
@@ -160,7 +184,7 @@ class TicketServiceImplTest {
 	@Test
 	void whenFindAllSortedObjects() {
 		when(mockTicketRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))).thenReturn(Arrays.asList(ticket));
-		List<Ticket> objects = ticketService.getAll();
+		List<Ticket> objects = ticketService.getAllSortedByIdDESC();
 		assertNotNull(objects);
 		assertFalse(objects.isEmpty());
 		assertEquals(objects.size(), 1);

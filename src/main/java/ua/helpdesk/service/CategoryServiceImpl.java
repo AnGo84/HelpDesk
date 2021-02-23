@@ -32,7 +32,12 @@ public class CategoryServiceImpl extends AbstractService<Category, CategoryRepos
         return repository.findByName(name) != null;
     }
 
-    public List<Category> findByAppService(Long serviceId) {
+    public List<Category> getAllByAppService(Long serviceId) {
+        log.info("Get all by appService id: {}", serviceId);
+        if (serviceId == null) {
+            return Collections.emptyList();
+        }
+
         List<Category> allCategories = getAll();
         if (CollectionUtils.isEmpty(allCategories)) {
             return Collections.emptyList();

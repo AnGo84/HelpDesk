@@ -121,7 +121,7 @@ class TicketMessageRepositoryTest {
     @Test
     public void whenFindByNumber_thenReturnService() {
         // when
-        List<TicketMessage> foundTicketMessageList = ticketMessageRepository.findByTicket(ticket);
+        List<TicketMessage> foundTicketMessageList = ticketMessageRepository.findByTicketOrderByDateDesc(ticket);
         // then
         assertNotNull(foundTicketMessageList);
         assertFalse(foundTicketMessageList.isEmpty());
@@ -130,15 +130,6 @@ class TicketMessageRepositoryTest {
 
         assertNotNull(foundTicketMessage);
         assertEquals(ticketMessage, foundTicketMessage);
-    }
-
-    @Test
-    public void whenFindByNumber_thenReturnEmpty() {
-        assertNotNull(ticketMessageRepository.findByTicket(null));
-        assertTrue(ticketMessageRepository.findByTicket(null).isEmpty());
-        ticketNew = ticketRepository.save(ticketNew);
-        assertNotNull(ticketMessageRepository.findByTicket(ticketNew));
-        assertTrue(ticketMessageRepository.findByTicket(ticketNew).isEmpty());
     }
 
     @Test
@@ -153,6 +144,30 @@ class TicketMessageRepositoryTest {
         assertFalse(ticketPriorities.isEmpty());
         assertEquals(ticketPriorities.size(), 2);
 
+    }
+
+    @Test
+    public void whenFindAllByTicket_thenReturnListOfTicket() {
+        TicketMessage newTicketMessage = TestDataUtils.getTicketMessage(null, ticket, performer, new Date(), "New text");
+        //given
+        ticketMessageRepository.save(newTicketMessage);
+        // when
+        List<TicketMessage> ticketPriorities = ticketMessageRepository.findByTicketOrderByDateDesc(ticket);
+        // then
+        assertNotNull(ticketPriorities);
+        assertFalse(ticketPriorities.isEmpty());
+        assertEquals(ticketPriorities.size(), 2);
+
+        ticketNew = testEntityManager.persistAndFlush(ticketNew);
+        newTicketMessage = TestDataUtils.getTicketMessage(null, ticketNew, performer, new Date(), "New text2");
+        //given
+        ticketMessageRepository.save(newTicketMessage);
+        // when
+        ticketPriorities = ticketMessageRepository.findByTicketOrderByDateDesc(ticketNew);
+        // then
+        assertNotNull(ticketPriorities);
+        assertFalse(ticketPriorities.isEmpty());
+        assertEquals(ticketPriorities.size(), 1);
     }
 
     @Test
@@ -234,7 +249,7 @@ class TicketMessageRepositoryTest {
         ticketMessageRepository.deleteById(newTicketMessage.getId());
         // then
         assertEquals(ticketMessageRepository.findAll().size(), 1);
-        assertTrue(ticketMessageRepository.findByTicket(ticketNew).isEmpty());
+        assertTrue(ticketMessageRepository.findByTicketOrderByDateDesc(ticketNew).isEmpty());
     }
 
     @Test

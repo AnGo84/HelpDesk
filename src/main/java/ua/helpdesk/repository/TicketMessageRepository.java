@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TicketMessageRepository extends CommonRepository<TicketMessage> {
-    List<TicketMessage> findByTicket(Ticket ticket);
+    List<TicketMessage> findByTicketOrderByDateDesc(Ticket ticket);
 }
