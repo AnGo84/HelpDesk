@@ -33,7 +33,7 @@ public class TicketMessage extends AbstractEntity {
 		this.ticket = ticket;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USER_ID", nullable = false)
 	public User getUser() {
 		return user;
