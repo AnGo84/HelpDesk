@@ -2,7 +2,7 @@
 
 Build
 status: [![build_status](https://travis-ci.com/AnGo84/Helpdesk.svg?branch=master)](https://travis-ci.com/AnGo84/Helpdesk.svg)
-[![BCH compliance](https://bettercodehub.com/edge/badge/AnGo84/Helpdesk?branch=master)](https://bettercodehub.com/)
+[![BCH compliance](https://bettercodehub.com/edge/badge/AnGo84/HelpDesk?branch=master)](https://bettercodehub.com/)
 
 HelpDesk is a simple ticketing system.
 
