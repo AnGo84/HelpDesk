@@ -1,92 +1,62 @@
 package ua.helpdesk.service;
 
-import org.hibernate.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.helpdesk.dao.CategoryDao;
-import ua.helpdesk.dao.CategoryDaoImpl;
-import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.model.Category;
+import org.springframework.util.CollectionUtils;
+import ua.helpdesk.entity.Category;
+import ua.helpdesk.repository.CategoryRepository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Service("categoryService")
+@Service
 @Transactional
-//public class CategoryServiceImpl implements TableDataService<Category> {
-public class CategoryServiceImpl implements CategoryService {
-    static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
+@Slf4j
+public class CategoryServiceImpl extends AbstractService<Category, CategoryRepository> {
 
-    @Autowired
-    //private TableDateDao<Category> dao;
-    private CategoryDao dao;
+    public CategoryServiceImpl(CategoryRepository repository) {
+        super(repository);
+    }
 
-    @Override
-    public Category findById(Integer id) {
-        if (id == null) {
-            return null;
+    public Category getByName(String name) {
+        return repository.findByName(name);
+    }
+
+    public Boolean isExistByName(String name) {
+        if (StringUtils.isEmpty(name)) {
+            return false;
         }
-        return dao.findById(id);
+        return repository.findByName(name) != null;
     }
 
-    @Override
-    public Category findByName(String name) {
-        return dao.findByName(name);
-    }
-
-    @Override
-    public void saveData(Category category) {
-        logger.info("Save: {}", category);
-        dao.save(category);
-    }
-
-    @Override
-    public void updateData(Category category) {
-        Category entity = dao.findById(category.getId());
-        if (entity != null) {
-            entity.setId(category.getId());
-            entity.setName(category.getName());
-            entity.setService(category.getService());
+    public List<Category> getAllByAppService(Long serviceId) {
+        log.info("Get all by appService id: {}", serviceId);
+        if (serviceId == null) {
+            return Collections.emptyList();
         }
+
+        List<Category> allCategories = getAll();
+        if (CollectionUtils.isEmpty(allCategories)) {
+            return Collections.emptyList();
+        }
+        return allCategories.stream().filter(category -> category.getAppService().getId().equals(serviceId)).collect(Collectors.toList());
     }
 
     @Override
-    public void deleteDataByName(String name) {
-        dao.deleteByName(name);
-    }
-
-    @Override
-    public void deleteDataById(Integer id) {
-        dao.deleteById(id);
-    }
-
-    @Override
-    public List<Category> findAllData() {
-        return dao.findAllData();
-    }
-
-    @Override
-    public boolean isDataUnique(Integer id, String name) {
+    public Boolean isExist(Category entity) {
+        log.info("Check on exist: {}", entity);
+        if (entity == null) {
+            return false;
+        }
+        Category foundEntity = repository.findByName(entity.getName());
+        if (foundEntity == null) {
+            return false;
+        } else if (entity.getId() == null || !entity.getId().equals(foundEntity.getId())) {
+            return true;
+        }
         return false;
     }
-
-    @Override
-    public boolean isDataUnique(Integer id, String name, Integer serviceId) {
-        logger.info("Get id: " + id + ", name: " + name + ", serviceId: " + serviceId);
-        Category category = findById(id);
-        return (category == null || ((id != null) && (category.getId() == id && category.getName().equals(name) && category.getService().getId() == serviceId)));
-    }
-
-    @Override
-    public List<Category> findCategoryForService(String serviceName){
-        return dao.findCategoryForService(serviceName);
-    }
-
-    @Override
-    public List<Category> findCategoryForService(Integer serviceID){
-        return dao.findCategoryForService(serviceID);
-    }
-
 }

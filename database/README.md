@@ -9,7 +9,7 @@ Used default:
 ### Docker issues
 Create an image:
 ```sh
-docker run --name helpdesk-mysql -e MYSQL_DATABASE=helpdeskDB -e MYSQL_USER=helpdeskDB-user -e MYSQL_PASSWORD=helpdeskDB-pass -e MYSQL_ROOT_PASSWORD=root_user_pass -d -p 3306:3306 mysql:latest
+docker run --name helpdesk-mysql -e MYSQL_DATABASE=helpdeskDB -e MYSQL_USER=helpdeskDB-user -e MYSQL_PASSWORD=helpdeskDB-pass -e MYSQL_ROOT_PASSWORD=root_user_pass -d -p 3306:3306 --restart unless-stopped mysql:latest
 ```
 
 ## Postgres
@@ -17,5 +17,5 @@ docker run --name helpdesk-mysql -e MYSQL_DATABASE=helpdeskDB -e MYSQL_USER=help
 ### Docker issues
 Create an image:
 ```sh
-docker run --name helpdesk-postgres -e POSTGRES_USER=helpdeskDB-user -e POSTGRES_PASSWORD=helpdeskDB-pass -d -p 5432:5432 postgres
+docker run --name helpdesk-postgres -e POSTGRES_USER=helpdeskDB-user -e POSTGRES_PASSWORD=helpdeskDB-pass -d -p 5432:5432 --restart unless-stopped postgres
 ```

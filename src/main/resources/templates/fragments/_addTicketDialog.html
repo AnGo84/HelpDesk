@@ -1,0 +1,135 @@
+<!-- Modal Dialog -->
+<!--
+https://stackoverflow.com/questions/47619511/springthymeleaf-post-data-from-modal-form
+https://blog.nazrulkabir.com/2018/04/dynamic-modal-with-spring-boot-and-thymeleaf/
+-->
+
+<html xmlns:th="http://www.thymeleaf.org">
+<div aria-hidden="true" class="modal fade" id="addTicketModal" role="dialog" tabindex="-2">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" th:text="#{label.action.add}">[[#{label.action.add}]]</h4>
+                <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+                    <!--×-->
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" th:action="@{/tickets/add}" th:object="${newTicket}">
+                    <div class="container">
+
+                        <input id="recordTicketState" th:field="*{ticketState}" type="hidden"/>
+
+                        <div class="row form-group ">
+                            <label for="ticketTheme" th:text="#{label.field.theme}">Theme</label>
+                            <input class="form-control form-control-sm" id="ticketTheme"
+                                   placeholder="Enter theme" th:field="*{theme}"
+                                   type="text"/>
+                        </div>
+
+                        <div class="row form-group ">
+                            <label for="ticketDescription" th:text="#{label.field.description}">Description</label>
+                            <textarea class="form-control form-control-sm" id="ticketDescription"
+                                      placeholder="Enter description" rows="3"
+                                      th:field="*{description}">
+                        </textarea>
+                        </div>
+
+                        <div class="row form-group">
+                            <label for="servicesSelect" th:text="#{label.service}">Service </label>
+                            <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                    id="servicesSelect" th:field="*{service}">
+                                <option th:attr="data-tokens=${dropDownItem.name}"
+                                        th:each="dropDownItem : ${appServicesList}"
+                                        th:text="${dropDownItem.name}"
+                                        th:value="${dropDownItem.id}"/>
+                            </select>
+                        </div>
+
+                        <div class="row form-group">
+                            <label for="categoriesSelect" th:text="#{label.category}">Category </label>
+                            <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                    id="categoriesSelect" th:field="*{category}">
+                                <!--<option th:attr="data-tokens=${dropDownItem.name}"
+                                        th:each="dropDownItem : ${categoriesList}"
+                                        th:text="${dropDownItem.name}"
+                                        th:value="${dropDownItem.id}"/>-->
+                            </select>
+                        </div>
+
+                        <div class="row form-group">
+                            <label for="typesSelect" th:text="#{label.field.type}">Type: </label>
+                            <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                    id="typesSelect" th:field="*{ticketType}">
+                                <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                                <option th:attr="data-tokens=${typeItem.name}"
+                                        th:each="typeItem : ${T(ua.helpdesk.entity.TicketType).values()}"
+                                        th:text="#{${'label.field.type.' + typeItem.name}}" th:value="${typeItem}"/>
+                            </select>
+                        </div>
+
+                        <div class="row form-group">
+                            <label for="prioritiesSelect" th:text="#{label.field.priority}">Priority: </label>
+                            <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                                    id="prioritiesSelect" th:field="*{ticketPriority}">
+                                <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                                <option th:attr="data-tokens=${priorityItem.name}"
+                                        th:each="priorityItem : ${prioritiesList}" th:text="${priorityItem.name}"
+                                        th:value="${priorityItem.id}"/>
+                            </select>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button class="btn btn-danger btn-sm btn-action-md" data-dismiss="modal"
+                                        type="button">
+                                    <i class="fa fa-times"></i><span th:text="#{label.action.cancel}"/>
+                                </button>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <button class="btn btn-success btn-sm btn-action-md custom-width float-right"
+                                        id="confirm"
+                                        type="submit">
+                                    <i class="fa fa-check"></i><span th:text="#{label.action.confirm}"/>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dialog show event handler -->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#servicesSelect').on('change', function () {
+            var serviceId = $(this).val();
+            /*console.log("country:" + serviceId);*/
+            $.ajax({
+                type: 'GET',
+                /*url: '${pageContext.request.contextPath}/loadCategoriesByCountry/' + serviceId,*/
+                url: '/loadCategoriesByService/' + serviceId,
+                success: function (result) {
+                    var result = JSON.parse(result);
+                    var s = '';
+                    for (var i = 0; i < result.length; i++) {
+                        s += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
+                    }
+
+                    $('#categoriesSelect').html(s);
+                }
+            });
+        });
+    });
+
+</script>
+
+<!-- From here: https://heera.it/bootstrap-3-delete-confirm-dialog -->

@@ -1,0 +1,27 @@
+# https://docs.travis-ci.com/user/languages/java/
+# language
+language: java
+
+# version numbers
+jdk:
+  - openjdk11
+
+# would just use default install/script but the ./mvnw script errors on travis
+# obviously this only works for maven builds right now...
+install:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script:
+  - mvn test
+
+# Improve Build Speed https://dzone.com/articles/travis-ci-tutorial-java-projects
+cache:
+  directories:
+    - $HOME/.m2
+
+# Notifications https://docs.travis-ci.com/user/notifications/
+notifications:
+  email:
+    recipients:
+      - ango1984@gmail.com
+    on_success: always # default: change
+    on_failure: always # default: always

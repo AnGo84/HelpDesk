@@ -1,117 +1,37 @@
 package ua.helpdesk.configuration;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.format.FormatterRegistry;
-import org.springframework.orm.hibernate5.support.OpenSessionInViewInterceptor;
-import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
-import ua.helpdesk.converter.*;
-
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
-@EnableWebMvc
-//@EnableTransactionManagement
-@ComponentScan(basePackages = "ua.helpdesk")
-public class AppConfig extends WebMvcConfigurerAdapter {
+public class AppConfig {
 
-    @Autowired
-    SessionFactory sessionFactory;
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasenames("classpath:/messages/i18n/messages");
+		messageSource.setDefaultEncoding("UTF-8");
+		return messageSource;
+	}
 
-    @Autowired
-    RoleToUserTypeConverter roleToUserTypeConverter;
-    @Autowired
-    ObjectToServiceConverter objectToServiceConverter;
-    @Autowired
-    ObjectToGroupConverter objectToGroupConverter;
-    @Autowired
-    ObjectToCategoryConverter objectToCategoryConverter;
-    @Autowired
-    ObjectToPriorityConverter objectToPriorityConverter;
-    @Autowired
-    ObjectToTicketTypeConverter objectToTicketTypeConverter;
-    @Autowired
-    ObjectToTicketStateConverter objectToTicketStateConverter;
-    @Autowired
-    ObjectToUserConverter objectToUserConverter;
+	/*
+	 * @Bean(name = "localeResolver")
+	 * public LocaleResolver getLocaleResolver()
+	 * { CookieLocaleResolver resolver = new CookieLocaleResolver();
+	 * resolver.setCookieDomain("vetalAppLocaleCookie");
+	 * resolver.setDefaultLocale(new Locale("ru")); // 60 minutes
+	 * resolver.setCookieMaxAge(60 * 60); return resolver; }
+	 */
 
+	@Bean
+	public LocalValidatorFactoryBean validator() {
+		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+		bean.setValidationMessageSource(messageSource());
 
-    /**
-     * Configure ViewResolvers to deliver preferred views.
-     */
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
+		return bean;
+	}
 
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
-        registry.viewResolver(viewResolver);
-
-    }
-
-    /**
-     * Configure ResourceHandlers to serve static resources like CSS/ Javascript etc...
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
-
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("/images/logo_16.ico");
-
-        //registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/static/musialnote.ico");
-        //registry.addResourceHandler("/**/favicon.ico").addResourceLocations("classpath:/static/musicalnote.ico");
-    }
-
-    /**
-     * Configure Converter to be used.
-     * In our example, we need a converter to convert string values[Roles] to UserProfiles in newUser.jsp
-     */
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(roleToUserTypeConverter);
-        registry.addConverter(objectToServiceConverter);
-        registry.addConverter(objectToGroupConverter);
-        registry.addConverter(objectToCategoryConverter);
-        registry.addConverter(objectToPriorityConverter);
-        registry.addConverter(objectToTicketTypeConverter);
-        registry.addConverter(objectToTicketStateConverter);
-        registry.addConverter(objectToUserConverter);
-    }
-    /**
-     * Configure MessageSource to lookup any validation/error message in internationalized property files
-     */
-    @Bean
-    public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasename("messages");
-        return messageSource;
-    }
-
-    /**
-     * Optional. It's only required when handling '.' in @PathVariables which otherwise ignore everything after last '.' in @PathVaidables argument.
-     * It's a known bug in Spring [https://jira.spring.io/browse/SPR-6164], still present in Spring 4.1.7.
-     * This is a workaround for this issue.
-     */
-    @Override
-    public void configurePathMatch(PathMatchConfigurer matcher) {
-        matcher.setUseRegisteredSuffixPatternMatch(true);
-    }
-
-    // for lazy for User.getGroup
-    // https://stackoverflow.com/questions/11746499/solve-failed-to-lazily-initialize-a-collection-of-role-exception
-    // https://www.javacodegeeks.com/2012/07/four-solutions-to-lazyinitializationexc_05.html
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        OpenSessionInViewInterceptor osiv = new OpenSessionInViewInterceptor();
-        osiv.setSessionFactory(sessionFactory);
-        registry.addWebRequestInterceptor(osiv);
-    }
 }
-

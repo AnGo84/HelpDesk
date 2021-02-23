@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+</head>
+<body>
+<!--<div th:fragment="footer" class = "app_footer">
+    <div class="container ">-->
+<footer class="app_footer" th:fragment="footer">
+    <!-- FOOTER -->
+    © <span id="copyright-years">2021</span> Helpdesk.com.ua
+    <span sec:authorize="isAuthenticated()">| Logged user: <span sec:authentication="name"></span> |
+                Role: <span sec:authentication="principal.authorities"></span> |
+                <a th:href="@{/logout}" th:text="#{label.login.sign_out}">Sign Out</a>
+            </span>
+    <!--<script th:src="@{/js/bootstrap.min.js}"></script>-->
+
+    <script>
+        document.getElementById("copyright-years").innerHTML = getCopyrightYears();
+
+        function getCopyrightYears() {
+            var startYear = '2020';
+            var currentYear = new Date().getFullYear();
+            if (currentYear == startYear) {
+                return startYear;
+            }
+            return startYear + '-' + currentYear;
+        }
+    </script>
+    <script>
+        console.log($(window).height());
+        if ($(document).height() <= $(window).height())
+            console.log($(document).height());
+        $("footer.app_footer").addClass("fixed-bottom");
+    </script>
+</footer>
+<!--</div>-->
+
+<!--</div>-->
+</body>
+</html>

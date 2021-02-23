@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Category info</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
+
+    <link rel="shortcut icon" th:href="@{/images/logo_16.ico}" type="image/x-icon">
+
+    <!--<div th:replace="fragments/_header :: header-css"/>-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/helpdesk.css}" type="text/css">
+
+    <script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<!-- Include _header.html -->
+<div th:replace="fragments/_header :: header"/>
+
+<div class="container page_container">
+    <div class="well">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <h3><span th:text="#{label.ticket}">Ticket Form</span></h3>
+            </div>
+        </div>
+
+        <form action="#" method="POST" th:action="@{/tickets/update}" th:object="${ticket}">
+
+            <div class="row form-group">
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <label for="recordId" th:text="#{label.field.id}">Id: </label>
+                    <input class="form-control form-control-sm" id="recordId"
+                           readonly th:field="*{id}" type="text"/>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('id')}">
+                        <p th:text="${#fields.errors('id')}"></p>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <label for="recordNumber" th:text="#{label.field.number}">Number: </label>
+                    <input class="form-control form-control-sm" id="recordNumber"
+                           readonly th:field="*{number}" type="text"/>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('number')}">
+                        <p th:text="${#fields.errors('number')}"></p>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <label for="recordDate" th:text="#{label.field.date}">Date: </label>
+
+                    <input id="recordDateHidden" th:field="*{date}" type="hidden"/>
+
+                    <input class="form-control form-control-sm" id="recordDate" readonly
+                           th:value="${#dates.format(ticket.date, 'dd-MM-yyyy HH:mm')}" type="text"/>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('date')}">
+                        <p th:text="${#fields.errors('date')}"></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="recordTheme" th:text="#{label.field.name}">Theme: </label>
+                    <input class="form-control form-control-sm" id="recordTheme"
+                           placeholder="Enter Theme" th:field="*{theme}" type="text"/>
+                </div>
+
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('theme')}">
+                    <p th:text="${#fields.errors('theme')}"></p>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="recordDescription" th:text="#{label.field.description}">Description: </label>
+                    <textarea class="form-control form-control-sm" id="recordDescription" maxlength="1000"
+                              rows="2" th:field="*{description}"></textarea>
+                </div>
+
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('description')}">
+                    <p th:text="${#fields.errors('description')}"></p>
+                </div>
+            </div>
+
+            <div class="row form-group" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPPORT')">
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <label for="recordService" th:text="#{label.service}">Service </label>
+                    <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                            id="recordService" th:field="*{service}">
+                        <option th:each="dropDownItem : ${appServicesList}"
+                                th:attr="data-tokens=${dropDownItem.name}"
+                                th:text="${dropDownItem.name}"
+                                th:value="${dropDownItem.id}"/>
+                    </select>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('service')}">
+                        <p th:text="${#fields.errors('service')}"></p>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <label for="recordCategory" th:text="#{label.category}">Category </label>
+                    <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                            id="recordCategory" th:field="*{category}">
+                        <!--<option th:attr="data-tokens=${dropDownItem.name}"
+                                th:each="dropDownItem : ${categoriesList}"
+                                th:text="${dropDownItem.name}"
+                                th:value="${dropDownItem.id}"/>-->
+                    </select>
+
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('category')}">
+                        <p th:text="${#fields.errors('category')}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group" sec:authorize="hasRole('ROLE_USER')">
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <input id="recordServiceHidden" th:field="*{service}" type="hidden"/>
+
+                    <label for="recordServiceText" th:text="#{label.service}">Service </label>
+                    <input class="form-control form-control-sm" id="recordServiceText" readonly
+                           th:value="*{service.name}" type="text"/>
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <input id="recordCategoryHidden" th:field="*{category}" type="hidden"/>
+
+                    <label for="recordCategoryText" th:text="#{label.category}">Category </label>
+                    <input class="form-control form-control-sm" id="recordCategoryText" readonly
+                           th:value="*{category.name}" type="text"/>
+                </div>
+            </div>
+
+
+            <div class="row form-group">
+                <div class="col-xs-12 col-md-6 col-lg-4"
+                     sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPPORT')">
+                    <label for="typesSelect" th:text="#{label.field.type}">Type: </label>
+                    <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                            id="typesSelect" th:field="*{ticketType}">
+                        <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                        <option th:attr="data-tokens=${typeItem.name}"
+                                th:each="typeItem : ${T(ua.helpdesk.entity.TicketType).values()}"
+                                th:text="#{${'label.field.type.' + typeItem.name}}" th:value="${typeItem}"/>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-4" sec:authorize="hasRole('ROLE_USER')">
+                    <input id="recordTicketTypeHidden" th:field="*{ticketType}" type="hidden"/>
+
+                    <label for="recordTypeText" th:text="#{label.field.type}">Type: </label>
+                    <input class="form-control form-control-sm" id="recordTypeText" readonly
+                           th:value="#{${'label.field.type.' + ticket.ticketType.name}}" type="text"/>
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-4"
+                     sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPPORT')">
+                    <label for="prioritiesSelect" th:text="#{label.field.priority}">Priority: </label>
+                    <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                            id="prioritiesSelect" th:field="*{ticketPriority}">
+                        <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                        <option th:attr="data-tokens=${priorityItem.name}"
+                                th:each="priorityItem : ${prioritiesList}" th:text="${priorityItem.name}"
+                                th:value="${priorityItem.id}"/>
+                    </select>
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-4" sec:authorize="hasRole('ROLE_USER')">
+                    <input id="recordTicketPriorityHidden" th:field="*{ticketPriority}" type="hidden"/>
+
+                    <label for="recordPriorityText" th:text="#{label.field.priority}">Priority: </label>
+                    <input class="form-control form-control-sm" id="recordPriorityText" readonly
+                           th:value="${ticket.ticketPriority.name}" type="text"/>
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-4">
+                    <label for="recordState" th:text="#{label.field.state}">State: </label>
+                    <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                            id="recordState" th:field="*{ticketState}">
+                        <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                        <option th:attr="data-tokens=${stateItem.name}"
+                                th:each="stateItem : ${T(ua.helpdesk.entity.TicketState).values()}"
+                                th:text="#{${'label.field.state.' + stateItem.name}}" th:value="${stateItem}"/>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="recordSolution" th:text="#{label.field.solution}">Solution: </label>
+                    <textarea class="form-control form-control-sm" id="recordSolution" maxlength="1000"
+                              rows="2" th:field="*{solution}"></textarea>
+                </div>
+
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('solution')}">
+                    <p th:text="${#fields.errors('solution')}"></p>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <input id="recordUser" th:field="*{user}" type="hidden"/>
+
+                    <label for="recordUserText" th:text="#{label.field.user}">User: </label>
+                    <input class="form-control form-control-sm" id="recordUserText" readonly
+                           th:value="*{user.login}" type="text"/>
+
+                </div>
+
+                <div class="col-xs-12 col-md-6 col-lg-4"
+                     sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPPORT')">
+                    <label for="performerSelect" th:text="#{label.field.performer}">Performer: </label>
+                    <select class="form-control form-control-sm selectpicker" data-live-search="true"
+                            id="performerSelect" th:field="*{performer}">
+                        <!--<option th:text="#{label.select_choose}" value=""> Please Select</option>-->
+
+                        <option th:attr="data-tokens=${dropDownItem.login}"
+                                th:each="dropDownItem : ${performersList}"
+                                th:text="${dropDownItem.login}+ ' ('+ ${dropDownItem.lastName}+ ' '+ ${dropDownItem.firstName} + ')'"
+                                th:value="${dropDownItem.id}"/>
+                    </select>
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-4" sec:authorize="hasRole('ROLE_USER')">
+                    <input id="recordPerformerHidden" th:field="*{performer}" type="hidden"/>
+
+                    <label for="recordPerformerText" th:text="#{label.field.performer}">Performer: </label>
+                    <input class="form-control form-control-sm" id="recordPerformerText" readonly
+                           th:value="*{performer?.login}" type="text"/>
+                </div>
+
+                <div class="col-sm-6 col-md-4 d-flex">
+                    <div class="align-self-end ml-auto">
+                        <button class="btn btn-info btn-sm btn-action" id="buttonSubmit" type="submit">
+                            <i class="fa fa-check"></i><span th:text="#{label.action.edit}"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+        <!-- messages part -->
+        <form action="#" method="POST" th:action="@{/tickets/messages/add}" th:object="${newMessage}">
+            <div class="row form-group">
+                <input id="messageTicketHidden" th:field="*{ticket}" type="hidden"/>
+
+                <div class="col-sm-12 col-md-8 col-lg-10">
+                    <label for="newMessageText" th:text="#{label.message.new}">New message</label>
+                    <textarea class="form-control" id="newMessageText" rows="3" th:field="*{text}"></textarea>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-2 d-flex">
+                    <div class="align-self-end ml-auto">
+                        <button class="btn btn-info btn-sm btn-action" id="buttonSubmitNewMessage" type="submit">
+                            <i class="fa fa-check"></i><span th:text="#{label.action.add}"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div th:if="${messagesList != null and not #lists.isEmpty(messagesList)}">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="text-center d-flex">
+                        <th class="col-8" th:text="#{label.message}"></th>
+                        <th class="col-2" th:text="#{label.field.user}">User</th>
+                        <th class="col-2" th:text="#{label.field.date}">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="d-flex" th:each="message : ${messagesList}">
+                        <td class="col-sm-8">
+                            <textarea class="form-control form-control-sm" readonly
+                                      rows="2" th:text="${message.text}"></textarea>
+                        </td>
+                        <td class="col-sm-2" th:text="${message.user.login}"></td>
+                        <td class="col-sm-2" th:text="${#dates.format(message.date, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- !messages part -->
+    </div>
+</div>
+
+<!-- Include _footer.html -->
+<div th:replace="fragments/_footer :: footer"/>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#recordService').on('change', function () {
+            var serviceId = $(this).val();
+            /*console.log("service:" + serviceId);*/
+            $.ajax({
+                type: 'GET',
+                /*url: '${pageContext.request.contextPath}/loadCategoriesByService/' + serviceId,*/
+                url: '/loadCategoriesByService/' + serviceId,
+                success: function (result) {
+                    var result = JSON.parse(result);
+                    var s = '';
+                    for (var i = 0; i < result.length; i++) {
+                        s += '<option value="' + result[i].id + '">' + result[i].name + '</option>';
+                    }
+
+                    $('#recordCategory').html(s);
+                }
+            });
+        });
+        $('#recordService').change();
+    });
+
+</script>
+
+
+</body>
+</html>

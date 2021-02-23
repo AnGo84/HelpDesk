@@ -1,99 +1,78 @@
 package ua.helpdesk.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.helpdesk.dao.TableDateDao;
-import ua.helpdesk.model.Ticket;
+import ua.helpdesk.entity.Ticket;
+import ua.helpdesk.entity.TicketState;
+import ua.helpdesk.exception.ForbiddenOperationException;
+import ua.helpdesk.repository.TicketRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-@org.springframework.stereotype.Service("ticketService")
+@Service
 @Transactional
-public class TicketServiceImpl implements TableDataService<Ticket> {
-    static final Logger logger = LoggerFactory.getLogger(TicketServiceImpl.class);
-    @Autowired
-    private TableDateDao<Ticket> dao;
+@Slf4j
+public class TicketServiceImpl extends AbstractService<Ticket, TicketRepository> {
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss:SS");
+
+    public TicketServiceImpl(TicketRepository repository) {
+        super(repository);
+    }
+
+    public Ticket findByNumber(String name) {
+        log.debug("Find by number: {}", name);
+        return repository.findByNumber(name);
+    }
+
+    public List<Ticket> getAllSortedByIdDESC() {
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+    }
+
 
     @Override
-    public Ticket findById(Integer id) {
-        logger.info("FindById: {}", id);
-        if (id == null) {
-            return null;
+    public Boolean isExist(Ticket entity) {
+        log.debug("Check on exist: {}", entity);
+        if (entity == null) {
+            return false;
         }
-        return dao.findById(id);
-    }
-
-    @Override
-    public Ticket findByName(String name) {
-        logger.info("FindByName: {}", name);
-        Ticket ticket = dao.findByName(name);
-        return ticket;
-    }
-
-    @Override
-    public void saveData(Ticket ticket) {
-        logger.info("Save: {}", ticket);
-        dao.save(ticket);
-
-        Ticket entity = dao.findById(ticket.getId());
-        if (entity != null) {
-            entity.setNumber(ticket.getService().getName().replaceAll(" ", "") + ticket.getId());
+        Ticket foundEntity = repository.findByNumber(entity.getNumber());
+        if (foundEntity == null) {
+            return false;
+        } else if (entity.getId() == null || !entity.getId().equals(foundEntity.getId())) {
+            return true;
         }
-
-    }
-
-    @Override
-    public void updateData(Ticket ticket) {
-        logger.info("Update: {}", ticket);
-
-        Ticket entity = dao.findById(ticket.getId());
-        if (entity != null) {
-            entity.setId(ticket.getId());
-            entity.setNumber(ticket.getNumber());
-            entity.setTheme(ticket.getTheme());
-            entity.setDescription(ticket.getDescription());
-            entity.setService(ticket.getService());
-            entity.setCategory(ticket.getCategory());
-            entity.setPriority(ticket.getPriority());
-            entity.setTicketState(ticket.getTicketState());
-            entity.setTicketType(ticket.getTicketType());
-            entity.setDate(ticket.getDate());
-            entity.setUser(ticket.getUser());
-            entity.setPerformer(ticket.getPerformer());
-            entity.setSolution(ticket.getSolution());
-        }
-    }
-
-    @Override
-    public void deleteDataByName(String name) {
-        dao.deleteByName(name);
-    }
-
-    @Override
-    public void deleteDataById(Integer id) {
-        dao.deleteById(id);
-    }
-
-    @Override
-    public List<Ticket> findAllData() {
-        return dao.findAllData();
-    }
-
-    @Override
-    public boolean isDataUnique(Integer id, String name) {
-        Ticket ticket = findByName(name);
-        return (ticket == null || ((id != null) && (ticket.getId() == id && ticket.getNumber().equals(name))));
-    }
-
-    @Override
-    public boolean isDataUnique(Integer id, String name, Integer type_id) {
         return false;
     }
 
-    public List<Ticket> findAllDataForUser() {
+    public Ticket createDefaultInstance() {
+        log.debug("Create new ticket");
+        Ticket newTicket = new Ticket();
+        newTicket.setTicketState(TicketState.NEW);
+        return newTicket;
+    }
 
-        return dao.findAllData();
+    public Ticket addNew(Ticket entity) {
+        log.info("Save new entity: {}", entity);
+        Date ticketDate = new Date();
+        entity.setDate(ticketDate);
+
+        entity.setNumber(DATE_FORMAT.format(ticketDate));
+
+        Ticket savedEntity = repository.save(entity);
+        return savedEntity;
+    }
+
+    @Override
+    public Boolean deleteById(Long id) {
+        throw new ForbiddenOperationException("Operation is forbidden");
+    }
+
+    @Override
+    public Boolean deleteAll() {
+        throw new ForbiddenOperationException("Operation is forbidden");
     }
 }
