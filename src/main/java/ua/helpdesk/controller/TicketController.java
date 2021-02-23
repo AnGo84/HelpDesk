@@ -16,8 +16,8 @@ import ua.helpdesk.service.UserServiceImpl;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/tickets")
@@ -55,7 +55,10 @@ public class TicketController {
 		log.info("View ticket with ID= {}", id);
 		Ticket ticket = ticketService.get(id);
 		model.addAttribute(OBJECT_ATTRIBUTE, ticket);
-		model.addAttribute("newMessage", new TicketMessage());
+
+		final TicketMessage ticketMessage = new TicketMessage();
+		ticketMessage.setTicket(ticket);
+		model.addAttribute("newMessage", ticketMessage);
 		model.addAttribute("messagesList", ticketMessageService.getAllByTicket(ticket));
 		return controllerData.getRecordPage();
 	}
@@ -79,19 +82,23 @@ public class TicketController {
 		}
 
 		Ticket updated = ticketService.update(object);
-		log.debug("Updated: {}", updated);
 		return "redirect:" + controllerData.getListPageURL();
 	}
 
 	@PostMapping(value = {"/messages/add"})
-	public String addNewMessage(@ModelAttribute("newMessage") TicketMessage ticketMessage, @ModelAttribute(OBJECT_ATTRIBUTE) Ticket ticket, Principal principal) {
+	public String addNewMessage(@ModelAttribute("newMessage") TicketMessage ticketMessage, BindingResult bindingResult, Principal principal) {
 		log.info("Add new ticketMessage record: {}", ticketMessage);
+		if (bindingResult.hasErrors()) {
+			log.debug("Errors: %n {}", buildFieldErrorsLog(bindingResult));
+			return controllerData.getRecordPage();
+		}
 
 		User user = userService.findByLogin(principal.getName());
 		ticketMessage.setUser(user);
-		ticketMessage.setTicket(ticket);
+		ticketMessage.setDate(new Date());
+		log.info("Prepared ticketMessage: {}", ticketMessage);
 		ticketMessageService.update(ticketMessage);
-		return "redirect:/tickets/view-" + ticket.getId();
+		return "redirect:/tickets/view-" + ticketMessage.getTicket().getId();
 	}
 
 	protected String buildFieldErrorsLog(BindingResult bindingResult) {
@@ -103,7 +110,7 @@ public class TicketController {
 		return errorText.toString();
 	}
 
-	protected FieldError constructFieldError(String messageProperty, FieldErrorData fieldErrorData, Locale locale) {
+	/*protected FieldError constructFieldError(String messageProperty, FieldErrorData fieldErrorData, Locale locale) {
 		String fieldLabelName = getMessageSourceMessage(fieldErrorData.getFieldLabel(), locale);
 		FieldError fieldError = new FieldError(OBJECT_ATTRIBUTE, fieldErrorData.getFieldName(),
 				messageSource.getMessage(messageProperty, new Object[]{fieldLabelName, fieldErrorData.getFieldValue()}, locale));
@@ -112,5 +119,5 @@ public class TicketController {
 
 	protected String getMessageSourceMessage(String label, Locale locale) {
 		return messageSource.getMessage(label, new Object[]{}, locale);
-	}
+	}*/
 }

@@ -39,7 +39,6 @@
         </div>
     </div>
 
-    <!--https://www.w3schools.com/bootstrap4/bootstrap_tables.asp-->
     <div th:if="${objectsList != null and not #lists.isEmpty(objectsList)}">
         <div class="table-responsive">
 
@@ -112,11 +111,6 @@
 
 <!-- Include _actionConfirmDialog.html -->
 <th:block th:include="fragments/_actionConfirmDialog.html"></th:block>
-
-
-<!--<script>
-    $(document).ready(initTable('#usersTable'));
-</script>-->
 
 </body>
 </html>

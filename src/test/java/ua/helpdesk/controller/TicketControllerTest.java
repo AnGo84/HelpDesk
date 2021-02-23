@@ -124,7 +124,6 @@ class TicketControllerTest {
                 .andExpect(model().attributeExists("ticket"))
                 .andExpect(model().attribute("ticket", notNullValue()))
                 .andExpect(model().attributeExists("newMessage"))
-                .andExpect(model().attribute("newMessage", new TicketMessage()))
                 .andExpect(model().attributeExists("messagesList"))
                 .andExpect(model().attribute("messagesList", notNullValue()))
                 .andExpect(view().name("ticket_page"));
@@ -139,7 +138,6 @@ class TicketControllerTest {
                 .andExpect(model().attributeExists("ticket"))
                 .andExpect(model().attribute("ticket", notNullValue()))
                 .andExpect(model().attributeExists("newMessage"))
-                .andExpect(model().attribute("newMessage", new TicketMessage()))
                 .andExpect(model().attributeExists("messagesList"))
                 .andExpect(model().attribute("messagesList", notNullValue()))
                 .andExpect(view().name("ticket_page"));
@@ -226,8 +224,8 @@ class TicketControllerTest {
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void whenAddNewMessageAsAuthorized_thenOk() throws Exception {
+
         mockMvc.perform(post(MAPPED_URL + "/messages/add")
-                .flashAttr("ticket", ticket)
                 .flashAttr("newMessage", ticketMessage)
         )
                 //.andDo

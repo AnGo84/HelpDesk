@@ -31,54 +31,47 @@
         </div>
         <div class="col-sm-8"></div>
         <div class="col-sm-2 align-self-center">
-            <!--<a class="btn btn-primary btn-sm custom-width float-right btn-action" role="button"
-               th:href="@{/tickets/add}">
-                <i class="fa fa-plus"></i><span th:text="#{label.action.new}"/>
-            </a>-->
-            <button type="button" class="btn btn-primary btn-sm custom-width float-right btn-action"
-                    data-toggle="modal" data-target="#addTicketModal">
+            <button class="btn btn-primary btn-sm custom-width float-right btn-action" data-target="#addTicketModal"
+                    data-toggle="modal" type="button">
                 <i class="fa fa-plus"></i><span th:text="#{label.action.add}"/>
             </button>
         </div>
     </div>
 
-    <!--https://www.w3schools.com/bootstrap4/bootstrap_tables.asp-->
-    <!--https://datatables.net/examples/styling/compact.html-->
-    <!--https://stackoverflow.com/questions/41747667/bootstrap-4-responsive-tables-wont-take-up-100-width-->
     <div th:if="${objectsList != null and not #lists.isEmpty(objectsList)}">
-        <div>
-            <!--<div class="table-responsive-md">-->
+
+        <div class="table-responsive-md">
 
             <!--<table id="ticketsTable" class="table table-bordered table-sm">-->
             <table class="table table-sm table-bordered table-hover display compact" id="ticketsTable">
                 <thead>
                 <tr class="text-center">
-                    <th th:text="#{label.field.id}" width="100">Id</th>
-                    <th th:text="#{label.field.number}">Number</th>
-                    <th th:text="#{label.field.theme}" class="w-25">Theme</th>
-                    <th th:text="#{label.field.type}">Type</th>
-                    <th th:text="#{label.field.priority}">Priority</th>
-                    <th th:text="#{label.field.date}">Date</th>
-                    <th th:text="#{label.field.state}">State</th>
+                    <th scope="col" th:text="#{label.field.id}">Id</th>
+                    <th scope="col" th:text="#{label.field.number}">Number</th>
+                    <th scope="col" th:text="#{label.field.theme}">Theme</th>
+                    <th scope="col" th:text="#{label.field.type}">Type</th>
+                    <th scope="col" th:text="#{label.field.priority}">Priority</th>
+                    <th scope="col" th:text="#{label.field.date}">Date</th>
+                    <th scope="col" th:text="#{label.field.state}">State</th>
                 </tr>
                 </thead>
                 <tbody>
                 <!-- align-items-center -->
                 <tr th:each="ticket : ${objectsList}">
-                    <td class="text-center">
+                    <th class="text-center" scope="row">
                         <a th:href="@{'/tickets/view-' + ${ticket.id}}"
                            th:text="${ticket.id}" th:title="#{label.record.view.title}"></a>
-                    </td>
+                    </th>
+                    <!--<td class="text-center">
+                        <a th:href="@{'/tickets/view-' + ${ticket.id}}"
+                           th:text="${ticket.id}" th:title="#{label.record.view.title}"></a>
+                    </td>-->
                     <td th:text="${ticket.number}"></td>
                     <td th:text="${ticket.theme}"></td>
-                    <!--<td th:text="${ticket?.ticketType?.name}"></td>-->
                     <td th:text="#{${'label.field.type.' + ticket.ticketType.name}}"></td>
                     <td th:text="${ticket.ticketPriority.name}"></td>
-                    <!--<td th:text="${ticket.date}"></td>-->
                     <td th:text="${#dates.format(ticket.date, 'dd-MM-yyyy HH:mm')}"></td>
                     <td th:text="#{${'label.field.state.' + ticket.ticketState.name}}"></td>
-                    <!--<td th:text="${ticket?.ticketState?.name}"></td>-->
-
                 </tr>
                 </tbody>
             </table>

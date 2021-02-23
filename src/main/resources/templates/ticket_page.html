@@ -239,7 +239,7 @@
                     <input id="recordPerformerHidden" th:field="*{performer}" type="hidden"/>
 
                     <label for="recordPerformerText" th:text="#{label.field.performer}">Performer: </label>
-                    <input class="form-control" id="recordPerformerText" readonly
+                    <input class="form-control form-control-sm" id="recordPerformerText" readonly
                            th:value="*{performer?.login}" type="text"/>
                 </div>
 
@@ -256,12 +256,14 @@
 
         <!-- messages part -->
         <form action="#" method="POST" th:action="@{/tickets/messages/add}" th:object="${newMessage}">
-            <div class="form-group">
-                <div class="col-sm-12 col-md-9 col-lg-11">
+            <div class="row form-group">
+                <input id="messageTicketHidden" th:field="*{ticket}" type="hidden"/>
+
+                <div class="col-sm-12 col-md-8 col-lg-10">
                     <label for="newMessageText" th:text="#{label.message.new}">New message</label>
                     <textarea class="form-control" id="newMessageText" rows="3" th:field="*{text}"></textarea>
                 </div>
-                <div class="col-sm-12 col-md-3 col-lg-1 d-flex">
+                <div class="col-sm-12 col-md-4 col-lg-2 d-flex">
                     <div class="align-self-end ml-auto">
                         <button class="btn btn-info btn-sm btn-action" id="buttonSubmitNewMessage" type="submit">
                             <i class="fa fa-check"></i><span th:text="#{label.action.add}"/>
@@ -276,7 +278,7 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr class="text-center d-flex">
-                        <th class="col-8" th:text="#{label.field.text}">Text</th>
+                        <th class="col-8" th:text="#{label.message}"></th>
                         <th class="col-2" th:text="#{label.field.user}">User</th>
                         <th class="col-2" th:text="#{label.field.date}">Date</th>
                     </tr>
@@ -284,7 +286,6 @@
                     <tbody>
                     <tr class="d-flex" th:each="message : ${messagesList}">
                         <td class="col-sm-8">
-                            <!--<p></p>-->
                             <textarea class="form-control form-control-sm" readonly
                                       rows="2" th:text="${message.text}"></textarea>
                         </td>
@@ -325,9 +326,6 @@
         });
         $('#recordService').change();
     });
-
-
-
 
 </script>
 

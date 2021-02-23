@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -24,9 +23,8 @@ public class TicketMessage extends AbstractEntity {
 
 	private String text;
 
-	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "TICKET_ID")
+	@JoinColumn(name = "TICKET_ID", nullable = false)
 	public Ticket getTicket() {
 		return ticket;
 	}
@@ -35,9 +33,8 @@ public class TicketMessage extends AbstractEntity {
 		this.ticket = ticket;
 	}
 
-	@NotNull
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "USER_ID")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "USER_ID", nullable = false)
 	public User getUser() {
 		return user;
 	}
@@ -46,7 +43,6 @@ public class TicketMessage extends AbstractEntity {
 		this.user = user;
 	}
 
-	@NotNull
 	@Column(name = "DATE", nullable = false)
 	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	public Date getDate() {
